@@ -14,10 +14,11 @@ using namespace std;
 
 #include "auxlib.h"
 #include "string_set.h"
-
+
 int exit_status = EXIT_SUCCESS;
 const string CPP = "/usr/bin/cpp -nostdinc";
 string cpp_command;
+string file_name = "";
 string dOpt = "";
 
 constexpr size_t LINESIZE = 1024;
@@ -54,19 +55,17 @@ void cpplines (FILE* pipe, const char* filename) {
          char* token = strtok_r (bufptr, " \t\n", &savepos);
          bufptr = nullptr;
          if (token == nullptr) break;
-         const string* str = string_set::intern (token);
-         printf ("returned %p->\"%s\"\n",
-                       str, str->c_str());
-         // printf ("token %d.%d: [%s]\n",
-            // linenr, tokenct, token);
+         string_set::intern (token);//places token inside string_set
       }
       ++linenr;
    }
+   
 }
 
 
 void cpp_popen(const char* filename){
    string command = CPP + dOpt.c_str() + " " + filename;
+   file_name += filename;
    //open pipe to the file
    FILE* pipe = popen (command.c_str(), "r");
    //now pass to preprocessor
@@ -114,6 +113,9 @@ void scan_opts (int argc, char** argv) {
 
 int main (int argc, char** argv) {
    scan_opts ( argc, argv);
+   file_name += ".str";
+   printf("%s\n",file_name.c_str());
+   string_set::dump (stdout);
    return exit_status;
 }
 
