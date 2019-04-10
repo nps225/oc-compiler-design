@@ -114,7 +114,7 @@ void scan_opts (int argc, char** argv) {
 int main (int argc, char** argv) {
    scan_opts ( argc, argv);
    file_name += ".str";
-   printf("%s\n",file_name.c_str());
+   FILE* pipe = popen (file_name.c_str(), "r");
    string_set::dump (stdout);
    return exit_status;
 }
