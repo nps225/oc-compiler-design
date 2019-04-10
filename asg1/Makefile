@@ -6,7 +6,7 @@ MAKEDEPCPP  = g++ -std=gnu++17 -MM
 
 MKFILE   = Makefile
 DEPFILE  = Makefile.dep
-SOURCES  = string_set.cpp main.cpp auxlib.cpp
+SOURCES  = string_set.cpp main.cpp auxlib.cpp 
 HEADERS  = string_set.h auxlib.h
 OBJECTS  = ${SOURCES:.cpp=.o}
 EXECBIN  = oc

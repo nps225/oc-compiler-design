@@ -9,17 +9,74 @@ using namespace std;
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <string.h>
+#include <wait.h>
 
 #include "auxlib.h"
 #include "string_set.h"
 
+int exit_status = EXIT_SUCCESS;
 const string CPP = "/usr/bin/cpp -nostdinc";
 string cpp_command;
 string dOpt = "";
 
+constexpr size_t LINESIZE = 1024;
+
+// Chomp the last character from a buffer if it is delim.
+void chomp (char* string, char delim) {
+   size_t len = strlen (string);
+   if (len == 0) return;
+   char* nlpos = string + len - 1;
+   if (*nlpos == delim) *nlpos = '\0';
+}
+
+// Run cpp against the lines of the file.
+void cpplines (FILE* pipe, const char* filename) {
+   int linenr = 1;
+   char inputname[LINESIZE];
+   strcpy (inputname, filename);
+   for (;;) {
+      char buffer[LINESIZE];
+      char* fgets_rc = fgets (buffer, LINESIZE, pipe);
+      if (fgets_rc == nullptr) break;
+      chomp (buffer, '\n');
+      printf ("%s:line %d: [%s]\n", filename, linenr, buffer);
+      // http://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html
+      int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
+                              &linenr, inputname);
+      if (sscanf_rc == 2) {
+         // printf ("DIRECTIVE: line %d file \"%s\"\n", linenr, inputname);
+         continue;
+      }
+      char* savepos = nullptr;
+      char* bufptr = buffer;
+      for (int tokenct = 1;; ++tokenct) {
+         char* token = strtok_r (bufptr, " \t\n", &savepos);
+         bufptr = nullptr;
+         if (token == nullptr) break;
+         // printf ("token %d.%d: [%s]\n",
+               //   linenr, tokenct, token);
+      }
+      ++linenr;
+   }
+}
+
+
 void cpp_popen(const char* filename){
    string command = CPP + dOpt.c_str() + " " + filename;
-   //printf("%s\n",command.c_str());
+   //open pipe to the file
+   FILE* pipe = popen (command.c_str(), "r");
+   //now pass to preprocessor
+   if (pipe == nullptr) {
+         exit_status = EXIT_FAILURE;
+         fprintf (stderr, "%s: %s: %s\n",
+                  "oc", command.c_str(), strerror (errno));
+   }else {
+         cpplines (pipe, filename);
+         int pclose_rc = pclose (pipe);
+         eprint_status (command.c_str(), pclose_rc);
+         if (pclose_rc != 0) exit_status = EXIT_FAILURE;
+   }
 }
 
 
@@ -53,14 +110,7 @@ void scan_opts (int argc, char** argv) {
 
 
 int main (int argc, char** argv) {
-   //handle arguments here
-   scan_opts (argc, argv);
-   // for (int i = 1; i < argc; ++i) {
-   //    const string* str = string_set::intern (argv[i]);
-   //    printf ("intern (\"%s\") returned %p->\"%s\"\n",
-   //            argv[i], str, str->c_str());
-   // }
-   // string_set::dump (stdout);
-   return EXIT_SUCCESS;
+   scan_opts ( argc, argv);
+   return exit_status;
 }
 
