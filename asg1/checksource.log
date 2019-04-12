@@ -1,4 +1,0 @@
-checksource: line length > 72 characters
-   file "Makefile": 1 errors: line 42
-   file "main.cpp": 2 errors: lines 49, 97
-checksource: TOTAL COMPLAINTS: 3

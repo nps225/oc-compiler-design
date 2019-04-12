@@ -46,7 +46,8 @@ void cpplines (FILE* pipe, const char* filename) {
       int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
                               &linenr, inputname);
       if (sscanf_rc == 2) {
-         //printf ("DIRECTIVE: line %d file \"%s\"\n", linenr, inputname);
+         //printf ("DIRECTIVE: line %d file \"%s\"\n", 
+         //linenr, inputname);
          continue;
       }
       char* savepos = nullptr;
@@ -93,8 +94,9 @@ void scan_opts (int argc, char** argv) {
       int opt = getopt (argc, argv, "@:lyD:");
       if (opt == EOF) break;
       switch (opt) {
-         case '@': set_debugflags (optarg);   break;
-         case 'D': dOpt = dOpt + string(" -D ") + optarg; break;   //pass to precompiler
+         case '@': set_debugflags (optarg); break;
+         case 'D': dOpt = dOpt + string(" -D ") 
+                 + optarg; break;   //pass to precompiler
          // case 'l': yy_flex_debug = 1;         break;
          // case 'y': yydebug = 1;               break;
          case 'l': printf("l");               break;

@@ -39,7 +39,8 @@ dep :
 include ${DEPFILE}
 
 test : ${EXECBIN}
-	valgrind --log-file=test.grind --leak-check=full ${EXECBIN} * * * >test.out 2>&1
+	valgrind --log-file=test.grind --leak-check=full\
+                ${EXECBIN} * * * >test.out 2>&1
 
 lis : test
 	mkpspdf Listing.ps ${SRCFILES} ${DEPFILE} test.out test.grind
