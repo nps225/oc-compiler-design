@@ -1,4 +1,26 @@
-// $Id: auxlib.h,v 1.1 2019-04-15 14:56:06-07 - - $
+head	1.1;
+access;
+symbols;
+locks;
+comment	@ * @;
+
+
+1.1
+date	2019.04.15.21.56.06;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@// $Id: auxlib.h,v 1.10 2017-10-11 14:33:32-07 - - $
 
 #ifndef __AUXLIB_H__
 #define __AUXLIB_H__
@@ -65,7 +87,7 @@ void set_debugflags (const char* flags);
 // Uses the address of the string, and does not copy it, so
 // it must not be dangling.  If a particular debug flag has
 // been set, messages are printed.  The format is identical to
-// printf format.  The flag "@" turns on all flags.
+// printf format.  The flag "@@" turns on all flags.
 
 bool is_debugflag (char flag);
 // Checks to see if a debugflag is set.
@@ -87,3 +109,4 @@ void __debugprintf (char flag, const char* file, int line,
 
 #endif
 
+@

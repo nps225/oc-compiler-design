@@ -1,5 +1,27 @@
-//Nikhil Sheth
-//npsheth@ucsc.edu
+head	1.1;
+access;
+symbols;
+locks;
+comment	@// @;
+
+
+1.1
+date	2019.04.15.21.56.06;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@//Nikhil Sheth
+//npsheth@@ucsc.edu
 //ID:1577698
 #include <string>
 #include <vector>
@@ -94,10 +116,10 @@ void scan_opts (int argc, char** argv) {
    // lexer::interactive = isatty (fileno (stdin))
    //                  and isatty (fileno (stdout));
    for(;;) {
-      int opt = getopt (argc, argv, "@:lyD:");
+      int opt = getopt (argc, argv, "@@:lyD:");
       if (opt == EOF) break;
       switch (opt) {
-         case '@': set_debugflags (optarg); break;
+         case '@@': set_debugflags (optarg); break;
          case 'D': dOpt = dOpt + string(" -D ") 
                  + optarg; break;   //pass to precompiler
          // case 'l': yy_flex_debug = 1;         break;
@@ -124,3 +146,4 @@ int main (int argc, char** argv) {
    return exit_status;
 }
 
+@

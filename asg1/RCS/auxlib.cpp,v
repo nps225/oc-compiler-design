@@ -1,4 +1,26 @@
-// $Id: auxlib.cpp,v 1.1 2019-04-15 14:56:06-07 - - $
+head	1.1;
+access;
+symbols;
+locks;
+comment	@// @;
+
+
+1.1
+date	2019.04.15.21.56.06;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@// $Id: auxlib.cpp,v 1.5 2017-10-11 14:28:23-07 - - $
 
 #include <assert.h>
 #include <errno.h>
@@ -91,7 +113,7 @@ void __stubprintf (const char* file, int line, const char* func,
 void set_debugflags (const char* flags) {
    debugflags = flags;
    assert (debugflags != nullptr);
-   if (strchr (debugflags, '@') != nullptr) alldebugflags = true;
+   if (strchr (debugflags, '@@') != nullptr) alldebugflags = true;
    DEBUGF ('x', "Debugflags = \"%s\", all = %d\n",
            debugflags, alldebugflags);
 }
@@ -113,3 +135,4 @@ void __debugprintf (char flag, const char* file, int line,
    fflush (nullptr);
 }
 
+@
