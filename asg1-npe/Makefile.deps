@@ -1,0 +1,5 @@
+# Makefile.deps
+
+string_set.o: string_set.cpp auxlib.h string_set.h
+auxlib.o: auxlib.cpp auxlib.h
+main.o: main.cpp auxlib.h string_set.h
