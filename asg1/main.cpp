@@ -110,7 +110,15 @@ void scan_opts (int argc, char** argv) {
    if (optind > argc) {
       errprintf ("Usage: %s [-ly] [filename]\n",
                  exec::execname.c_str());
-      exit (exec::exit_status);
+      //exit (exec::Exit_);
+      exit(1);
+   }
+   //check if the file exists
+   if(FILE *file = fopen(argv[optind],"r")){
+      fclose(file);
+   }else{
+      perror("file does not exist\n");
+      exit(1);//if not exit
    }
    cpp_popen(optind == argc ? "-" : argv[optind]);
 }
@@ -118,9 +126,12 @@ void scan_opts (int argc, char** argv) {
 
 int main (int argc, char** argv) {
    scan_opts ( argc, argv);
+   file_name = file_name.substr(0, file_name.length() - 3);
+   //printf("%s\n",file_name.c_str());
    file_name += ".str";
    FILE* pipe = fopen (file_name.c_str(), "w");
    string_set::dump (pipe);
+   fclose(pipe);
    return exit_status;
 }
 
