@@ -137,7 +137,10 @@ int main (int argc, char** argv) {
    scan_opts (argc, argv);
    int parse_rc = yyparse();
    cpp_pclose();
-   yylex_destroy();
+   string outfileTok = outfile + ".tok";
+   FILE* out = fopen (outfileTok.c_str(), "w");
+   // string_set::dump (out);
+   // yylex_destroy();
    if (yydebug or yy_flex_debug) {
       fprintf (stderr, "Dumping parser::root:\n");
       if (parser::root != nullptr) parser::root->dump_tree (stderr);
@@ -147,7 +150,7 @@ int main (int argc, char** argv) {
    if (parse_rc) {
       errprintf ("parse failed (%d)\n", parse_rc);
    }else {
-      astree::print (stdout, parser::root);
+      astree::print (out, parser::root);
       emit_sm_code (parser::root);
       delete parser::root;
    }
