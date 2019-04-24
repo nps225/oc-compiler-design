@@ -34,7 +34,7 @@ constexpr size_t LINESIZE = 1024;
 // Global variables
 string dArg = "";
 string outfile = "";
-
+string cpp_command;
 /*
  *  Function prototypes
 */
@@ -115,19 +115,31 @@ void scan_opts (int argc, char** argv) {
 // Exit failure if can't.
 // Assigns opened pipe to FILE* pipe.
 void cpp_popen (const char* filename) {
-   string cpp_command = CPP + dArg + " " + filename;
+   cpp_command = CPP + dArg + " " + filename;
    FILE* pipe = popen (cpp_command.c_str(), "r");
+   
    if (pipe == nullptr) {
       syserrprintf (cpp_command.c_str());
       exit (exec::exit_status);
    } else {
-      cpplines (pipe);
-      int pclose_rc = pclose (pipe);
-      eprint_status (cpp_command.c_str(), pclose_rc);
-      if (pclose_rc != 0) exec::exit_status = EXIT_FAILURE;
+      //cpplines (pipe);
+      if(yy_flex_debug){
+        fprintf(stderr,"-- popen(%s), fileno(yyin) = %d\n",
+                cpp_command.c_str(), fileno(pipe));
+      }
+      lexer::newfilename(cpp_command);
+      //int pclose_rc = pclose (pipe);
+      //eprint_status (cpp_command.c_str(), pclose_rc);
+      //if (pclose_rc != 0) exec::exit_status = EXIT_FAILURE;
    }
 }
 
+
+void cpp_pclose(){
+   int pclose_rc = pclose(yyin);
+   eprint_status (cpp_command.c_str(),pclose_rc);
+   if (pclose_rc != 0) exec::exit_status = EXIT_FAILURE;
+}
 
 /*
  *  Functions kanged from Prof. Mackey's cppstrtok.cpp
