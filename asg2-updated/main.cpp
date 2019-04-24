@@ -18,7 +18,13 @@ using namespace std;
 #include "lyutils.h"
 #include "string_set.h"
 
+//constants
 const string cpp_name = "/usr/bin/cpp";
+constexpr size_t LINESIZE = 1024;
+
+// Global variables
+string dArg = "";
+string outfile = "";
 string cpp_command;
 
 // Open a pipe from the C preprocessor.
@@ -52,14 +58,20 @@ void scan_opts (int argc, char** argv) {
    yydebug = 0;
    lexer::interactive = isatty (fileno (stdin))
                     and isatty (fileno (stdout));
-   for(;;) {
-      int opt = getopt (argc, argv, "@:ly");
+      for(;;) {
+      int opt = getopt (argc, argv, "@:lyD:");
       if (opt == EOF) break;
       switch (opt) {
-         case '@': set_debugflags (optarg);   break;
-         case 'l': yy_flex_debug = 1;         break;
-         case 'y': yydebug = 1;               break;
-         default:  errprintf ("bad option (%c)\n", optopt); break;
+         case '@': set_debugflags (optarg);
+         break;
+         case 'l': // yy_flex_debug = 1;
+         break;
+         case 'y': // yydebug = 1;
+         break;
+         case 'D': dArg += string(" -D") + optarg;
+         break;
+         default:  errprintf ("bad option (%c)\n", optopt);
+         break;
       }
    }
    if (optind > argc) {
@@ -68,7 +80,49 @@ void scan_opts (int argc, char** argv) {
       exit (exec::exit_status);
    }
    const char* filename = optind == argc ? "-" : argv[optind];
+   string fn = filename;
+   string f(basename(const_cast<char*> (fn.c_str())));
+   // extract the filename without .oc using substr()
+   outfile = f.substr(0, f.length()-3);
    cpp_popen (filename);
+}
+
+// Chomp the last character from a buffer if it is delim.
+void chomp (char* string, char delim) {
+   size_t len = strlen (string);
+   if (len == 0) return;
+   char* nlpos = string + len - 1;
+   if (*nlpos == delim) *nlpos = '\0';
+}
+
+// Run cpp against the lines of the file.
+void cpplines (FILE* pipe) {
+   int linenr = 1;
+   for (;;) {
+      char buffer[LINESIZE];
+      const char* fgets_rc = fgets (buffer, LINESIZE, pipe);
+      if (fgets_rc == nullptr) break;
+      chomp (buffer, '\n');
+      //printf ("%s:line %d: [%s]\n", filename, linenr, buffer);
+      // http://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html
+      char inputname[LINESIZE];
+      int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
+                              &linenr, inputname);
+      if (sscanf_rc == 2) {
+         continue;
+      }
+      char* savepos = nullptr;
+      char* bufptr = buffer;
+      for (int tokenct = 1;; ++tokenct) {
+         char* token = strtok_r (bufptr, " \t\n", &savepos);
+         bufptr = nullptr;
+         if (token == nullptr) break;
+         // printf ("token %d.%d: [%s]\n",
+         //        linenr, tokenct, token);
+         string_set::intern(token);
+      }
+      ++linenr;
+   }
 }
 
 int main (int argc, char** argv) {
@@ -99,3 +153,4 @@ int main (int argc, char** argv) {
    }
    return exec::exit_status;
 }
+
