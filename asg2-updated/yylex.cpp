@@ -943,12 +943,12 @@ YY_RULE_SETUP
 case 4:
 YY_RULE_SETUP
 #line 35 "lexer.l"
-{ return lexer::token (NUMBER); }
+{ return lexer::token (TOK_INT); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 36 "lexer.l"
-{ return lexer::token (IDENT); }
+{ return lexer::token (TOK_IDENT); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
@@ -998,7 +998,7 @@ YY_RULE_SETUP
 case 15:
 YY_RULE_SETUP
 #line 47 "lexer.l"
-{ return lexer::badtoken (NUMBER); }
+{ return lexer::badtoken (TOK_INT); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
@@ -2092,5 +2092,6 @@ void yyfree (void * ptr )
 /* %ok-for-header */
 
 #line 50 "lexer.l"
+
 
 

@@ -82,4 +82,3 @@ void yyerror (const char* message) {
    assert (not lexer::filenames.empty());
    errllocprintf (lexer::lloc, "%s\n", message);
 }
-

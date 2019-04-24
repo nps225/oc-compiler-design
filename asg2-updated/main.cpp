@@ -1,9 +1,13 @@
-// $Id: main.cpp,v 1.18 2017-10-19 16:02:14-07 - - $
+/*
+ *  oc-compiler main.cpp
+ *  CMPS 104A Assignment 1: StringSet generator
+ *  Author: Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
+ *  Date: 2019.04.15
+ */
 
+// Standard C[++] libraries
 #include <string>
 #include <vector>
-using namespace std;
-
 #include <assert.h>
 #include <errno.h>
 #include <libgen.h>
@@ -11,15 +15,19 @@ using namespace std;
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-#include "astree.h"
-#include "auxlib.h"
-#include "emitter.h"
-#include "lyutils.h"
+#include <string.h>
+#include <wait.h>
+// Include our own libraries
 #include "string_set.h"
+#include "auxlib.h"
+#include "lyutils.h"
+#include "yyparse.h"
 
-//constants
-const string cpp_name = "/usr/bin/cpp";
+
+using namespace std;
+
+// Global constants
+const string CPP = "/usr/bin/cpp -nostdinc";
 constexpr size_t LINESIZE = 1024;
 
 // Global variables
@@ -27,23 +35,16 @@ string dArg = "";
 string outfile = "";
 string cpp_command;
 
-// Open a pipe from the C preprocessor.
-// Exit failure if can't.
-// Assigns opened pipe to FILE* yyin.
-void cpp_popen (const char* filename) {
-   cpp_command = cpp_name + " " + filename;
-   yyin = popen (cpp_command.c_str(), "r");
-   if (yyin == nullptr) {
-      syserrprintf (cpp_command.c_str());
-      exit (exec::exit_status);
-   }else {
-      if (yy_flex_debug) {
-         fprintf (stderr, "-- popen (%s), fileno(yyin) = %d\n",
-                  cpp_command.c_str(), fileno (yyin));
-      }
-      lexer::newfilename (cpp_command);
-   }
-}
+/*
+ *  Function prototypes
+*/
+
+void chomp (char* string, char delim);
+void eprint_status (const char* command, int status);
+void cpplines (FILE* pipe);
+void scan_opts (int argc, char** argv);
+void cpp_popen (const char* filename);
+void cpp_pclose();
 
 void cpp_pclose() {
    int pclose_rc = pclose (yyin);
@@ -51,22 +52,61 @@ void cpp_pclose() {
    if (pclose_rc != 0) exec::exit_status = EXIT_FAILURE;
 }
 
-
+/* Main() */
+int main(int argc, char** argv) {
+   exec::execname = basename (argv[0]);
+   if (yydebug or yy_flex_debug) {
+      fprintf (stderr, "Command:");
+      for (char** arg = &argv[0]; arg < &argv[argc]; ++arg) {
+            fprintf (stderr, " %s", *arg);
+      }
+      fprintf (stderr, "\n");
+   }
+   scan_opts (argc, argv);
+   int parse_rc = yyparse();
+   cpp_pclose();
+   string outfileTok = outfile + ".tok";
+   FILE* out = fopen (outfileTok.c_str(), "w");
+   if (parse_rc) {
+      errprintf ("parse failed (%d)\n", parse_rc);
+   }else {
+      printLexer(out);
+      fclose(out);
+   }
+//   outfile += ".str";
+//   FILE* out = fopen (outfile.c_str(), "w");
+//   string_set::dump (out);
+  return exec::exit_status;
+}
+
+
+/*
+* Function to analyze the command line arguments and 
+* do what's necessary.
+* Based on 
+* Assignments/expr-smc/main.cpp
+*
+*/
+
 void scan_opts (int argc, char** argv) {
    opterr = 0;
+
+   /* Unnecessary code for Assignment 1 */
+
    yy_flex_debug = 0;
    yydebug = 0;
    lexer::interactive = isatty (fileno (stdin))
-                    and isatty (fileno (stdout));
-      for(;;) {
+                  and isatty (fileno (stdout));
+
+   for(;;) {
       int opt = getopt (argc, argv, "@:lyD:");
       if (opt == EOF) break;
       switch (opt) {
          case '@': set_debugflags (optarg);
          break;
-         case 'l': // yy_flex_debug = 1;
+         case 'l': yy_flex_debug = 1;
          break;
-         case 'y': // yydebug = 1;
+         case 'y': yydebug = 1;
          break;
          case 'D': dArg += string(" -D") + optarg;
          break;
@@ -86,6 +126,37 @@ void scan_opts (int argc, char** argv) {
    outfile = f.substr(0, f.length()-3);
    cpp_popen (filename);
 }
+
+/*
+* Function to open the pipe and call cpplines().
+* Based on Assignments/expr-smc/main.cpp
+*
+*/
+
+// Open a pipe from the C preprocessor.
+// Exit failure if can't.
+// Assigns opened pipe to FILE* pipe.
+void cpp_popen (const char* filename) {
+   cpp_command = CPP + dArg + " " + filename;
+   yyin = popen (cpp_command.c_str(), "r");
+   if (yyin == nullptr) {
+      syserrprintf (cpp_command.c_str());
+      exit (exec::exit_status);
+   } else {
+      // cpplines (yyin);
+      if (yy_flex_debug) {
+         fprintf (stderr, "-- popen (%s), fileno(yyin) = %d\n",
+                  cpp_command.c_str(), fileno (yyin));
+      }
+      lexer::newfilename (cpp_command);
+   }
+}
+
+
+/*
+ *  Functions kanged from Prof. Mackey's cppstrtok.cpp
+ *  Slightly modified to meet the requirements of the assignment.
+*/
 
 // Chomp the last character from a buffer if it is delim.
 void chomp (char* string, char delim) {
@@ -124,36 +195,3 @@ void cpplines (FILE* pipe) {
       ++linenr;
    }
 }
-
-int main (int argc, char** argv) {
-   exec::execname = basename (argv[0]);
-   if (yydebug or yy_flex_debug) {
-      fprintf (stderr, "Command:");
-      for (char** arg = &argv[0]; arg < &argv[argc]; ++arg) {
-            fprintf (stderr, " %s", *arg);
-      }
-      fprintf (stderr, "\n");
-   }
-   scan_opts (argc, argv);
-   int parse_rc = yyparse();
-   cpp_pclose();
-   string outfileTok = outfile + ".tok";
-   FILE* out = fopen (outfileTok.c_str(), "w");
-   // string_set::dump (out);
-   // yylex_destroy();
-   if (yydebug or yy_flex_debug) {
-      fprintf (stderr, "Dumping parser::root:\n");
-      if (parser::root != nullptr) parser::root->dump_tree (stderr);
-      fprintf (stderr, "Dumping string_set:\n");
-      string_set::dump (stderr);
-   }
-   if (parse_rc) {
-      errprintf ("parse failed (%d)\n", parse_rc);
-   }else {
-      astree::print (out, parser::root);
-      emit_sm_code (parser::root);
-      delete parser::root;
-   }
-   return exec::exit_status;
-}
-

@@ -11,14 +11,14 @@ MKDEPS    = g++ -std=gnu++17 -MM
 GRIND     = valgrind --leak-check=full --show-reachable=yes
 UTILBIN   = /afs/cats.ucsc.edu/courses/cmps104a-wm/bin/
 
-MODULES   = astree lyutils string_set emitter auxlib
+MODULES   = astree lyutils string_set auxlib
 HDRSRC    = ${MODULES:=.h}
 CPPSRC    = ${MODULES:=.cpp} main.cpp
 FLEXSRC   = lexer.l
 BISONSRC  = parser.y
 PARSEHDR  = yyparse.h
 LEXCPP    = yylex.cpp
-PARSECPP  = yyparse.cpp
+PARSECPP  = yyparse.cpp asg2.cpp
 CGENS     = ${LEXCPP} ${PARSECPP}
 ALLGENS   = ${PARSEHDR} ${CGENS}
 EXECBIN   = oc 
