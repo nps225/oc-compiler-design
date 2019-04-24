@@ -44,16 +44,52 @@ void eprint_status (const char* command, int status);
 void cpplines (FILE* pipe);
 void scan_opts (int argc, char** argv);
 void cpp_popen (const char* filename);
-void cpp_pclose(FILE* pipe, string cpp_command);
+
+void cpp_pclose() {
+   int pclose_rc = pclose (yyin);
+   eprint_status (cpp_command.c_str(), pclose_rc);
+   if (pclose_rc != 0) exec::exit_status = EXIT_FAILURE;
+}
 
 
 
 /* Main() */
 int main(int argc, char** argv) {
+  exec::execname = basename (argv[0]);
+  if (yydebug or yy_flex_debug) {
+     fprintf (stderr, "Command:");
+     for (char** arg = &argv[0]; arg < &argv[argc]; ++arg) {
+           fprintf (stderr, " %s", *arg);
+     }
+     fprintf (stderr, "\n");
+  }
+
   scan_opts (argc, argv);
-  outfile += ".str";
-  FILE* out = fopen (outfile.c_str(), "w");
-  string_set::dump (out);
+  int parse_rc = yyparse();
+   cpp_pclose();
+
+  //generate the filename
+  string outfiletok = outfile + ".tok";
+  FILE* out = fopen (outfiletok.c_str(), "w");
+
+  yylex_destroy();
+  if (yydebug or yy_flex_debug) {
+     fprintf (stderr, "Dumping parser::root:\n");
+     if (parser::root != nullptr) parser::root->dump_tree (stderr);
+     fprintf (stderr, "Dumping string_set:\n");
+     string_set::dump (stderr);
+  }
+  if (parse_rc) {
+     errprintf ("parse failed (%d)\n", parse_rc);
+  }else {
+     astree::print (out, parser::root);
+     emit_sm_code (parser::root);
+     delete parser::root;
+  }
+
+  //outfile += ".str";
+  //FILE* out = fopen (outfile.c_str(), "w");
+  //string_set::dump (out);
   return exec::exit_status;
 }
 
@@ -116,31 +152,20 @@ void scan_opts (int argc, char** argv) {
 // Assigns opened pipe to FILE* pipe.
 void cpp_popen (const char* filename) {
    cpp_command = CPP + dArg + " " + filename;
-   FILE* pipe = popen (cpp_command.c_str(), "r");
+   yyin = popen (cpp_command.c_str(), "r");
    
-   if (pipe == nullptr) {
+   if (yyin == nullptr) {
       syserrprintf (cpp_command.c_str());
       exit (exec::exit_status);
    } else {
       //cpplines (pipe);
       if(yy_flex_debug){
         fprintf(stderr,"-- popen(%s), fileno(yyin) = %d\n",
-                cpp_command.c_str(), fileno(pipe));
+                cpp_command.c_str(), fileno(yyin));
       }
       lexer::newfilename(cpp_command);
-      //int pclose_rc = pclose (pipe);
-      //eprint_status (cpp_command.c_str(), pclose_rc);
-      //if (pclose_rc != 0) exec::exit_status = EXIT_FAILURE;
    }
 }
-
-
-void cpp_pclose(){
-   int pclose_rc = pclose(yyin);
-   eprint_status (cpp_command.c_str(),pclose_rc);
-   if (pclose_rc != 0) exec::exit_status = EXIT_FAILURE;
-}
-
 /*
  *  Functions kanged from Prof. Mackey's cppstrtok.cpp
  *  Slightly modified to meet the requirements of the assignment.
