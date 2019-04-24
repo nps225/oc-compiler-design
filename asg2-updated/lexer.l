@@ -48,4 +48,3 @@ IDENT           ({LETTER}({LETTER}|{DIGIT})*)
 .               { lexer::badchar (*yytext); }
 
 %%
-

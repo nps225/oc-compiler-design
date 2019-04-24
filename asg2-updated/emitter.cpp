@@ -77,4 +77,3 @@ void emit_sm_code (astree* tree) {
    printf ("\n");
    if (tree) emit (tree);
 }
-

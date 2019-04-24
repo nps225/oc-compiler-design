@@ -60,8 +60,6 @@ expr    : expr '=' expr         { $$ = $2->adopt ($1, $3); }
         ;
 
 %%
-
 const char* parser::get_tname (int symbol) {
    return yytname [YYTRANSLATE (symbol)];
 }
-

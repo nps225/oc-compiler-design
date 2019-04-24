@@ -8,4 +8,3 @@
 void emit_sm_code (astree*);
 
 #endif
-

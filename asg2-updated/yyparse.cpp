@@ -1765,8 +1765,6 @@ yyreturn:
 }
 #line 62 "parser.y" /* yacc.c:1906  */
 
-
 const char* parser::get_tname (int symbol) {
    return yytname [YYTRANSLATE (symbol)];
 }
-
