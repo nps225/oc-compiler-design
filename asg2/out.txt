@@ -1,0 +1,96 @@
+; 0.  1: # 1 "00-trivial.oc"; 0.  0: 
+; 0.  1: # 1 "<built-in>"
+; 1.  1: # 1 "<command-line>"
+; 2.  1: # 1 "00-trivial.oc"
+; 3.  1: 
+; 3.  2: 
+; 3.  3: 
+; 3.  4: # 1 "oclib.h" 1
+; 4.  1: # 25 "oclib.h"
+; 5. 25: void; TOK_NOT "void" (5.25.1)
+ __assert_fail; TOK_NOT "__assert_fail" (5.25.6)
+ (; '(' "(" (5.25.20)
+string; TOK_NOT "string" (5.25.21)
+ expr; TOK_NOT "expr" (5.25.28)
+,; ',' "," (5.25.32)
+ string; TOK_NOT "string" (5.25.34)
+ file; TOK_NOT "file" (5.25.41)
+,; ',' "," (5.25.45)
+ int; TOK_NOT "int" (5.25.47)
+ line; TOK_NOT "line" (5.25.51)
+,; ',' "," (5.25.55)
+ string; TOK_NOT "string" (5.25.57)
+ func; TOK_NOT "func" (5.25.64)
+); ')' ")" (5.25.68)
+;; ';' ";" (5.25.69)
+
+; 5. 26: void; TOK_NOT "void" (5.26.1)
+ putchar; TOK_NOT "putchar" (5.26.6)
+ (; '(' "(" (5.26.14)
+int; TOK_NOT "int" (5.26.15)
+ c; TOK_NOT "c" (5.26.19)
+); ')' ")" (5.26.20)
+;; ';' ";" (5.26.21)
+
+; 5. 27: void; TOK_NOT "void" (5.27.1)
+ putint; TOK_NOT "putint" (5.27.6)
+ (; '(' "(" (5.27.13)
+int; TOK_NOT "int" (5.27.14)
+ i; TOK_NOT "i" (5.27.18)
+); ')' ")" (5.27.19)
+;; ';' ";" (5.27.20)
+
+; 5. 28: void; TOK_NOT "void" (5.28.1)
+ putstr; TOK_NOT "putstr" (5.28.6)
+ (; '(' "(" (5.28.13)
+string; TOK_NOT "string" (5.28.14)
+ s; TOK_NOT "s" (5.28.21)
+); ')' ")" (5.28.22)
+;; ';' ";" (5.28.23)
+
+; 5. 29: int; TOK_NOT "int" (5.29.1)
+ getchar; TOK_NOT "getchar" (5.29.5)
+(; '(' "(" (5.29.12)
+); ')' ")" (5.29.13)
+;; ';' ";" (5.29.14)
+
+; 5. 30: string; TOK_NOT "string" (5.30.1)
+ getword; TOK_NOT "getword" (5.30.8)
+(; '(' "(" (5.30.15)
+); ')' ")" (5.30.16)
+;; ';' ";" (5.30.17)
+
+; 5. 31: string; TOK_NOT "string" (5.31.1)
+ getln; TOK_NOT "getln" (5.31.8)
+(; '(' "(" (5.31.13)
+); ')' ")" (5.31.14)
+;; ';' ";" (5.31.15)
+
+; 5. 32: void; TOK_NOT "void" (5.32.1)
+ exit; TOK_NOT "exit" (5.32.6)
+ (; '(' "(" (5.32.11)
+int; TOK_NOT "int" (5.32.12)
+ status; TOK_NOT "status" (5.32.16)
+); ')' ")" (5.32.22)
+;; ';' ";" (5.32.23)
+
+; 5. 33: # 5 "00-trivial.oc" 2
+; 6.  5: 
+; 6.  6: int; TOK_NOT "int" (6.6.1)
+ main; TOK_NOT "main" (6.6.5)
+(; '(' "(" (6.6.9)
+); ')' ")" (6.6.10)
+ {; '{' "{" (6.6.12)
+
+; 6.  7:    putstr; TOK_NOT "putstr" (6.7.4)
+ (; '(' "(" (6.7.11)
+"Hello, world!\n"; TOK_STRING ""Hello, world!\n"" (6.7.12)
+); ')' ")" (6.7.29)
+;; ';' ";" (6.7.30)
+
+; 6.  8:    return; TOK_NOT "return" (6.8.4)
+ SUCCESS; TOK_NOT "SUCCESS" (6.8.11)
+;; ';' ";" (6.8.18)
+
+; 6.  9: }; '}' "}" (6.9.1)
+

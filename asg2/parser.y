@@ -15,7 +15,7 @@
 %token-table
 %verbose
 
-%token TOK_VOID TOK_INT TOK_STRING
+%token TOK_VOID TOK_INT TOK_STRING TOK_CHAR
 %token TOK_IF TOK_ELSE TOK_WHILE TOK_RETURN TOK_STRUCT
 %token TOK_NULLPTR TOK_ARRAY TOK_ARROW TOK_ALLOC TOK_PTR
 %token TOK_EQ TOK_NE TOK_LT TOK_LE TOK_GT TOK_GE TOK_NOT
@@ -29,7 +29,7 @@
 program : program token | ;
 token   : '(' | ')' | '[' | ']' | '{' | '}' | ';' | ','
         | '=' | '+' | '-' | '*' | '/' | '%' | TOK_NOT | TOK_PTR
-        | TOK_ROOT TOK_VOID | TOK_INT | TOK_STRING
+        | TOK_ROOT TOK_VOID | TOK_INT | TOK_STRING | TOK_CHAR
         | TOK_IF | TOK_ELSE | TOK_WHILE | TOK_RETURN | TOK_STRUCT
         | TOK_NULLPTR | TOK_ARRAY | TOK_ARROW | TOK_ALLOC
         | TOK_EQ | TOK_NE | TOK_LT | TOK_LE | TOK_GT | TOK_GE
