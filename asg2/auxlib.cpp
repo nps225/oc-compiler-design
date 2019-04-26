@@ -113,4 +113,3 @@ void __debugprintf (char flag, const char* file, int line,
    va_end (args);
    fflush (nullptr);
 }
-

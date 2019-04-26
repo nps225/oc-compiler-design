@@ -39,4 +39,3 @@ void destroy (astree* tree1, astree* tree2 = nullptr);
 void errllocprintf (const location&, const char* format, const char*);
 
 #endif
-

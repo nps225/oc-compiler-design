@@ -42,6 +42,8 @@ IDENT           ({LETTER}({LETTER}|{DIGIT})*)
 "^"             { return lexer::token ('^'); }
 "("             { return lexer::token ('('); }
 ")"             { return lexer::token (')'); }
+"{"             { return lexer::token ('{'); }
+"}"             { return lexer::token ('}'); }
 ";"             { return lexer::token (';'); }
 
 {NOTNUMBER}     { return lexer::badtoken (TOK_INT); }
