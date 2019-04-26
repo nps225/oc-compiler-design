@@ -14,7 +14,7 @@ UTILBIN   = /afs/cats.ucsc.edu/courses/cmps104a-wm/bin/
 MODULES   = astree lyutils string_set auxlib asg2
 HDRSRC    = ${MODULES:=.h}
 CPPSRC    = ${MODULES:=.cpp} main.cpp
-FLEXSRC   = lexer.l
+FLEXSRC   = scanner.l
 BISONSRC  = parser.y
 PARSEHDR  = yyparse.h
 LEXCPP    = yylex.cpp
