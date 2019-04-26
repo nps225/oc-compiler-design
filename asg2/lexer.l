@@ -32,9 +32,11 @@ IDENT           ({LETTER}({LETTER}|{DIGIT})*)
 [ \t]+          { }
 \n              { lexer::newline(); }
 
-{NUMBER}        { return lexer::token (TOK_INT); }
-{IDENT}         { return lexer::token (TOK_IDENT); }
+">="             { return lexer::token (TOK_GE); }
+"<="             { return lexer::token (TOK_LE); }
 "="             { return lexer::token ('='); }
+">"             { return lexer::token (TOK_GT); }
+"<"             { return lexer::token (TOK_LT); }
 "+"             { return lexer::token ('+'); }
 "-"             { return lexer::token ('-'); }
 "*"             { return lexer::token ('*'); }
@@ -45,6 +47,15 @@ IDENT           ({LETTER}({LETTER}|{DIGIT})*)
 "{"             { return lexer::token ('{'); }
 "}"             { return lexer::token ('}'); }
 ";"             { return lexer::token (';'); }
+"not"           { return lexer::token (TOK_NOT); }
+"int"           { return lexer::token (TOK_INTCON); }
+"char"          { return lexer::token (TOK_CHARCON); }
+"while"         { return lexer::token (TOK_WHILE); }
+"void"          { return lexer::token (TOK_VOID); }
+"return"        { return lexer::token (TOK_RETURN); }
+
+{NUMBER}        { return lexer::token (TOK_INT); }
+{IDENT}         { return lexer::token (TOK_IDENT); }
 
 {NOTNUMBER}     { return lexer::badtoken (TOK_INT); }
 .               { lexer::badchar (*yytext); }
