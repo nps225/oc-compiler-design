@@ -29,7 +29,7 @@ MANTISSA        ({DIGIT}+\.?{DIGIT}*|\.{DIGIT}+)
 EXPONENT        ([Ee][+-]?{DIGIT}+)
 STRING          (\"([^\\"\n]|\\[\\’"0nt])*\")
 CHAR            ('([^\\'\n]|\\[\\'"0nt])')
-NUM             ({HEXNUM}|{DECIMAL}|{OCTALNUM})
+NUM             ({HEXNUM}|{OCTALNUM})
 NUMBER          ({MANTISSA}{EXPONENT}?)
 NOTNUMBER       ({MANTISSA}[Ee][+-]?)
 IDENT           ({LETTER}({LETTER}|{DIGIT})*)
@@ -81,6 +81,7 @@ BADIDENT        ({DIGIT}{IDENT})
 
 {CHAR}          { return lexer::token (TOK_CHARCON); }
 {STRING}        { return lexer::token (TOK_STRINGCON); }
+{NUM}           { return lexer::token (TOK_INTCON); }
 {NUMBER}           { return lexer::token (TOK_INTCON); }
 {IDENT}         { return lexer::token (TOK_IDENT); }
 
