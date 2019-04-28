@@ -33,7 +33,9 @@ NUM             ({HEXNUM}|{DECIMAL}|{OCTALNUM})
 NUMBER          ({MANTISSA}{EXPONENT}?)
 NOTNUMBER       ({MANTISSA}[Ee][+-]?)
 IDENT           ({LETTER}({LETTER}|{DIGIT})*)
-
+BADSTRING       (\"([^"])*\"|\")
+BADCHAR         ('([^'])*'|')
+BADIDENT        ({DIGIT}{IDENT})
 
 %%
 
@@ -78,10 +80,13 @@ IDENT           ({LETTER}({LETTER}|{DIGIT})*)
 
 {CHAR}          { return lexer::token (TOK_CHARCON); }
 {STRING}        { return lexer::token (TOK_STRINGCON); }
-{NUM}        { return lexer::token (TOK_INTCON); }
+{NUM}           { return lexer::token (TOK_INTCON); }
 {IDENT}         { return lexer::token (TOK_IDENT); }
 
 {NOTNUMBER}     { return lexer::badtoken (TOK_INT); }
+{BADSTRING}               { yyerror("bad string"); }
+{BADCHAR}               { yyerror("bad char"); }
+{BADIDENT}               { yyerror("bad identifier"); }
 .               { lexer::badchar (*yytext); }
 
 %%
