@@ -15,3 +15,22 @@ void printLexer(FILE* out){
 
 
 }
+
+
+void scanToFile(string filename){
+   //here we parse the file
+   string filenameTOK = filename + ".tok";
+   string filenameSTR = filename + ".str";
+   FILE* outSTR = fopen (filenameSTR.c_str(), "w");
+   FILE* outTOK = fopen (filenameTOK.c_str(), "w");
+   int val = yylex();
+   while(val != YYEOF){
+      astree::print(stdout,yylval);
+      //yylval is our token in this case scenario
+      string_set::intern(yytext);
+      printf("%zd\n",yylval->lloc.offset);
+      val = yylex();
+   }
+   string_set::dump (outSTR);
+   fclose(outSTR);
+}

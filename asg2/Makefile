@@ -1,47 +1,99 @@
-# $Id: Makefile,v 1.18 2019-04-24 14:23:25-07 - - $
+# $Id: Makefile,v 1.40 2019-04-18 13:38:03-07 - - $
 
-UTILDIR = /afs/cats.ucsc.edu/courses/cmps104a-wm/bin
+DEPSFILE  = Makefile.deps
+NOINCLUDE = ci clean spotless
+NEEDINCL  = ${filter ${NOINCLUDE}, ${MAKECMDGOALS}}
+WARNING   = -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast
+GPP       = g++ -std=gnu++17 -g -O0
+GPPWARN   = ${GPP} ${WARNING} -fdiagnostics-color=never
+GPPYY     = ${GPP} -Wno-sign-compare -Wno-register
+MKDEPS    = g++ -std=gnu++17 -MM
+GRIND     = valgrind --leak-check=full --show-reachable=yes
+UTILBIN   = /afs/cats.ucsc.edu/courses/cmps104a-wm/bin/
 
-NOWARN  = -Wno-write-strings -Wno-main
-OCGPP   = g++ ${NOWARN} -x c++ -include octypes.h
+MODULES   = astree lyutils string_set auxlib asg2
+HDRSRC    = ${MODULES:=.h}
+CPPSRC    = ${MODULES:=.cpp} main.cpp
+FLEXSRC   = scanner.l
+BISONSRC  = parser.y
+PARSEHDR  = yyparse.h
+LEXCPP    = yylex.cpp
+PARSECPP  = yyparse.cpp
+CGENS     = ${LEXCPP} ${PARSECPP}
+ALLGENS   = ${PARSEHDR} ${CGENS}
+EXECBIN   = oc 
+ALLCSRC   = ${CPPSRC} ${CGENS}
+OBJECTS   = ${ALLCSRC:.cpp=.o}
+LEXOUT    = yylex.output
+PARSEOUT  = yyparse.output
+REPORTS   = ${LEXOUT} ${PARSEOUT}
+MODSRC    = ${foreach MOD, ${MODULES}, ${MOD}.h ${MOD}.cpp}
+MISCSRC   = ${filter-out ${MODSRC}, ${HDRSRC} ${CPPSRC}}
+ALLSRC    = README ${FLEXSRC} ${BISONSRC} ${MODSRC} ${MISCSRC} Makefile
+TESTINS   = ${wildcard test*.in}
+EXECTEST  = ${EXECBIN} -ly
+LISTSRC   = ${ALLSRC} ${DEPSFILE} ${PARSEHDR}
 
-OCSRC   = ${sort ${wildcard *.oc}}
-LIBSRC  = oclib.c
-LIBOBJ  = ${LIBSRC:.c=.o}
-HEADERS = oclib.h octypes.h
-OCOBJ   = ${OCSRC:.oc=.o}
-EXECS   = ${OCSRC:.oc=.elf}
-ALLSRC  = ${HEADERS} ${LIBSRC} ${OCSRC} Makefile
-LISTING = Listing.oc-programs
+all : ${EXECBIN}
 
-all : ${EXECS}
+${EXECBIN} : ${OBJECTS}
+	${GPPWARN} -o${EXECBIN} ${OBJECTS}
 
-%.elf : %.o ${LIBOBJ}
-	g++ $< ${LIBOBJ} -o $@
+yylex.o : yylex.cpp
+	${GPPYY} -c $<
 
-%.o : %.oc ${HEADERS}
-	${OCGPP} -c $<
+yyparse.o : yyparse.cpp
+	${GPPYY} -c $<
 
-${LIBOBJ} : ${LIBSRC}
-	gcc -c $<
+%.o : %.cpp
+	- ${UTILBIN}/cpplint.py.perl $<
+	- ${UTILBIN}/checksource $<
+	${GPPWARN} -c $<
 
-spotless : clean
-	- rm ${LISTING}.{ps,pdf} ${EXECS}
+
+${LEXCPP} : ${FLEXSRC}
+	flex --outfile=${LEXCPP} ${FLEXSRC}
+
+${PARSECPP} ${PARSEHDR} : ${BISONSRC}
+	bison --defines=${PARSEHDR} --output=${PARSECPP} ${BISONSRC}
+
+ci : ${ALLSRC} ${TESTINS}
+	- ${UTILBIN}/checksource ${ALLSRC}
+	${UTILBIN}/cid + ${ALLSRC} ${TESTINS} test?.inh
+
+lis : ${LISTSRC} tests
+	${UTILBIN}/mkpspdf List.source.ps ${LISTSRC}
+	${UTILBIN}/mkpspdf List.output.ps ${REPORTS} \
+	      ${foreach test, ${TESTINS:.in=}, \
+	      ${patsubst %, ${test}.%, in out err log}}
 
 clean :
-	-rm ${OCOBJ} ${LIBOBJ} oclib.nm Listing.asm.{ps,pdf}
+	- rm ${OBJECTS} ${ALLGENS} ${REPORTS} ${DEPSFILE} core
+	- rm ${foreach test, ${TESTINS:.in=}, \
+	      ${patsubst %, ${test}.%, out err log}}
 
-ci :
-	${UTILDIR}/cid + ${ALLSRC}
+spotless : clean
+	- rm ${EXECBIN} List.*.ps List.*.pdf
 
-lis :
-	${UTILDIR}/checksource ${ALLSRC}
-	${UTILDIR}/mkpspdf ${LISTING}.ps ${ALLSRC}
+deps : ${ALLCSRC}
+	@ echo "# ${DEPSFILE} created `date` by ${MAKE}" >${DEPSFILE}
+	${MKDEPS} ${ALLCSRC} >>${DEPSFILE}
 
-asm : ${LIBOBJ}
-	nm -a ${LIBOBJ} >oclib.nm
-	${UTILDIR}/mkpspdf Listing.asm.ps \
-	      oclib.h oclib.c oclib.nm oclib.s
+${DEPSFILE} :
+	@ touch ${DEPSFILE}
+	${MAKE} --no-print-directory deps
+
+tests : ${EXECBIN}
+	touch ${TESTINS}
+	gmake --no-print-directory ${TESTINS:.in=.out}
+
+%.out %.err : %.in
+	${GRIND} --log-file=$*.log ${EXECTEST} $< 1>$*.out 2>$*.err; \
+	echo EXIT STATUS = $$? >>$*.log
 
 again :
-	make --no-print-directory clean ci all lis
+	gmake --no-print-directory spotless deps ci all lis
+	
+ifeq "${NEEDINCL}" ""
+include ${DEPSFILE}
+endif

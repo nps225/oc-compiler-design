@@ -80,7 +80,7 @@ BADIDENT        ({DIGIT}{IDENT})
 
 {CHAR}          { return lexer::token (TOK_CHARCON); }
 {STRING}        { return lexer::token (TOK_STRINGCON); }
-{NUM}           { return lexer::token (TOK_INTCON); }
+{NUMBER}           { return lexer::token (TOK_INTCON); }
 {IDENT}         { return lexer::token (TOK_IDENT); }
 
 {NOTNUMBER}     { return lexer::badtoken (TOK_INT); }

@@ -44,6 +44,7 @@ void cpplines (FILE* pipe);
 void scan_opts (int argc, char** argv);
 void cpp_popen (const char* filename);
 void cpp_pclose(FILE* pipe, string cpp_command);
+void scanToFile(string outfile);
 
 
 
@@ -58,17 +59,14 @@ int main(int argc, char** argv) {
       fprintf (stderr, "\n");
    }
    scan_opts (argc, argv);
-   int val = yylex();
-   while(val != YYEOF){
-      astree::print(stdout,yylval);
-      val = yylex();
-   }
+   //scann throught he file entirely
+   
+   scanToFile(outfile);
 //   outfile += ".str";
 //   FILE* out = fopen (outfile.c_str(), "w");
 //   string_set::dump (out);
   return exec::exit_status;
 }
-
 
 /*
 * Function to analyze the command line arguments and 
