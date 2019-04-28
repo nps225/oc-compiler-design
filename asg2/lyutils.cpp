@@ -50,7 +50,6 @@ void lexer::badchar (unsigned char bad) {
                   buffer);
 }
 
-
 void lexer::include() {
    size_t linenr;
    static char filename[0x1000];

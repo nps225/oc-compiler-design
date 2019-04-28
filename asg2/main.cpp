@@ -51,6 +51,11 @@ void scanToFile(string outfile);
 /* Main() */
 int main(int argc, char** argv) {
    exec::execname = basename (argv[0]);
+   if (argc < 2) {
+      errprintf ("Usage: %s [-ly] [filename]\n",
+                 exec::execname.c_str());
+      exit (exec::exit_status);
+   }
    if (yydebug or yy_flex_debug) {
       fprintf (stderr, "Command:");
       for (char** arg = &argv[0]; arg < &argv[argc]; ++arg) {
@@ -58,9 +63,8 @@ int main(int argc, char** argv) {
       }
       fprintf (stderr, "\n");
    }
-   scan_opts (argc, argv);
    //scann throught he file entirely
-   
+   scan_opts (argc, argv);
    scanToFile(outfile);//scans the file + parses it -> generates output
 //   outfile += ".str";
 //   FILE* out = fopen (outfile.c_str(), "w");

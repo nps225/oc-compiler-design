@@ -46,11 +46,8 @@ yyparse.o : yyparse.cpp
 	${GPPYY} -c $<
 
 %.o : %.cpp
-	- ${UTILBIN}/cpplint.py.perl $<
-	- ${UTILBIN}/checksource $<
 	${GPPWARN} -c $<
 
-
 ${LEXCPP} : ${FLEXSRC}
 	flex --outfile=${LEXCPP} ${FLEXSRC}
 
@@ -58,8 +55,6 @@ ${PARSECPP} ${PARSEHDR} : ${BISONSRC}
 	bison --defines=${PARSEHDR} --output=${PARSECPP} ${BISONSRC}
 
 ci : ${ALLSRC} ${TESTINS}
-	- ${UTILBIN}/checksource ${ALLSRC}
-	${UTILBIN}/cid + ${ALLSRC} ${TESTINS} test?.inh
 
 lis : ${LISTSRC} tests
 	${UTILBIN}/mkpspdf List.source.ps ${LISTSRC}
@@ -73,7 +68,7 @@ clean :
 	      ${patsubst %, ${test}.%, out err log}}
 
 spotless : clean
-	- rm ${EXECBIN} List.*.ps List.*.pdf
+	- rm ${EXECBIN}
 
 deps : ${ALLCSRC}
 	@ echo "# ${DEPSFILE} created `date` by ${MAKE}" >${DEPSFILE}
