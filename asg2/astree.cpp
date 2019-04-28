@@ -69,10 +69,16 @@ void astree::dump (FILE* outfile, astree* tree) {
 }
 
 void astree::print (FILE* outfile, astree* tree, int depth) {
-   fprintf (outfile, "; %*s", depth * 3, "");
-   fprintf (outfile, "%s \"%s\" (%zd.%zd.%zd)\n",
-            parser::get_tname (tree->symbol), tree->lexinfo->c_str(),
-            tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset);
+   //fprintf (outfile, "; %*s", depth * 3, "");
+   // fprintf (outfile, "%s \"%s\" (%zd.%zd.%zd)\n",
+   //          parser::get_tname (tree->symbol), tree->lexinfo->c_str(),
+   //          tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset);
+   fprintf(outfile, "%zd    %zd.%zd    %d    %s   %s\n", 
+               tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
+               tree->symbol,parser::get_tname (tree->symbol), tree->lexinfo->c_str());
+   // fprintf(outfile, "   %zd  ", tree->lloc.filenr);
+   //  fprintf(outfile, "\n");
+   
    for (astree* child: tree->children) {
       astree::print (outfile, child, depth + 1);
    }

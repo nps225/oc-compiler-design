@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
    scan_opts (argc, argv);
    //scann throught he file entirely
    
-   scanToFile(outfile);
+   scanToFile(outfile);//scans the file + parses it -> generates output
 //   outfile += ".str";
 //   FILE* out = fopen (outfile.c_str(), "w");
 //   string_set::dump (out);

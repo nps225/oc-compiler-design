@@ -28,7 +28,8 @@ void scanToFile(string filename){
       astree::print(stdout,yylval);
       //yylval is our token in this case scenario
       string_set::intern(yytext);
-      printf("%zd\n",yylval->lloc.offset);
+      //printf("%d\n", yylval->symbol);//token title
+      //printf("%s\n",yylval->lexinfo->c_str());//actual string rep
       val = yylex();
    }
    string_set::dump (outSTR);

@@ -47,6 +47,7 @@ BADIDENT        ({DIGIT}{IDENT})
 "<="             { return lexer::token (TOK_LE); }
 "="             { return lexer::token ('='); }
 "=="             { return lexer::token (TOK_EQ); }
+"!="             { return lexer::token (TOK_NE); }
 ">"             { return lexer::token (TOK_GT); }
 "<"             { return lexer::token (TOK_LT); }
 ","             { return lexer::token (','); }
