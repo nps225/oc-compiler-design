@@ -20,13 +20,20 @@
 
 LETTER          [A-Za-z_]
 DIGIT           [0-9]
+OCTAL           [0-7]
+HEX             [0-9a-fA-F]
+DECIMAL         (^[^0]{DIGIT}*)
+OCTALNUM        (0{OCTAL}*)
+HEXNUM          ((0x|0X){HEX}*)        
 MANTISSA        ({DIGIT}+\.?{DIGIT}*|\.{DIGIT}+)
 EXPONENT        ([Ee][+-]?{DIGIT}+)
 STRING          (\"([^\\"\n]|\\[\\’"0nt])*\")
-CHAR            (’([^\\’\n]|\\[\\’"0nt])’)
+CHAR            ('([^\\'\n]|\\[\\'"0nt])')
+NUM             ({HEXNUM}|{DECIMAL}|{OCTALNUM})
 NUMBER          ({MANTISSA}{EXPONENT}?)
 NOTNUMBER       ({MANTISSA}[Ee][+-]?)
 IDENT           ({LETTER}({LETTER}|{DIGIT})*)
+
 
 %%
 
@@ -45,26 +52,33 @@ IDENT           ({LETTER}({LETTER}|{DIGIT})*)
 "-"             { return lexer::token ('-'); }
 "*"             { return lexer::token ('*'); }
 "/"             { return lexer::token ('/'); }
+"%"             { return lexer::token ('%'); }
 "^"             { return lexer::token ('^'); }
 "("             { return lexer::token ('('); }
 ")"             { return lexer::token (')'); }
 "{"             { return lexer::token ('{'); }
 "}"             { return lexer::token ('}'); }
+"["             { return lexer::token ('['); }
+"]"             { return lexer::token (']'); }
 ";"             { return lexer::token (';'); }
 "if"           { return lexer::token (TOK_IF); }
 "else"           { return lexer::token (TOK_ELSE); }
+"struct"           { return lexer::token (TOK_STRUCT); }
+"array"           { return lexer::token (TOK_ARRAY); }
 "not"           { return lexer::token (TOK_NOT); }
-"->"           { return lexer::token (TOK_PTR); }
-"int"           { return lexer::token (TOK_INTCON); }
-"char"          { return lexer::token (TOK_CHARCON); }
-"string"        { return lexer::token (TOK_STRINGCON); }
+"alloc"           { return lexer::token (TOK_ALLOC); }
+"ptr"           { return lexer::token (TOK_PTR); }
+"->"           { return lexer::token (TOK_ARROW); }
 "while"         { return lexer::token (TOK_WHILE); }
 "void"          { return lexer::token (TOK_VOID); }
 "return"        { return lexer::token (TOK_RETURN); }
+"int"           { return lexer::token (TOK_INT); }
+"char"          { return lexer::token (TOK_CHAR); }
+"string"        { return lexer::token (TOK_STRING); }
 
-{CHAR}          { return lexer::token (TOK_CHAR); }
-{STRING}        { return lexer::token (TOK_STRING); }
-{NUMBER}        { return lexer::token (TOK_INT); }
+{CHAR}          { return lexer::token (TOK_CHARCON); }
+{STRING}        { return lexer::token (TOK_STRINGCON); }
+{NUM}        { return lexer::token (TOK_INTCON); }
 {IDENT}         { return lexer::token (TOK_IDENT); }
 
 {NOTNUMBER}     { return lexer::badtoken (TOK_INT); }
