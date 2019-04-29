@@ -1,6 +1,6 @@
 /*
- *  *  oc-compiler main.cpp
- *   *  CMPS 104A Assignment 1: StringSet generator
+ *  *  oc-compiler asg2.cpp
+ *   *  CMPS 104A Assignment 2: Scanner
  *    *  Author: 
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]

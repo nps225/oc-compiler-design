@@ -1,12 +1,12 @@
 // $Id: astree.cpp,v 1.17 2019-03-15 14:32:40-07 - - $
 /*
- *  *  oc-compiler main.cpp
- *   *  CMPS 104A Assignment 1: StringSet generator
+ *  *  oc-compiler astree.cpp
+ *   *  CMPS 104A Assignment 2: Scanner
  *    *  Author: 
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
- *       *  Date: 2019.04.29
- *        */
+ *      Date: 2019.04.29
+ */
 
 #include <assert.h>
 #include <inttypes.h>

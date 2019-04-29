@@ -1,5 +1,12 @@
 // $Id: oclib.c,v 1.6 2019-04-24 17:46:41-07 - - $
-
+/*
+ *  *  oc-compiler oclib.cpp
+ *   *  CMPS 104A Assignment 2: Scanner
+ *    *  Author: 
+ *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
+ *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
+ *      Date: 2019.04.29
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
