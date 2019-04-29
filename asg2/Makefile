@@ -19,14 +19,14 @@ BISONSRC  = parser.y
 PARSEHDR  = yyparse.h
 LEXCPP    = yylex.cpp
 PARSECPP  = yyparse.cpp
+# LEXOUT    = yylex.output
+PARSEOUT  = yyparse.output
+REPORTS   = ${PARSEOUT} #${LEXOUT}
 CGENS     = ${LEXCPP} ${PARSECPP}
 ALLGENS   = ${PARSEHDR} ${CGENS}
 EXECBIN   = oc 
 ALLCSRC   = ${CPPSRC} ${CGENS}
 OBJECTS   = ${ALLCSRC:.cpp=.o}
-LEXOUT    = yylex.output
-PARSEOUT  = yyparse.output
-REPORTS   = ${LEXOUT} ${PARSEOUT}
 MODSRC    = ${foreach MOD, ${MODULES}, ${MOD}.h ${MOD}.cpp}
 MISCSRC   = ${filter-out ${MODSRC}, ${HDRSRC} ${CPPSRC}}
 ALLSRC    = README ${FLEXSRC} ${BISONSRC} ${MODSRC} ${MISCSRC} Makefile
@@ -56,16 +56,9 @@ ${PARSECPP} ${PARSEHDR} : ${BISONSRC}
 
 ci : ${ALLSRC} ${TESTINS}
 
-lis : ${LISTSRC} tests
-	${UTILBIN}/mkpspdf List.source.ps ${LISTSRC}
-	${UTILBIN}/mkpspdf List.output.ps ${REPORTS} \
-	      ${foreach test, ${TESTINS:.in=}, \
-	      ${patsubst %, ${test}.%, in out err log}}
 
 clean :
-	- rm ${OBJECTS} ${ALLGENS} ${REPORTS} ${DEPSFILE} core
-	- rm ${foreach test, ${TESTINS:.in=}, \
-	      ${patsubst %, ${test}.%, out err log}}
+	- rm ${OBJECTS} ${ALLGENS} ${DEPSFILE} ${REPORTS}
 
 spotless : clean
 	- rm ${EXECBIN}
@@ -87,7 +80,7 @@ tests : ${EXECBIN}
 	echo EXIT STATUS = $$? >>$*.log
 
 again :
-	gmake --no-print-directory spotless deps ci all lis
+	gmake --no-print-directory spotless deps ci all
 	
 ifeq "${NEEDINCL}" ""
 include ${DEPSFILE}

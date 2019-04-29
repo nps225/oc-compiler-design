@@ -11,17 +11,6 @@
 #include "string_set.h"
 #include "lyutils.h"
 
-/*
-*  1st 1 digit
-*  2nd 2 digits
-*  .
-*  3 digits padded 0
-*  3 digits 3 digits right aligned
-*  string length 13
-* 
-*/
-FILE* out = nullptr;
-
 astree::astree (int symbol_, const location& lloc_, const char* info) {
    symbol = symbol_;
    lloc = lloc_;
@@ -79,6 +68,17 @@ void astree::dump (FILE* outfile, astree* tree) {
                    else tree->dump_node (outfile);
 }
 
+
+/*
+*  1st 1 digit
+*  2nd 2 digits
+*  .
+*  3 digits padded 0
+*  3 digits 3 digits right aligned
+*  string length 13
+* 
+*/
+
 void astree::print (FILE* outfile, astree* tree, int depth) {
    //fprintf (outfile, "; %*s", depth * 3, "");
    // fprintf (outfile, "%s \"%s\" (%zd.%zd.%zd)\n",
@@ -87,7 +87,7 @@ void astree::print (FILE* outfile, astree* tree, int depth) {
 
    // out = outfile;
  
-   fprintf(outfile, "     %1zd    %2zd.%.3zd    %3d    %-13s   %s\n", 
+   fprintf(outfile, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n", 
                tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
                tree->symbol,parser::get_tname (tree->symbol), tree->lexinfo->c_str());
    // fprintf(outfile, "   %zd  ", tree->lloc.filenr);

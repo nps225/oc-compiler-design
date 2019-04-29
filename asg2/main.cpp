@@ -51,21 +51,22 @@ void scanToFile(string outfile);
 /* Main() */
 int main(int argc, char** argv) {
    exec::execname = basename (argv[0]);
+   // Make sure program exits correctly if incorrectly used
    if (argc < 2) {
       errprintf ("Usage: %s [-ly] [filename]\n",
                  exec::execname.c_str());
       exit (exec::exit_status);
    }
-   if (yydebug or yy_flex_debug) {
+   scan_opts (argc, argv);
+   if (yydebug == 1 or yy_flex_debug == 1) {
       fprintf (stderr, "Command:");
       for (char** arg = &argv[0]; arg < &argv[argc]; ++arg) {
             fprintf (stderr, " %s", *arg);
       }
       fprintf (stderr, "\n");
    }
-   //scann throught he file entirely
-   scan_opts (argc, argv);
-   scanToFile(outfile);//scans the file + parses it -> generates output
+   //scans the file + parses it -> generates output
+   scanToFile(outfile);
 //   outfile += ".str";
 //   FILE* out = fopen (outfile.c_str(), "w");
 //   string_set::dump (out);
@@ -82,9 +83,6 @@ int main(int argc, char** argv) {
 
 void scan_opts (int argc, char** argv) {
    opterr = 0;
-
-   /* Unnecessary code for Assignment 1 */
-
    yy_flex_debug = 0;
    yydebug = 0;
    lexer::interactive = isatty (fileno (stdin))
@@ -139,10 +137,10 @@ void cpp_popen (const char* filename) {
          fprintf (stderr, "-- popen (%s), fileno(yyin) = %d\n",
                   cpp_command.c_str(), fileno (yyin));
       }
-      // cpplines (yyin);
-      // int pclose_rc = pclose (yyin);
-      // eprint_status (cpp_command.c_str(), pclose_rc);
-      // if (pclose_rc != 0) exec::exit_status = EXIT_FAILURE;
+      //cpplines (yyin);
+      //int pclose_rc = pclose (yyin);
+      //eprint_status (cpp_command.c_str(), pclose_rc);
+      //    if (pclose_rc != 0) exec::exit_status = EXIT_FAILURE;
    }
 }
 

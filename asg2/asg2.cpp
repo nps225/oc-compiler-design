@@ -5,30 +5,20 @@
 
 FILE* outstream;
 
-void printLexer(FILE* out){
-    
-    int val = yylex();
-   
-    while(val != YYEOF){
-        astree::print(out,yylval);
-        val = yylex(); 
-    
-    }
-
-
-}
-
-
 void scanToFile(string filename){
    //here we parse the file
    string filenameTOK = filename + ".tok";
    string filenameSTR = filename + ".str";
-   outstream = stdout;
    FILE* outSTR = fopen (filenameSTR.c_str(), "w");
+   if (!outSTR)
+      fprintf (stderr, "Error creating str file");
    FILE* outTOK = fopen (filenameTOK.c_str(), "w");
+   if (!outTOK)
+      fprintf (stderr, "Error creating tok file");
+   outstream = outTOK;
    int val = yylex();
    while(val != YYEOF){
-      astree::print(stdout,yylval);
+      astree::print(outstream,yylval);
       //yylval is our token in this case scenario
         
       string_set::intern(yytext);
@@ -38,4 +28,5 @@ void scanToFile(string filename){
    }
    string_set::dump (outSTR);
    fclose(outSTR);
+   fclose(outTOK);
 }
