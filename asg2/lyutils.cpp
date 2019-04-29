@@ -9,6 +9,8 @@
 #include "auxlib.h"
 #include "lyutils.h"
 
+extern FILE* outstream;
+
 bool lexer::interactive = true;
 location lexer::lloc = {0, 1, 0};
 size_t lexer::last_yyleng = 0;
@@ -63,6 +65,7 @@ void lexer::include() {
                   linenr, filename);
       }
       lexer::lloc.linenr = linenr - 1;
+      fprintf(outstream, "# %zd \"%s\"\n", linenr, filename);
       lexer::newfilename (filename);
    }
 }
