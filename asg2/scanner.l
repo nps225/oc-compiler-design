@@ -1,6 +1,15 @@
 /* $Id: lexer.l,v 1.9 2019-04-18 13:33:21-07 - - $ */
 
 %{
+/*
+ *  oc-compiler main.cpp
+ *  CMPS 104A Assignment 1: StringSet generator
+ *  Author: 
+ *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
+ *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
+ *  Date: 2019.04.29
+ */
+
 
 #include "lyutils.h"
 

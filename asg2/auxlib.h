@@ -1,4 +1,12 @@
 // $Id: auxlib.h,v 1.5 2017-10-11 14:33:45-07 - - $
+/*
+ *  *  oc-compiler main.cpp
+ *   *  CMPS 104A Assignment 1: StringSet generator
+ *    *  Author: 
+ *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
+ *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
+ *       *  Date: 2019.04.29
+ *        */
 
 #ifndef __AUXLIB_H__
 #define __AUXLIB_H__

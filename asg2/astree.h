@@ -1,4 +1,12 @@
 // $Id: astree.h,v 1.10 2016-10-06 16:42:35-07 - - $
+/*
+ *  *  oc-compiler main.cpp
+ *   *  CMPS 104A Assignment 1: StringSet generator
+ *    *  Author: 
+ *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
+ *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
+ *       *  Date: 2019.04.29
+ *        */
 
 #ifndef __ASTREE_H__
 #define __ASTREE_H__
