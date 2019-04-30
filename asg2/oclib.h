@@ -1,12 +1,5 @@
 // $Id: oclib.h,v 1.11 2019-04-25 13:03:37-07 - - $
-/*
- *  *  oc-compiler oclib.h
- *   *  CMPS 104A Assignment 2: Scanner
- *    *  Author: 
- *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
- *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
- *      Date: 2019.04.29
- */
+
 // Bilingual file useable as a header file for both oc and c++.
 
 #ifndef __OCLIB_H__

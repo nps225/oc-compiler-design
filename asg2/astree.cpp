@@ -97,7 +97,8 @@ void astree::print (FILE* outfile, astree* tree, int depth) {
  
    fprintf(outfile, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n", 
                tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
-               tree->symbol,parser::get_tname (tree->symbol), tree->lexinfo->c_str());
+               tree->symbol,parser::get_tname (tree->symbol), 
+                  tree->lexinfo->c_str());
    // fprintf(outfile, "   %zd  ", tree->lloc.filenr);
    //  fprintf(outfile, "\n");
    

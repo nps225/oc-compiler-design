@@ -1,12 +1,5 @@
 // $Id: octypes.h,v 1.3 2019-04-22 13:46:03-07 - - $
-/*
- *  *  oc-compiler octypes.h
- *   *  CMPS 104A Assignment 2: Scanner
- *    *  Author: 
- *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
- *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
- *      Date: 2019.04.29
- */
+
 // Type definitiions to compile oc programs with c++ compiler.
 
 #ifndef __OCDEFS_H__
