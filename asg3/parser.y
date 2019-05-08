@@ -31,11 +31,13 @@
 %token  TOK_RETURN TOK_INT TOK_CHAR TOK_STRING
 %token  TOK_CHARCON TOK_STRINGCON TOK_INTCON TOK_IDENT
 
+%right TOK_IF TOK_ELSE
 %right  '='
+%left   TOK_EQ TOK_NE TOK_LT TOK_LE TOK_GT TOK_GE
 %left   '+' '-'
-%left   '*' '/'
+%left   '*' '/' '%'
 %right  '^'
-%right  POS NEG
+%right  POS NEG TOK_NOT
 
 %start  program
 
@@ -51,18 +53,31 @@ stmtseq : stmtseq expr ';'      { destroy ($3); $$ = $1->adopt ($2); }
         |                       { $$ = parser::root; }
         ;
 
-expr    : expr '=' expr         { $$ = $2->adopt ($1, $3); }
+vardecl : TOK_IDENT '=' expr    { $$ = $1; }
+
+expr    : '(' expr ')'          { destroy ($1, $3); $$ = $2; }
+        | binop                 { $$ = $1; }
+        | unop                  { $$ = $1; }
+        ;
+
+binop   : expr '=' expr         { $$ = $2->adopt ($1, $3); }
         | expr '+' expr         { $$ = $2->adopt ($1, $3); }
         | expr '-' expr         { $$ = $2->adopt ($1, $3); }
         | expr '*' expr         { $$ = $2->adopt ($1, $3); }
         | expr '/' expr         { $$ = $2->adopt ($1, $3); }
         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
-        | '+' expr %prec POS    { $$ = $1->adopt_sym ($2, POS); }
-        | '-' expr %prec NEG    { $$ = $1->adopt_sym ($2, NEG); }
-        | '(' expr ')'          { destroy ($1, $3); $$ = $2; }
-        | IDENT                 { $$ = $1; }
-        | NUMBER                { $$ = $1; }
+        | expr '%' expr         { $$ = $2->adopt ($1, $3); }
+        | expr TOK_EQ expr         { $$ = $2->adopt ($1, $3); }
+        | expr TOK_NE expr         { $$ = $2->adopt ($1, $3); }
+        | expr TOK_LT expr         { $$ = $2->adopt ($1, $3); }
+        | expr TOK_LE expr         { $$ = $2->adopt ($1, $3); }
+        | expr TOK_GT expr         { $$ = $2->adopt ($1, $3); }
+        | expr TOK_GE expr         { $$ = $2->adopt ($1, $3); }
         ;
+
+unop    : '+' expr %prec POS    { $$ = $1->adopt_sym ($2, POS); }
+        | '-' expr %prec NEG    { $$ = $1->adopt_sym ($2, NEG); }
+        | TOK_NOT expr %prec POS    { $$ = $1->adopt_sym ($2, TOK_NOT); }
 
 %%
 
