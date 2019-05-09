@@ -52,14 +52,14 @@ astree* astree::adopt_sym (astree* child, int symbol_) {
 
 
 void astree::dump_node (FILE* outfile) {
-   fprintf (outfile, "%p->{%s %zd.%zd.%zd \"%s\":",
-            static_cast<const void*> (this),
+   fprintf (outfile, "%s \"%s\" %zd.%zd.%zd",
             parser::get_tname (symbol),
-            lloc.filenr, lloc.linenr, lloc.offset,
-            lexinfo->c_str());
+            lexinfo->c_str(),lloc.filenr, 
+            lloc.linenr, lloc.offset);
+   // fprintf(outfile, "%s %zd.%zd.%zd",lexinfo->c_str(),lloc.filenr, lloc.linenr, lloc.offset);
    for (size_t child = 0; child < children.size(); ++child) {
-      fprintf (outfile, " %p",
-               static_cast<const void*> (children.at(child)));
+      // fprintf (outfile, " %p",
+      //          static_cast<const void*> (children.at(child)));
    }
 }
 
@@ -87,21 +87,31 @@ void astree::dump (FILE* outfile, astree* tree) {
 * 
 */
 
-void astree::print (FILE* outfile, astree* tree, int depth) {
-   //fprintf (outfile, "; %*s", depth * 3, "");
-   // fprintf (outfile, "%s \"%s\" (%zd.%zd.%zd)\n",
-   //          parser::get_tname (tree->symbol), tree->lexinfo->c_str(),
-   //          tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset);
+// void astree::print (FILE* outfile, astree* tree, int depth) {
+//    //fprintf (outfile, "; %*s", depth * 3, "");
+//    // fprintf (outfile, "%s \"%s\" (%zd.%zd.%zd)\n",
+//    //          parser::get_tname (tree->symbol), tree->lexinfo->c_str(),
+//    //          tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset);
 
-   // out = outfile;
+//    // out = outfile;
  
-   fprintf(outfile, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n", 
-               tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
-               tree->symbol,parser::get_tname (tree->symbol), 
-                  tree->lexinfo->c_str());
-   // fprintf(outfile, "   %zd  ", tree->lloc.filenr);
-   //  fprintf(outfile, "\n");
+//    // fprintf(outfile, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n", 
+//    //             tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
+//    //             tree->symbol,parser::get_tname (tree->symbol), 
+//    //                tree->lexinfo->c_str());
+//    // fprintf(outfile, "   %zd  ", tree->lloc.filenr);
+//    //  fprintf(outfile, "\n");
    
+//    for (astree* child: tree->children) {
+//       astree::print (outfile, child, depth + 1);
+//    }
+// }
+
+void astree::print (FILE* outfile, astree* tree, int depth) {
+   fprintf (outfile, "; %*s", depth * 3, "");
+   fprintf (outfile, "%s \"%s\" (%zd.%zd.%zd)\n",
+            parser::get_tname (tree->symbol), tree->lexinfo->c_str(),
+            tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset);
    for (astree* child: tree->children) {
       astree::print (outfile, child, depth + 1);
    }

@@ -21,6 +21,9 @@ void scanToFile(string filename){
 
   //call yyparse to construct our tree
   int val = yyparse();
+
+  parser::root -> astree::dump_tree(stdout,0);
+
 }
 
 // void scanToFile(string filename){

@@ -21,10 +21,10 @@
 %printer { astree::dump (yyoutput, $$); } <>
 
 %initial-action {
-   parser::root = new astree (ROOT, {0, 0, 0}, "<<ROOT>>");
+   parser::root = new astree (ROOT, {0, 0, 0}, "");
 }
 
-%token  ROOT IDENT NUMBER
+%token  ROOT IDENT NUMBER TYPE_ID FUNCTION
 %token  TOK_GE TOK_LE TOK_EQ TOK_NE TOK_GT TOK_LT
 %token  TOK_IF TOK_ELSE TOK_STRUCT TOK_ARRAY TOK_NOT
 %token  TOK_ALLOC TOK_PTR TOK_ARROW TOK_WHILE TOK_VOID
@@ -39,49 +39,48 @@
 %right  '^'
 %right  POS NEG TOK_NOT
 
-%start  program
+%start  start
 
-
-%%
+%%
 
-program : stmtseq               { $$ = $1 = nullptr; }
-        ;
+start : program               { $$ = $1 = nullptr; }
+      ;
 
-stmtseq : stmtseq expr ';'      { destroy ($3); $$ = $1->adopt ($2); }
-        | stmtseq error ';'     { destroy ($3); $$ = $1; }
-        | stmtseq ';'           { destroy ($2); $$ = $1; }
+program : program function      { $$ = $1->adopt(new astree 
+                                          (FUNCTION, {0, 0, 0}, "")); }
+        | program error ';'     { destroy ($3); $$ = $1; }
+        | program ';'           { destroy ($2); $$ = $1; }
         |                       { $$ = parser::root; }
         ;
 
-vardecl : TOK_IDENT '=' expr    { $$ = $1; }
+function : expr ';'  { destroy ($2); $$ = $1; }
+         ;
 
-expr    : '(' expr ')'          { destroy ($1, $3); $$ = $2; }
-        | binop                 { $$ = $1; }
-        | unop                  { $$ = $1; }
+identif  : type_id IDENT            { $$ = $1; }
+         ;
+
+type_id : TOK_INT                { $$ = $1; }
+        | TOK_STRING             { $$ = $1; }
+        | TOK_CHAR               { $$ = $1; }
+        | TOK_VOID               { $$ = $1; }
+        | TOK_IDENT              { $$ = $1; }
         ;
 
-binop   : expr '=' expr         { $$ = $2->adopt ($1, $3); }
+expr    : expr '=' expr         { $$ = $2->adopt ($1, $3); }
         | expr '+' expr         { $$ = $2->adopt ($1, $3); }
         | expr '-' expr         { $$ = $2->adopt ($1, $3); }
         | expr '*' expr         { $$ = $2->adopt ($1, $3); }
         | expr '/' expr         { $$ = $2->adopt ($1, $3); }
         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
-        | expr '%' expr         { $$ = $2->adopt ($1, $3); }
-        | expr TOK_EQ expr         { $$ = $2->adopt ($1, $3); }
-        | expr TOK_NE expr         { $$ = $2->adopt ($1, $3); }
-        | expr TOK_LT expr         { $$ = $2->adopt ($1, $3); }
-        | expr TOK_LE expr         { $$ = $2->adopt ($1, $3); }
-        | expr TOK_GT expr         { $$ = $2->adopt ($1, $3); }
-        | expr TOK_GE expr         { $$ = $2->adopt ($1, $3); }
-        ;
-
-unop    : '+' expr %prec POS    { $$ = $1->adopt_sym ($2, POS); }
+        | '+' expr %prec POS    { $$ = $1->adopt_sym ($2, POS); }
         | '-' expr %prec NEG    { $$ = $1->adopt_sym ($2, NEG); }
-        | TOK_NOT expr %prec POS    { $$ = $1->adopt_sym ($2, TOK_NOT); }
+        | '(' expr ')'          { destroy ($1, $3); $$ = $2; }
+        | TOK_IDENT             { $$ = $1; }
+        | NUMBER                { $$ = $1; }
+        ;
 
 %%
 
 const char* parser::get_tname (int symbol) {
    return yytname [YYTRANSLATE (symbol)];
 }
-
