@@ -66,6 +66,21 @@ function : identif '(' ')' ';'
                   $$ = new astree(FUNCTION, $1->lloc, "");
                   $$ = $$->adopt($1,$2);
                }
+         | identif '(' ')' block
+               {
+                 destroy($3);
+                 $2 = $2->symChange($2,TOK_PARAM);
+                 $$ = new astree(FUNCTION,$1->lloc,"");
+                 $$ = $$->adopt($1,$2);
+                 $$ = $$->adopt($4);
+               }
+	| identif param ')' block
+               {
+                 destroy($3);
+                 $$ = new astree(FUNCTION,$1->lloc,"");
+                 $$ = $$->adopt($1,$2);
+                 $$ = $$->adopt($4);
+               }
          ;
 
 identif : type_id TOK_IDENT     
@@ -88,10 +103,24 @@ param : '(' identif
                }
       ;
 
-block: '{' '}' 
+
+
+block: '{' 
                {
-                  $$ = new astree(BLOCK,$1->lloc,"");
+                  $$ = new astree(BLOCK,$1->lloc,"{");
                }
+     | '{' statement
+              {
+                 $$ = new astree(BLOCK,$1->lloc,"{");
+                 $$=$$->adopt($2);
+              }
+     ;
+
+statement: expr 
+             {
+                $$ = $1;
+             }
+         ;
 
 type_id : TOK_INT                { $$ = $1; }
         | TOK_STRING             { $$ = $1; }

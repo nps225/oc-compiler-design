@@ -69,7 +69,6 @@ int main(int argc, char** argv) {
    }
    //scans the file + parses it -> generates output
    //scanToFile(outfile);//this applies asg2
-   //asg3
    scanToFile(outfile);
 //   outfile += ".str";
 //   FILE* out = fopen (outfile.c_str(), "w");
