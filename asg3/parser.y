@@ -25,6 +25,7 @@
 }
 
 %token  ROOT IDENT NUMBER TYPE_ID FUNCTION TOK_PARAM TOK_PROTOTYPE
+%token  BLOCK
 %token  TOK_GE TOK_LE TOK_EQ TOK_NE TOK_GT TOK_LT
 %token  TOK_IF TOK_ELSE TOK_STRUCT TOK_ARRAY TOK_NOT
 %token  TOK_ALLOC TOK_PTR TOK_ARROW TOK_WHILE TOK_VOID
@@ -63,7 +64,7 @@ function : identif '(' ')' ';'
                {
                   destroy($3,$4);
                   $$ = new astree(FUNCTION, $1->lloc, "");
-                  $$ = $$->adopt($2);
+                  $$ = $$->adopt($1,$2);
                }
          ;
 
@@ -86,6 +87,11 @@ param : '(' identif
                   $$ = $$->adopt($2,$4);
                }
       ;
+
+block: '{' '}' 
+               {
+                  $$ = new astree(BLOCK,$1->lloc,"");
+               }
 
 type_id : TOK_INT                { $$ = $1; }
         | TOK_STRING             { $$ = $1; }

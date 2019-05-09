@@ -1,5 +1,6 @@
 Nonterminals useless in grammar
 
+   block
    expr
 
 
@@ -12,6 +13,7 @@ Terminals unused in grammar
    FUNCTION
    TOK_PARAM
    TOK_PROTOTYPE
+   BLOCK
    TOK_GE
    TOK_LE
    TOK_EQ
@@ -38,21 +40,25 @@ Terminals unused in grammar
    '/'
    '%'
    '^'
+   '{'
+   '}'
 
 
 Rules useless in grammar
 
-   16 expr: expr '=' expr
-   17     | expr '+' expr
-   18     | expr '-' expr
-   19     | expr '*' expr
-   20     | expr '/' expr
-   21     | expr '^' expr
-   22     | '+' expr
-   23     | '-' expr
-   24     | '(' expr ')'
-   25     | TOK_IDENT
-   26     | NUMBER
+   16 block: '{' '}'
+
+   17 expr: expr '=' expr
+   18     | expr '+' expr
+   19     | expr '-' expr
+   20     | expr '*' expr
+   21     | expr '/' expr
+   22     | expr '^' expr
+   23     | '+' expr
+   24     | '-' expr
+   25     | '(' expr ')'
+   26     | TOK_IDENT
+   27     | NUMBER
 
 
 Grammar
@@ -95,6 +101,8 @@ $end (0) 0
 ';' (59) 3 4 6 7
 '=' (61)
 '^' (94)
+'{' (123)
+'}' (125)
 error (256) 3
 ROOT (258)
 IDENT (259)
@@ -103,49 +111,50 @@ TYPE_ID (261)
 FUNCTION (262)
 TOK_PARAM (263)
 TOK_PROTOTYPE (264)
-TOK_GE (265)
-TOK_LE (266)
-TOK_EQ (267)
-TOK_NE (268)
-TOK_GT (269)
-TOK_LT (270)
-TOK_IF (271)
-TOK_ELSE (272)
-TOK_STRUCT (273)
-TOK_ARRAY (274)
-TOK_NOT (275)
-TOK_ALLOC (276)
-TOK_PTR (277)
-TOK_ARROW (278)
-TOK_WHILE (279)
-TOK_VOID (280) 14
-TOK_RETURN (281)
-TOK_INT (282) 11
-TOK_CHAR (283) 13
-TOK_STRING (284) 12
-TOK_CHARCON (285)
-TOK_STRINGCON (286)
-TOK_INTCON (287)
-TOK_IDENT (288) 8 15
-POS (289)
-NEG (290)
+BLOCK (265)
+TOK_GE (266)
+TOK_LE (267)
+TOK_EQ (268)
+TOK_NE (269)
+TOK_GT (270)
+TOK_LT (271)
+TOK_IF (272)
+TOK_ELSE (273)
+TOK_STRUCT (274)
+TOK_ARRAY (275)
+TOK_NOT (276)
+TOK_ALLOC (277)
+TOK_PTR (278)
+TOK_ARROW (279)
+TOK_WHILE (280)
+TOK_VOID (281) 14
+TOK_RETURN (282)
+TOK_INT (283) 11
+TOK_CHAR (284) 13
+TOK_STRING (285) 12
+TOK_CHARCON (286)
+TOK_STRINGCON (287)
+TOK_INTCON (288)
+TOK_IDENT (289) 8 15
+POS (290)
+NEG (291)
 
 
 Nonterminals, with rules where they appear
 
-$accept (47)
+$accept (50)
     on left: 0
-start (48)
+start (51)
     on left: 1, on right: 0
-program (49)
+program (52)
     on left: 2 3 4 5, on right: 1 2 3 4
-function (50)
+function (53)
     on left: 6 7, on right: 2
-identif (51)
+identif (54)
     on left: 8, on right: 6 7 9 10
-param (52)
+param (55)
     on left: 9 10, on right: 7
-type_id (53)
+type_id (56)
     on left: 11 12 13 14 15, on right: 8
 
 
