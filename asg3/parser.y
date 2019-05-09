@@ -24,7 +24,7 @@
    parser::root = new astree (ROOT, {0, 0, 0}, "");
 }
 
-%token  ROOT IDENT NUMBER TYPE_ID FUNCTION
+%token  ROOT IDENT NUMBER TYPE_ID FUNCTION TOK_PARAM TOK_PROTOTYPE
 %token  TOK_GE TOK_LE TOK_EQ TOK_NE TOK_GT TOK_LT
 %token  TOK_IF TOK_ELSE TOK_STRUCT TOK_ARRAY TOK_NOT
 %token  TOK_ALLOC TOK_PTR TOK_ARROW TOK_WHILE TOK_VOID
@@ -46,18 +46,46 @@
 start : program               { $$ = $1 = nullptr; }
       ;
 
-program : program function      { $$ = $1->adopt(new astree 
-                                          (FUNCTION, {0, 0, 0}, "")); }
+program : program function      { $$ = $1->adopt($2); }
         | program error ';'     { destroy ($3); $$ = $1; }
         | program ';'           { destroy ($2); $$ = $1; }
         |                       { $$ = parser::root; }
         ;
 
-function : expr ';'  { destroy ($2); $$ = $1; }
+function : identif '(' ')' ';' 
+               {  
+                  destroy ( $3, $4) ; 
+                  $2 = $2->symChange($2,TOK_PARAM);
+                  $$ = new astree(FUNCTION, $1->lloc, "");
+                  $$ = $$->adopt($1,$2);
+               }
+         | identif param ')' ';' 
+               {
+                  destroy($3,$4);
+                  $$ = new astree(FUNCTION, $1->lloc, "");
+                  $$ = $$->adopt($2);
+               }
          ;
 
-identif  : type_id IDENT            { $$ = $1; }
+identif : type_id TOK_IDENT     
+               {
+                  $$ = new astree(TYPE_ID, $1->lloc,"");
+                  $$ = $$->adopt($1,$2);
+               }
          ;
+
+param : '(' identif 
+               {
+                  $$ = new astree(TOK_PARAM, $1->lloc, "");
+                  $$ = $$->adopt($2);
+               }
+      | '(' identif ',' identif
+               {
+                  destroy($3);
+                  $$ = new astree(TOK_PARAM, $1->lloc, "");
+                  $$ = $$->adopt($2,$4);
+               }
+      ;
 
 type_id : TOK_INT                { $$ = $1; }
         | TOK_STRING             { $$ = $1; }

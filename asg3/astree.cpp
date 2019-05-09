@@ -50,6 +50,12 @@ astree* astree::adopt_sym (astree* child, int symbol_) {
    return adopt (child);
 }
 
+astree* astree::symChange (astree* tree, int symbol_) {
+   tree->symbol = symbol_;
+   return tree;
+}
+
+
 
 void astree::dump_node (FILE* outfile) {
    fprintf (outfile, "%s \"%s\" %zd.%zd.%zd",

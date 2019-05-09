@@ -36,10 +36,12 @@ struct astree {
    ~astree();
    astree* adopt (astree* child1, astree* child2 = nullptr);
    astree* adopt_sym (astree* child, int symbol);
+   astree* symChange (astree* tree, int symbol_);
    void dump_node (FILE*);
    void dump_tree (FILE*, int depth = 0);
    static void dump (FILE* outfile, astree* tree);
    static void print (FILE* outfile, astree* tree, int depth = 0);
+   
 };
 
 void destroy (astree* tree1, astree* tree2 = nullptr);

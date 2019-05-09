@@ -1,15 +1,17 @@
 Nonterminals useless in grammar
 
-   identif
-   type_id
+   expr
 
 
 Terminals unused in grammar
 
    ROOT
    IDENT
+   NUMBER
    TYPE_ID
    FUNCTION
+   TOK_PARAM
+   TOK_PROTOTYPE
    TOK_GE
    TOK_LE
    TOK_EQ
@@ -25,26 +27,32 @@ Terminals unused in grammar
    TOK_PTR
    TOK_ARROW
    TOK_WHILE
-   TOK_VOID
    TOK_RETURN
-   TOK_INT
-   TOK_CHAR
-   TOK_STRING
    TOK_CHARCON
    TOK_STRINGCON
    TOK_INTCON
+   '='
+   '+'
+   '-'
+   '*'
+   '/'
    '%'
+   '^'
 
 
 Rules useless in grammar
 
-   18 identif: type_id IDENT
-
-   19 type_id: TOK_INT
-   20        | TOK_STRING
-   21        | TOK_CHAR
-   22        | TOK_VOID
-   23        | TOK_IDENT
+   16 expr: expr '=' expr
+   17     | expr '+' expr
+   18     | expr '-' expr
+   19     | expr '*' expr
+   20     | expr '/' expr
+   21     | expr '^' expr
+   22     | '+' expr
+   23     | '-' expr
+   24     | '(' expr ')'
+   25     | TOK_IDENT
+   26     | NUMBER
 
 
 Grammar
@@ -58,81 +66,87 @@ Grammar
     4        | program ';'
     5        | %empty
 
-    6 function: expr ';'
+    6 function: identif '(' ')' ';'
+    7         | identif param ')' ';'
 
-    7 expr: expr '=' expr
-    8     | expr '+' expr
-    9     | expr '-' expr
-   10     | expr '*' expr
-   11     | expr '/' expr
-   12     | expr '^' expr
-   13     | '+' expr
-   14     | '-' expr
-   15     | '(' expr ')'
-   16     | TOK_IDENT
-   17     | NUMBER
+    8 identif: type_id TOK_IDENT
+
+    9 param: '(' identif
+   10      | '(' identif ',' identif
+
+   11 type_id: TOK_INT
+   12        | TOK_STRING
+   13        | TOK_CHAR
+   14        | TOK_VOID
+   15        | TOK_IDENT
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 '%' (37)
-'(' (40) 15
-')' (41) 15
-'*' (42) 10
-'+' (43) 8 13
-'-' (45) 9 14
-'/' (47) 11
-';' (59) 3 4 6
-'=' (61) 7
-'^' (94) 12
+'(' (40) 6 9 10
+')' (41) 6 7
+'*' (42)
+'+' (43)
+',' (44) 10
+'-' (45)
+'/' (47)
+';' (59) 3 4 6 7
+'=' (61)
+'^' (94)
 error (256) 3
 ROOT (258)
 IDENT (259)
-NUMBER (260) 17
+NUMBER (260)
 TYPE_ID (261)
 FUNCTION (262)
-TOK_GE (263)
-TOK_LE (264)
-TOK_EQ (265)
-TOK_NE (266)
-TOK_GT (267)
-TOK_LT (268)
-TOK_IF (269)
-TOK_ELSE (270)
-TOK_STRUCT (271)
-TOK_ARRAY (272)
-TOK_NOT (273)
-TOK_ALLOC (274)
-TOK_PTR (275)
-TOK_ARROW (276)
-TOK_WHILE (277)
-TOK_VOID (278)
-TOK_RETURN (279)
-TOK_INT (280)
-TOK_CHAR (281)
-TOK_STRING (282)
-TOK_CHARCON (283)
-TOK_STRINGCON (284)
-TOK_INTCON (285)
-TOK_IDENT (286) 16
-POS (287)
-NEG (288)
+TOK_PARAM (263)
+TOK_PROTOTYPE (264)
+TOK_GE (265)
+TOK_LE (266)
+TOK_EQ (267)
+TOK_NE (268)
+TOK_GT (269)
+TOK_LT (270)
+TOK_IF (271)
+TOK_ELSE (272)
+TOK_STRUCT (273)
+TOK_ARRAY (274)
+TOK_NOT (275)
+TOK_ALLOC (276)
+TOK_PTR (277)
+TOK_ARROW (278)
+TOK_WHILE (279)
+TOK_VOID (280) 14
+TOK_RETURN (281)
+TOK_INT (282) 11
+TOK_CHAR (283) 13
+TOK_STRING (284) 12
+TOK_CHARCON (285)
+TOK_STRINGCON (286)
+TOK_INTCON (287)
+TOK_IDENT (288) 8 15
+POS (289)
+NEG (290)
 
 
 Nonterminals, with rules where they appear
 
-$accept (44)
+$accept (47)
     on left: 0
-start (45)
+start (48)
     on left: 1, on right: 0
-program (46)
+program (49)
     on left: 2 3 4 5, on right: 1 2 3 4
-function (47)
-    on left: 6, on right: 2
-expr (48)
-    on left: 7 8 9 10 11 12 13 14 15 16 17, on right: 6 7 8 9 10 11
-    12 13 14 15
+function (50)
+    on left: 6 7, on right: 2
+identif (51)
+    on left: 8, on right: 6 7 9 10
+param (52)
+    on left: 9 10, on right: 7
+type_id (53)
+    on left: 11 12 13 14 15, on right: 8
 
 
 State 0
@@ -159,18 +173,19 @@ State 2
     3        | program . error ';'
     4        | program . ';'
 
-    error      shift, and go to state 4
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    ';'        shift, and go to state 9
-    '('        shift, and go to state 10
+    error       shift, and go to state 4
+    TOK_VOID    shift, and go to state 5
+    TOK_INT     shift, and go to state 6
+    TOK_CHAR    shift, and go to state 7
+    TOK_STRING  shift, and go to state 8
+    TOK_IDENT   shift, and go to state 9
+    ';'         shift, and go to state 10
 
     $end  reduce using rule 1 (start)
 
     function  go to state 11
-    expr      go to state 12
+    identif   go to state 12
+    type_id   go to state 13
 
 
 State 3
@@ -184,67 +199,49 @@ State 4
 
     3 program: program error . ';'
 
-    ';'  shift, and go to state 13
+    ';'  shift, and go to state 14
 
 
 State 5
 
-   17 expr: NUMBER .
+   14 type_id: TOK_VOID .
 
-    $default  reduce using rule 17 (expr)
+    $default  reduce using rule 14 (type_id)
 
 
 State 6
 
-   16 expr: TOK_IDENT .
+   11 type_id: TOK_INT .
 
-    $default  reduce using rule 16 (expr)
+    $default  reduce using rule 11 (type_id)
 
 
 State 7
 
-   13 expr: '+' . expr
+   13 type_id: TOK_CHAR .
 
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    '('        shift, and go to state 10
-
-    expr  go to state 14
+    $default  reduce using rule 13 (type_id)
 
 
 State 8
 
-   14 expr: '-' . expr
+   12 type_id: TOK_STRING .
 
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    '('        shift, and go to state 10
-
-    expr  go to state 15
+    $default  reduce using rule 12 (type_id)
 
 
 State 9
 
-    4 program: program ';' .
+   15 type_id: TOK_IDENT .
 
-    $default  reduce using rule 4 (program)
+    $default  reduce using rule 15 (type_id)
 
 
 State 10
 
-   15 expr: '(' . expr ')'
+    4 program: program ';' .
 
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    '('        shift, and go to state 10
-
-    expr  go to state 16
+    $default  reduce using rule 4 (program)
 
 
 State 11
@@ -256,261 +253,113 @@ State 11
 
 State 12
 
-    6 function: expr . ';'
-    7 expr: expr . '=' expr
-    8     | expr . '+' expr
-    9     | expr . '-' expr
-   10     | expr . '*' expr
-   11     | expr . '/' expr
-   12     | expr . '^' expr
+    6 function: identif . '(' ')' ';'
+    7         | identif . param ')' ';'
 
-    '='  shift, and go to state 17
-    '+'  shift, and go to state 18
-    '-'  shift, and go to state 19
-    '*'  shift, and go to state 20
-    '/'  shift, and go to state 21
-    '^'  shift, and go to state 22
-    ';'  shift, and go to state 23
+    '('  shift, and go to state 15
+
+    param  go to state 16
 
 
 State 13
+
+    8 identif: type_id . TOK_IDENT
+
+    TOK_IDENT  shift, and go to state 17
+
+
+State 14
 
     3 program: program error ';' .
 
     $default  reduce using rule 3 (program)
 
 
-State 14
-
-    7 expr: expr . '=' expr
-    8     | expr . '+' expr
-    9     | expr . '-' expr
-   10     | expr . '*' expr
-   11     | expr . '/' expr
-   12     | expr . '^' expr
-   13     | '+' expr .
-
-    $default  reduce using rule 13 (expr)
-
-
 State 15
 
-    7 expr: expr . '=' expr
-    8     | expr . '+' expr
-    9     | expr . '-' expr
-   10     | expr . '*' expr
-   11     | expr . '/' expr
-   12     | expr . '^' expr
-   14     | '-' expr .
+    6 function: identif '(' . ')' ';'
+    9 param: '(' . identif
+   10      | '(' . identif ',' identif
 
-    $default  reduce using rule 14 (expr)
+    TOK_VOID    shift, and go to state 5
+    TOK_INT     shift, and go to state 6
+    TOK_CHAR    shift, and go to state 7
+    TOK_STRING  shift, and go to state 8
+    TOK_IDENT   shift, and go to state 9
+    ')'         shift, and go to state 18
+
+    identif  go to state 19
+    type_id  go to state 13
 
 
 State 16
 
-    7 expr: expr . '=' expr
-    8     | expr . '+' expr
-    9     | expr . '-' expr
-   10     | expr . '*' expr
-   11     | expr . '/' expr
-   12     | expr . '^' expr
-   15     | '(' expr . ')'
+    7 function: identif param . ')' ';'
 
-    '='  shift, and go to state 17
-    '+'  shift, and go to state 18
-    '-'  shift, and go to state 19
-    '*'  shift, and go to state 20
-    '/'  shift, and go to state 21
-    '^'  shift, and go to state 22
-    ')'  shift, and go to state 24
+    ')'  shift, and go to state 20
 
 
 State 17
 
-    7 expr: expr '=' . expr
+    8 identif: type_id TOK_IDENT .
 
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    '('        shift, and go to state 10
-
-    expr  go to state 25
+    $default  reduce using rule 8 (identif)
 
 
 State 18
 
-    8 expr: expr '+' . expr
+    6 function: identif '(' ')' . ';'
 
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    '('        shift, and go to state 10
-
-    expr  go to state 26
+    ';'  shift, and go to state 21
 
 
 State 19
 
-    9 expr: expr '-' . expr
+    9 param: '(' identif .
+   10      | '(' identif . ',' identif
 
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    '('        shift, and go to state 10
+    ','  shift, and go to state 22
 
-    expr  go to state 27
+    $default  reduce using rule 9 (param)
 
 
 State 20
 
-   10 expr: expr '*' . expr
+    7 function: identif param ')' . ';'
 
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    '('        shift, and go to state 10
-
-    expr  go to state 28
+    ';'  shift, and go to state 23
 
 
 State 21
 
-   11 expr: expr '/' . expr
-
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    '('        shift, and go to state 10
-
-    expr  go to state 29
-
-
-State 22
-
-   12 expr: expr '^' . expr
-
-    NUMBER     shift, and go to state 5
-    TOK_IDENT  shift, and go to state 6
-    '+'        shift, and go to state 7
-    '-'        shift, and go to state 8
-    '('        shift, and go to state 10
-
-    expr  go to state 30
-
-
-State 23
-
-    6 function: expr ';' .
+    6 function: identif '(' ')' ';' .
 
     $default  reduce using rule 6 (function)
 
 
+State 22
+
+   10 param: '(' identif ',' . identif
+
+    TOK_VOID    shift, and go to state 5
+    TOK_INT     shift, and go to state 6
+    TOK_CHAR    shift, and go to state 7
+    TOK_STRING  shift, and go to state 8
+    TOK_IDENT   shift, and go to state 9
+
+    identif  go to state 24
+    type_id  go to state 13
+
+
+State 23
+
+    7 function: identif param ')' ';' .
+
+    $default  reduce using rule 7 (function)
+
+
 State 24
 
-   15 expr: '(' expr ')' .
+   10 param: '(' identif ',' identif .
 
-    $default  reduce using rule 15 (expr)
-
-
-State 25
-
-    7 expr: expr . '=' expr
-    7     | expr '=' expr .
-    8     | expr . '+' expr
-    9     | expr . '-' expr
-   10     | expr . '*' expr
-   11     | expr . '/' expr
-   12     | expr . '^' expr
-
-    '='  shift, and go to state 17
-    '+'  shift, and go to state 18
-    '-'  shift, and go to state 19
-    '*'  shift, and go to state 20
-    '/'  shift, and go to state 21
-    '^'  shift, and go to state 22
-
-    $default  reduce using rule 7 (expr)
-
-
-State 26
-
-    7 expr: expr . '=' expr
-    8     | expr . '+' expr
-    8     | expr '+' expr .
-    9     | expr . '-' expr
-   10     | expr . '*' expr
-   11     | expr . '/' expr
-   12     | expr . '^' expr
-
-    '*'  shift, and go to state 20
-    '/'  shift, and go to state 21
-    '^'  shift, and go to state 22
-
-    $default  reduce using rule 8 (expr)
-
-
-State 27
-
-    7 expr: expr . '=' expr
-    8     | expr . '+' expr
-    9     | expr . '-' expr
-    9     | expr '-' expr .
-   10     | expr . '*' expr
-   11     | expr . '/' expr
-   12     | expr . '^' expr
-
-    '*'  shift, and go to state 20
-    '/'  shift, and go to state 21
-    '^'  shift, and go to state 22
-
-    $default  reduce using rule 9 (expr)
-
-
-State 28
-
-    7 expr: expr . '=' expr
-    8     | expr . '+' expr
-    9     | expr . '-' expr
-   10     | expr . '*' expr
-   10     | expr '*' expr .
-   11     | expr . '/' expr
-   12     | expr . '^' expr
-
-    '^'  shift, and go to state 22
-
-    $default  reduce using rule 10 (expr)
-
-
-State 29
-
-    7 expr: expr . '=' expr
-    8     | expr . '+' expr
-    9     | expr . '-' expr
-   10     | expr . '*' expr
-   11     | expr . '/' expr
-   11     | expr '/' expr .
-   12     | expr . '^' expr
-
-    '^'  shift, and go to state 22
-
-    $default  reduce using rule 11 (expr)
-
-
-State 30
-
-    7 expr: expr . '=' expr
-    8     | expr . '+' expr
-    9     | expr . '-' expr
-   10     | expr . '*' expr
-   11     | expr . '/' expr
-   12     | expr . '^' expr
-   12     | expr '^' expr .
-
-    '^'  shift, and go to state 22
-
-    $default  reduce using rule 12 (expr)
+    $default  reduce using rule 10 (param)
