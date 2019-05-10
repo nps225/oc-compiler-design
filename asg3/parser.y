@@ -138,7 +138,54 @@ ifelse: TOK_IF '(' express ')' block
           $1 = $1->adopt($3,$5);
           $1 = $1->adopt($7);          
        }
+       ;
 
+alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' ')'
+       {
+         destroy($2,$4);
+         destroy($5,$6);
+         $$ = $1->adopt($3);
+       }
+       | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express ')'
+       {
+         destroy($2,$4);
+         destroy($5,$7);
+         $$ = $1->adopt($3,$6);
+       }
+       | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT
+         TOK_GT '(' express ')'
+       {
+         destroy($2,$3);
+         destroy($6);
+         destroy($5,$8);
+         $$ = $1->adopt($4,$7);
+       }
+       | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT
+         TOK_GT '(' ')'
+       {
+         destroy($2,$3);
+         destroy($6);
+         destroy($5,$7);
+         $$ = $1->adopt($4);
+       }
+       | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT
+         type TOK_GT TOK_GT '(' ')'
+       {
+         destroy($2,$4);
+         destroy($6,$7);
+         destroy($8,$9);
+         $$ = $1->adopt($3,$5);
+       }
+       | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT
+         type TOK_GT TOK_GT '(' express ')'
+       {
+         destroy($2,$4);
+         destroy($6,$7);
+         destroy($8,$10);
+         $1 = $1->adopt($3,$5);
+         $$ = $1->adopt($9);
+       }
+       ;
 
 
 block: blockBody '}'
@@ -201,6 +248,10 @@ state:   while
 express: express binop express
          {
             $$ = $2->adopt ($1, $3); 
+         }
+         | alloc
+         {
+            $$ = $1;
          }
          | '(' express ')'
          {
@@ -298,7 +349,6 @@ type_id : TOK_INT                { $$ = $1; }
         | TOK_STRING             { $$ = $1; }
         | TOK_CHAR               { $$ = $1; }
         | TOK_VOID               { $$ = $1; }
-        | TOK_IDENT              { $$ = $1; }
         ;
 
 constant: TOK_INTCON                { $$ = $1; }
