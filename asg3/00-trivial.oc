@@ -1,2 +1,2 @@
 // $Id: 00-trivial.oc,v 1.1 2019-04-16 12:14:45-07 - - $
-while( i < 4){ a = b;} 
+if( i < 4){ a = b + a;}else{b = c;} 

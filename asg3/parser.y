@@ -126,6 +126,19 @@ while: TOK_WHILE '(' express ')' block
        }
        ;
 
+ifelse: TOK_IF '(' express ')' block
+       {
+         destroy($2,$4);
+         $$ = $1-> adopt($3,$5);
+       }
+       | TOK_IF '(' express ')' block TOK_ELSE block
+       {
+          destroy($2,$4);
+          destroy($6);
+          $1 = $1->adopt($3,$5);
+          $1 = $1->adopt($7);          
+       }
+
 
 
 block: blockBody '}'
@@ -161,6 +174,10 @@ statement: expr ';'
          ;
 
 state:   while
+         {
+            $$ = $1;
+         }
+         | ifelse
          {
             $$ = $1;
          }
