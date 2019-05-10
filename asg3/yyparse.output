@@ -1,3 +1,8 @@
+Nonterminals useless in grammar
+
+   var
+
+
 Terminals unused in grammar
 
    ROOT
@@ -24,6 +29,11 @@ Terminals unused in grammar
    TOK_WHILE
    TOK_RETURN
    '%'
+
+
+Rules useless in grammar
+
+   43 var: IDENT
 
 
 State 27 conflicts: 9 shift/reduce

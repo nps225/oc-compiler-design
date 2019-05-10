@@ -150,6 +150,7 @@ statement: expr ';'
                $$=$1;
             }
          ;
+// old code that may need later
 //          | statement expr ';'
 //             {
 //                destroy($3);
@@ -157,6 +158,18 @@ statement: expr ';'
 //                $$ = $$->adopt($1,$2);
 //             }
 //          ;
+
+
+express: express binop express
+         {
+            { $$ = $2->adopt ($1, $3); }
+         }
+
+var     : IDENT 
+               {
+                  $$ = $1;
+               }
+         ;
 
 type    : type_id                { $$ = $1; }
         ;
@@ -173,6 +186,19 @@ constant: TOK_INTCON                 { $$ = $1; }
         | TOK_CHARCON                { $$ = $1; }
         | TOK_NULLPTR                { $$ = $1; }
         ;
+
+// binop   : expr '=' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '+' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '-' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '*' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '/' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
+//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
+         //   ;
 
 expr    : expr '=' expr         { $$ = $2->adopt ($1, $3); }
         | expr '+' expr         { $$ = $2->adopt ($1, $3); }
