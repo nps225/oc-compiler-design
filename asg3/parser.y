@@ -47,7 +47,7 @@
 start : program               { $$ = $1 = nullptr; }
       ;
 
-program : program function      { $$ = $1->adopt($2); }
+program : program state         { $$ = $1->adopt($2); }
         | program vardecl       { $$ = $1->adopt($2); }
         | program error ';'     { destroy ($3); $$ = $1; }
         | program ';'           { destroy ($2); $$ = $1; }
@@ -152,6 +152,14 @@ statement: expr ';'
                $$=$1;
             }
          ;
+
+state:     express ';'
+           {
+               destroy($2);
+               $$=$1;
+            }
+         ;
+
 // old code that may need later
 //          | statement expr ';'
 //             {
@@ -166,6 +174,12 @@ express: express binop express
          {
             $$ = $2->adopt ($1, $3); 
          }
+         | '(' express ')'
+         {
+            destroy($3);
+            $$ = new astree(TOK_PARAM,$1->lloc,"(");
+            $$ = $$->adopt($2);
+         }
          | var
          {
             $$ = $1;
@@ -176,7 +190,7 @@ express: express binop express
          }
          ;
 
-binop: "=" 
+binop: '=' 
         {
            $$ = $1;
         }
@@ -204,30 +218,40 @@ binop: "="
         {
            $$ = $1;
         }
-      | "+"
+      | '+'
         {
            $$ = $1;
         }
-      | "-"
-        {
-           $$ = $1
-        }
-      | "*"
+      | '-'
         {
            $$ = $1;
         }
-      | "/" 
+      | '*'
         {
            $$ = $1;
         }
-      | "%" 
+      | '/' 
+        {
+           $$ = $1;
+        }
+      | '%' 
         {
            $$ = $1;
         }
       ;
 
+unop: '+' express %prec POS    
+         {
+            $$ = $1->adopt_sym ($2, POS); 
+         }
+    | '-' express %prec NEG    
+         {
+           $$ = $1->adopt_sym ($2, NEG); 
+         }
+     ;
 
-var     : IDENT 
+
+var     : TOK_IDENT 
                {
                   $$ = $1;
                }
@@ -243,24 +267,12 @@ type_id : TOK_INT                { $$ = $1; }
         | TOK_IDENT              { $$ = $1; }
         ;
 
-constant: TOK_INTCON                 { $$ = $1; }
+constant: TOK_INTCON                { $$ = $1; }
         | TOK_STRINGCON              { $$ = $1; }
         | TOK_CHARCON                { $$ = $1; }
         | TOK_NULLPTR                { $$ = $1; }
         ;
 
-// binop   : expr '=' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '+' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '-' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '*' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '/' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
-//         | expr '^' expr         { $$ = $2->adopt ($1, $3); }
-         //   ;
 
 expr    : expr '=' expr         { $$ = $2->adopt ($1, $3); }
         | expr '+' expr         { $$ = $2->adopt ($1, $3); }
