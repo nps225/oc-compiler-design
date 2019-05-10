@@ -131,7 +131,8 @@ block: blockBody '}'
 
 blockBody: '{' statement 
              { 
-               $$ = $$->symChange($$, BLOCK); 
+               // destroy($1); 
+               $$ = new astree(BLOCK,$1->lloc,"{"); 
                $$ = $$->adopt($2);
              }
          |  blockBody statement
@@ -143,6 +144,7 @@ blockBody: '{' statement
             {
                $$ = $1->symChange($1,BLOCK);
             }
+         ;
 
 statement: expr ';'
             {
@@ -162,8 +164,68 @@ statement: expr ';'
 
 express: express binop express
          {
-            { $$ = $2->adopt ($1, $3); }
+            $$ = $2->adopt ($1, $3); 
          }
+         | var
+         {
+            $$ = $1;
+         }
+         | constant 
+         {
+            $$ = $1;
+         }
+         ;
+
+binop: "=" 
+        {
+           $$ = $1;
+        }
+      | TOK_EQ
+        {
+           $$ = $1;
+        }
+      | TOK_NE
+        {
+           $$ = $1;
+        }
+      | TOK_GT
+        {
+           $$ = $1;
+        }
+      | TOK_GE
+        {
+           $$ = $1;
+        }
+      | TOK_LT
+        {
+           $$ = $1;
+        }
+      | TOK_LE
+        {
+           $$ = $1;
+        }
+      | "+"
+        {
+           $$ = $1;
+        }
+      | "-"
+        {
+           $$ = $1
+        }
+      | "*"
+        {
+           $$ = $1;
+        }
+      | "/" 
+        {
+           $$ = $1;
+        }
+      | "%" 
+        {
+           $$ = $1;
+        }
+      ;
+
 
 var     : IDENT 
                {
