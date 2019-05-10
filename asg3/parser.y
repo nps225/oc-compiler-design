@@ -25,7 +25,7 @@
 }
 
 %token  ROOT IDENT NUMBER TYPE_ID FUNCTION TOK_PARAM TOK_PROTOTYPE
-%token  BLOCK
+%token  BLOCK TOK_NULLPTR
 %token  TOK_GE TOK_LE TOK_EQ TOK_NE TOK_GT TOK_LT
 %token  TOK_IF TOK_ELSE TOK_STRUCT TOK_ARRAY TOK_NOT
 %token  TOK_ALLOC TOK_PTR TOK_ARROW TOK_WHILE TOK_VOID
@@ -48,6 +48,7 @@ start : program               { $$ = $1 = nullptr; }
       ;
 
 program : program function      { $$ = $1->adopt($2); }
+        | program vardecl       { $$ = $1->adopt($2); }
         | program error ';'     { destroy ($3); $$ = $1; }
         | program ';'           { destroy ($2); $$ = $1; }
         |                       { $$ = parser::root; }
@@ -83,7 +84,22 @@ function : identif '(' ')' ';'
                }
          ;
 
-identif : type_id TOK_IDENT     
+vardecl : type TOK_IDENT ';'
+               {
+                  destroy($3);
+                  $$ = new astree(TYPE_ID,$1->lloc,"");
+                  $$ = $$->adopt($1,$2);
+               }
+         | type TOK_IDENT '=' expr ';'
+               {
+                  destroy($3,$5);
+                  $$ = new astree(TYPE_ID,$1->lloc,"");
+                  $$ = $$->adopt($1,$2);
+                  $$ = $$->adopt($4);
+               }
+         ;
+
+identif : type TOK_IDENT     
                {
                   $$ = new astree(TYPE_ID, $1->lloc,"");
                   $$ = $$->adopt($1,$2);
@@ -105,28 +121,57 @@ param : '(' identif
 
 
 
-block: '{' 
+block: blockBody '}'
                {
-                  $$ = new astree(BLOCK,$1->lloc,"{");
+                  destroy($2);
+                  $$ = $1;
                }
-     | '{' statement
-              {
-                 $$ = new astree(BLOCK,$1->lloc,"{");
-                 $$=$$->adopt($2);
-              }
-     ;
+      ;
 
-statement: expr 
-             {
-                $$ = $1;
+
+blockBody: '{' statement 
+             { 
+               $$ = $$->symChange($$, BLOCK); 
+               $$ = $$->adopt($2);
              }
+         |  blockBody statement
+            {
+               $$ = $1->symChange($1,BLOCK);
+               $1 = $1->adopt($2);
+            }
+         |  '{'
+            {
+               $$ = $1->symChange($1,BLOCK);
+            }
+
+statement: expr ';'
+            {
+               destroy($2);
+               $$=$1;
+            }
          ;
+//          | statement expr ';'
+//             {
+//                destroy($3);
+//                $$ = new astree(TOK_PARAM,$1->lloc,"");
+//                $$ = $$->adopt($1,$2);
+//             }
+//          ;
+
+type    : type_id                { $$ = $1; }
+        ;
 
 type_id : TOK_INT                { $$ = $1; }
         | TOK_STRING             { $$ = $1; }
         | TOK_CHAR               { $$ = $1; }
         | TOK_VOID               { $$ = $1; }
         | TOK_IDENT              { $$ = $1; }
+        ;
+
+constant: TOK_INTCON                 { $$ = $1; }
+        | TOK_STRINGCON              { $$ = $1; }
+        | TOK_CHARCON                { $$ = $1; }
+        | TOK_NULLPTR                { $$ = $1; }
         ;
 
 expr    : expr '=' expr         { $$ = $2->adopt ($1, $3); }
@@ -139,6 +184,7 @@ expr    : expr '=' expr         { $$ = $2->adopt ($1, $3); }
         | '-' expr %prec NEG    { $$ = $1->adopt_sym ($2, NEG); }
         | '(' expr ')'          { destroy ($1, $3); $$ = $2; }
         | TOK_IDENT             { $$ = $1; }
+        | constant              { $$ = $1; }
         | NUMBER                { $$ = $1; }
         ;
 

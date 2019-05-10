@@ -78,6 +78,7 @@ BADIDENT        ({DIGIT}{IDENT})
 "struct"           { return lexer::token (TOK_STRUCT); }
 "array"           { return lexer::token (TOK_ARRAY); }
 "not"           { return lexer::token (TOK_NOT); }
+"nullptr"       { return lexer::token (TOK_NULLPTR); }
 "alloc"           { return lexer::token (TOK_ALLOC); }
 "ptr"           { return lexer::token (TOK_PTR); }
 "->"           { return lexer::token (TOK_ARROW); }
