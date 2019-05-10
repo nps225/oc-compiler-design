@@ -25,7 +25,7 @@
 }
 
 %token  ROOT IDENT NUMBER TYPE_ID FUNCTION TOK_PARAM TOK_PROTOTYPE
-%token  BLOCK TOK_NULLPTR
+%token  BLOCK TOK_NULLPTR TOK_INDEX
 %token  TOK_GE TOK_LE TOK_EQ TOK_NE TOK_GT TOK_LT
 %token  TOK_IF TOK_ELSE TOK_STRUCT TOK_ARRAY TOK_NOT
 %token  TOK_ALLOC TOK_PTR TOK_ARROW TOK_WHILE TOK_VOID
@@ -119,6 +119,13 @@ param : '(' identif
                }
       ;
 
+while: TOK_WHILE '(' express ')' block
+       {
+         destroy($2,$4);
+         $$ = $1->adopt($3,$5);
+       }
+       ;
+
 
 
 block: blockBody '}'
@@ -153,11 +160,15 @@ statement: expr ';'
             }
          ;
 
-state:     express ';'
-           {
-               destroy($2);
-               $$=$1;
-            }
+state:   while
+         {
+            $$ = $1;
+         }
+         | express ';'
+         {
+            destroy($2);
+            $$=$1;
+         }
          ;
 
 // old code that may need later
@@ -254,6 +265,12 @@ unop: '+' express %prec POS
 var     : TOK_IDENT 
                {
                   $$ = $1;
+               }
+         | express '[' express ']'
+               {
+                  destroy($4);
+                  $$ = new astree(TOK_INDEX,$2->lloc,"[");
+                  $$ = $$->adopt($1,$3);
                }
          ;
 
