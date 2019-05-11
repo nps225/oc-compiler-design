@@ -25,7 +25,7 @@
 }
 
 %token  ROOT IDENT NUMBER TYPE_ID FUNCTION TOK_PARAM TOK_PROTOTYPE
-%token  BLOCK TOK_NULLPTR TOK_INDEX
+%token  BLOCK TOK_NULLPTR TOK_INDEX CALL
 %token  TOK_GE TOK_LE TOK_EQ TOK_NE TOK_GT TOK_LT
 %token  TOK_IF TOK_ELSE TOK_STRUCT TOK_ARRAY TOK_NOT
 %token  TOK_ALLOC TOK_PTR TOK_ARROW TOK_WHILE TOK_VOID
@@ -43,11 +43,11 @@
 %start  start
 
 %%
-
+//test
 start : program               { $$ = $1 = nullptr; }
       ;
 
-program : program state         { $$ = $1->adopt($2); }
+program : program function         { $$ = $1->adopt($2); }
         | program vardecl       { $$ = $1->adopt($2); }
         | program error ';'     { destroy ($3); $$ = $1; }
         | program ';'           { destroy ($2); $$ = $1; }
@@ -108,15 +108,43 @@ identif : type TOK_IDENT
 
 param : '(' identif 
                {
-                  $$ = new astree(TOK_PARAM, $1->lloc, "");
+                  $$ = new astree(TOK_PARAM, $1->lloc, "(");
                   $$ = $$->adopt($2);
                }
-      | '(' identif ',' identif
+      | param ',' identif
                {
-                  destroy($3);
-                  $$ = new astree(TOK_PARAM, $1->lloc, "");
-                  $$ = $$->adopt($2,$4);
+                  destroy($2);
+                  // $$ = new astree(TOK_PARAM, $1->lloc, "(");
+                  $$ = $1->adopt($3);
                }
+      ;
+
+
+callParam : TOK_IDENT '(' express
+               {
+                  $$ = $2->symChange($2,CALL);
+                  $$ = $$->adopt($1,$3); 
+                  
+               }
+            | callParam ',' express
+               {
+                  destroy($2);
+                  $$ = $1->adopt($3);
+               }
+             
+      ;
+
+call: TOK_IDENT '(' ')'
+      {
+         destroy($3);
+         $$ = $2->symChange($2,CALL);
+         $$ = $$->adopt($1);
+      }
+      | callParam ')'
+      {
+         destroy($2);
+         $$ = $1;
+      }
       ;
 
 while: TOK_WHILE '(' express ')' block
@@ -250,6 +278,10 @@ express: express binop express
             $$ = $2->adopt ($1, $3); 
          }
          | alloc
+         {
+            $$ = $1;
+         }
+         |call 
          {
             $$ = $1;
          }
