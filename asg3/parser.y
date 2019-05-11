@@ -43,11 +43,11 @@
 %start  start
 
 %%
-//test
+
 start : program               { $$ = $1 = nullptr; }
       ;
 
-program : program function         { $$ = $1->adopt($2); }
+program : program state         { $$ = $1->adopt($2); }
         | program vardecl       { $$ = $1->adopt($2); }
         | program error ';'     { destroy ($3); $$ = $1; }
         | program ';'           { destroy ($2); $$ = $1; }
@@ -90,7 +90,7 @@ vardecl : type TOK_IDENT ';'
                   $$ = new astree(TYPE_ID,$1->lloc,"");
                   $$ = $$->adopt($1,$2);
                }
-         | type TOK_IDENT '=' expr ';'
+         | type TOK_IDENT '=' express ';'
                {
                   destroy($3,$5);
                   $$ = new astree(TYPE_ID,$1->lloc,"");
@@ -375,6 +375,11 @@ var     : TOK_IDENT
          ;
 
 type    : type_id                { $$ = $1; }
+        | TOK_ARRAY TOK_LT type_id TOK_GT 
+        {
+           destroy($2,$4);
+           $$ = $1->adopt($3);
+        }
         ;
 
 type_id : TOK_INT                { $$ = $1; }
