@@ -70,8 +70,8 @@ Grammar
    27 return: TOK_RETURN ';'
    28       | TOK_RETURN express ';'
 
-   29 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' ')'
-   30      | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express ')'
+   29 alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' ')'
+   30      | TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' express ')'
    31      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express ')'
    32      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' ')'
    33      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')'
@@ -186,9 +186,9 @@ TOK_VOID (285) 77
 TOK_RETURN (286) 27 28
 TOK_INT (287) 74
 TOK_CHAR (288) 76
-TOK_STRING (289) 75
+TOK_STRING (289) 29 30 75
 TOK_CHARCON (290) 81
-TOK_STRINGCON (291) 29 30 80
+TOK_STRINGCON (291) 80
 TOK_INTCON (292) 79
 TOK_IDENT (293) 8 9 14 15 16 19 21 31 32 69 71 78
 POS (294)
@@ -815,8 +815,8 @@ State 42
 
 State 43
 
-   29 alloc: TOK_ALLOC . TOK_LT TOK_STRINGCON TOK_GT '(' ')'
-   30      | TOK_ALLOC . TOK_LT TOK_STRINGCON TOK_GT '(' express ')'
+   29 alloc: TOK_ALLOC . TOK_LT TOK_STRING TOK_GT '(' ')'
+   30      | TOK_ALLOC . TOK_LT TOK_STRING TOK_GT '(' express ')'
    31      | TOK_ALLOC . TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express ')'
    32      | TOK_ALLOC . TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' ')'
    33      | TOK_ALLOC . TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')'
@@ -1358,16 +1358,16 @@ State 83
 
 State 84
 
-   29 alloc: TOK_ALLOC TOK_LT . TOK_STRINGCON TOK_GT '(' ')'
-   30      | TOK_ALLOC TOK_LT . TOK_STRINGCON TOK_GT '(' express ')'
+   29 alloc: TOK_ALLOC TOK_LT . TOK_STRING TOK_GT '(' ')'
+   30      | TOK_ALLOC TOK_LT . TOK_STRING TOK_GT '(' express ')'
    31      | TOK_ALLOC TOK_LT . TOK_STRUCT TOK_IDENT TOK_GT '(' express ')'
    32      | TOK_ALLOC TOK_LT . TOK_STRUCT TOK_IDENT TOK_GT '(' ')'
    33      | TOK_ALLOC TOK_LT . TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')'
    34      | TOK_ALLOC TOK_LT . TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express ')'
 
-    TOK_STRUCT     shift, and go to state 116
-    TOK_ARRAY      shift, and go to state 117
-    TOK_STRINGCON  shift, and go to state 118
+    TOK_STRUCT  shift, and go to state 116
+    TOK_ARRAY   shift, and go to state 117
+    TOK_STRING  shift, and go to state 118
 
 
 State 85
@@ -1771,8 +1771,8 @@ State 117
 
 State 118
 
-   29 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON . TOK_GT '(' ')'
-   30      | TOK_ALLOC TOK_LT TOK_STRINGCON . TOK_GT '(' express ')'
+   29 alloc: TOK_ALLOC TOK_LT TOK_STRING . TOK_GT '(' ')'
+   30      | TOK_ALLOC TOK_LT TOK_STRING . TOK_GT '(' express ')'
 
     TOK_GT  shift, and go to state 131
 
@@ -2024,8 +2024,8 @@ State 130
 
 State 131
 
-   29 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT . '(' ')'
-   30      | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT . '(' express ')'
+   29 alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT . '(' ')'
+   30      | TOK_ALLOC TOK_LT TOK_STRING TOK_GT . '(' express ')'
 
     '('  shift, and go to state 137
 
@@ -2108,8 +2108,8 @@ State 136
 
 State 137
 
-   29 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' . ')'
-   30      | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' . express ')'
+   29 alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' . ')'
+   30      | TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' . express ')'
 
     TOK_NULLPTR    shift, and go to state 39
     TOK_NOT        shift, and go to state 42
@@ -2175,14 +2175,14 @@ State 140
 
 State 141
 
-   29 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' ')' .
+   29 alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' ')' .
 
     $default  reduce using rule 29 (alloc)
 
 
 State 142
 
-   30 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express . ')'
+   30 alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' express . ')'
    47 express: express . binop express
    70 var: express . '[' express ']'
    71    | express . TOK_ARROW TOK_IDENT
@@ -2249,7 +2249,7 @@ State 145
 
 State 146
 
-   30 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express ')' .
+   30 alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' express ')' .
 
     $default  reduce using rule 30 (alloc)
 
