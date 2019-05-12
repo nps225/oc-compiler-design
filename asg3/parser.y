@@ -25,7 +25,7 @@
 }
 
 %token  ROOT IDENT NUMBER TYPE_ID FUNCTION TOK_PARAM TOK_PROTOTYPE
-%token  BLOCK TOK_NULLPTR TOK_INDEX CALL
+%token  BLOCK TOK_NULLPTR TOK_INDEX CALL NOELSE
 %token  TOK_GE TOK_LE TOK_EQ TOK_NE TOK_GT TOK_LT
 %token  TOK_IF TOK_ELSE TOK_STRUCT TOK_ARRAY TOK_NOT
 %token  TOK_ALLOC TOK_PTR TOK_ARROW TOK_WHILE TOK_VOID
@@ -47,7 +47,7 @@
 start : program               { $$ = $1 = nullptr; }
       ;
 
-program : program struct         { $$ = $1->adopt($2); }
+program : program state         { $$ = $1->adopt($2); }
         | program vardecl       { $$ = $1->adopt($2); }
         | program function      { $$ = $1->adopt($2); }
         | program error ';'     { destroy ($3); $$ = $1; }
@@ -185,7 +185,7 @@ ifelse: TOK_IF '(' express ')' block
          destroy($2,$4);
          $$ = $1-> adopt($3,$5);
        }
-       | TOK_IF '(' express ')' block TOK_ELSE block
+       | TOK_IF '(' express ')' block TOK_ELSE block 
        {
           destroy($2,$4);
           destroy($6);
