@@ -266,6 +266,7 @@ block: blockBody '}'
                   destroy($2);
                   $$ = $1;
                }
+      | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
       ;
 
 
@@ -411,6 +412,10 @@ unop: '+' express %prec POS
             $$ = $1->adopt_sym ($2, POS); 
          }
     | '-' express %prec NEG    
+         {
+           $$ = $1->adopt_sym ($2, NEG); 
+         }
+    | TOK_NOT express %prec NEG    
          {
            $$ = $1->adopt_sym ($2, NEG); 
          }

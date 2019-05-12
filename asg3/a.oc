@@ -1,0 +1,1 @@
+if (not (str != nullptr)) fail ("str != nullptr", "23-atoi.oc", 9);
