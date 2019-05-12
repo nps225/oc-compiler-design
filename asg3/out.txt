@@ -1,0 +1,90 @@
+; 0.  1: # 1 "00-trivial.oc"; 0.  0: 
+; 0.  1: # 1 "<built-in>"
+; 1.  1: # 1 "<command-line>"
+; 2.  1: # 1 "00-trivial.oc"
+; 3.  1: 
+; 3.  2: 
+; 3.  3: 
+; 3.  4: 
+; 3.  5: 
+; 3.  6: 
+; 3.  7: 
+; 3.  8: int fac (int n) {
+; 3.  9:    int f = 1;
+; 3. 10:    while (n > 1) {
+; 3. 11:       f = f * n;
+; 3. 12:       n = n - 1;
+; 3. 13:    }
+; 3. 14:    return f;
+; 3. 15: }
+; 3. 16: 
+; 3. 17: int main() {
+; 3. 18:    int n = 1;
+; 3. 19:    while (n <= 5) {
+; 3. 20:       putint (fac (n));
+; 3. 21:       putchr ('\n');
+; 3. 22:       n = n + 1;
+; 3. 23:    }
+; 3. 24:    return SUCCESS;
+; 3. 25: }
+ROOT "" 0.0.0
+   FUNCTION "" 3.8.1
+      TYPE_ID "" 3.8.1
+         TOK_INT "int" 3.8.1
+         TOK_IDENT "fac" 3.8.5
+      TOK_PARAM "(" 3.8.9
+         TYPE_ID "" 3.8.10
+            TOK_INT "int" 3.8.10
+            TOK_IDENT "n" 3.8.14
+      BLOCK "{" 3.8.17
+         TYPE_ID "" 3.9.4
+            TOK_INT "int" 3.9.4
+            TOK_IDENT "f" 3.9.8
+            TOK_INTCON "1" 3.9.12
+         TOK_WHILE "while" 3.10.4
+            TOK_GT ">" 3.10.13
+               TOK_IDENT "n" 3.10.11
+               TOK_INTCON "1" 3.10.15
+            BLOCK "{" 3.10.18
+               '=' "=" 3.11.9
+                  TOK_IDENT "f" 3.11.7
+                  '*' "*" 3.11.13
+                     TOK_IDENT "f" 3.11.11
+                     TOK_IDENT "n" 3.11.15
+               '=' "=" 3.12.9
+                  TOK_IDENT "n" 3.12.7
+                  '-' "-" 3.12.13
+                     TOK_IDENT "n" 3.12.11
+                     TOK_INTCON "1" 3.12.15
+         TOK_RETURN "return" 3.14.4
+            TOK_IDENT "f" 3.14.11
+   FUNCTION "" 3.17.1
+      TYPE_ID "" 3.17.1
+         TOK_INT "int" 3.17.1
+         TOK_IDENT "main" 3.17.5
+      TOK_PARAM "(" 3.17.9
+      BLOCK "{" 3.17.12
+         TYPE_ID "" 3.18.4
+            TOK_INT "int" 3.18.4
+            TOK_IDENT "n" 3.18.8
+            TOK_INTCON "1" 3.18.12
+         TOK_WHILE "while" 3.19.4
+            TOK_LE "<=" 3.19.13
+               TOK_IDENT "n" 3.19.11
+               TOK_INTCON "5" 3.19.16
+            BLOCK "{" 3.19.19
+               CALL "(" 3.20.14
+                  TOK_IDENT "putint" 3.20.7
+                  CALL "(" 3.20.19
+                     TOK_IDENT "fac" 3.20.15
+                     TOK_IDENT "n" 3.20.20
+               CALL "(" 3.21.14
+                  TOK_IDENT "putchr" 3.21.7
+                  TOK_CHARCON "'\n'" 3.21.15
+               '=' "=" 3.22.9
+                  TOK_IDENT "n" 3.22.7
+                  '+' "+" 3.22.13
+                     TOK_IDENT "n" 3.22.11
+                     TOK_INTCON "1" 3.22.15
+         TOK_RETURN "return" 3.24.4
+            TOK_IDENT "SUCCESS" 3.24.11

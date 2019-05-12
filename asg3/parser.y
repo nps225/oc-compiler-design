@@ -47,12 +47,38 @@
 start : program               { $$ = $1 = nullptr; }
       ;
 
-program : program state         { $$ = $1->adopt($2); }
+program : program struct         { $$ = $1->adopt($2); }
         | program vardecl       { $$ = $1->adopt($2); }
+        | program function      { $$ = $1->adopt($2); }
         | program error ';'     { destroy ($3); $$ = $1; }
         | program ';'           { destroy ($2); $$ = $1; }
         |                       { $$ = parser::root; }
         ;
+
+
+struct : TOK_STRUCT TOK_IDENT '{' '}' ';'
+       {
+         destroy($4);
+         destroy($3,$5);
+         $$ = $1->adopt($2);
+       }
+       | TOK_STRUCT TOK_IDENT block ';'
+       {
+         destroy($4);
+         $$ = $1->adopt($2,$3);
+       }
+
+// blockStruct: '{' state
+//                {
+//                   destroy($1);
+//                   $$ = $2;
+//                }
+//             | blockStruct state
+//                {
+//                   $$ = $1->adopt($2);
+//                }
+//       ;
+ 
 
 function : identif '(' ')' ';' 
                {  
@@ -164,9 +190,22 @@ ifelse: TOK_IF '(' express ')' block
           destroy($2,$4);
           destroy($6);
           $1 = $1->adopt($3,$5);
-          $1 = $1->adopt($7);          
+          $1 = $1->adopt($7);
+          $$ = $1;          
        }
        ;
+
+return : TOK_RETURN ';'
+        {
+           destroy($2);
+           $$ = $1;
+        }
+        | TOK_RETURN express ';'
+        {
+           destroy($3);
+           $$ = $1->adopt($2);
+        }
+        ;
 
 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' ')'
        {
@@ -224,13 +263,13 @@ block: blockBody '}'
       ;
 
 
-blockBody: '{' statement 
+blockBody: '{' state 
              { 
                // destroy($1); 
                $$ = new astree(BLOCK,$1->lloc,"{"); 
                $$ = $$->adopt($2);
              }
-         |  blockBody statement
+         |  blockBody state
             {
                $$ = $1->symChange($1,BLOCK);
                $1 = $1->adopt($2);
@@ -241,18 +280,24 @@ blockBody: '{' statement
             }
          ;
 
-statement: expr ';'
-            {
-               destroy($2);
-               $$=$1;
-            }
-         ;
 
-state:   while
+state:   vardecl
+         {
+            $$ = $1;
+         }
+         |block
+         {
+            $$ = $1;
+         }
+         |while
          {
             $$ = $1;
          }
          | ifelse
+         {
+            $$ = $1;
+         }
+         | return 
          {
             $$ = $1;
          }
@@ -276,6 +321,10 @@ state:   while
 express: express binop express
          {
             $$ = $2->adopt ($1, $3); 
+         }
+         |unop 
+         {
+            $$ = $1;
          }
          | alloc
          {
@@ -372,6 +421,11 @@ var     : TOK_IDENT
                   $$ = new astree(TOK_INDEX,$2->lloc,"[");
                   $$ = $$->adopt($1,$3);
                }
+         | express TOK_ARROW TOK_IDENT
+               {
+                  //get clarification for if we need to swap $1 & $3
+                  $$ = $2->adopt($1,$3);
+               }
          ;
 
 type    : type_id                { $$ = $1; }
@@ -386,27 +440,18 @@ type_id : TOK_INT                { $$ = $1; }
         | TOK_STRING             { $$ = $1; }
         | TOK_CHAR               { $$ = $1; }
         | TOK_VOID               { $$ = $1; }
+        | TOK_PTR TOK_LT TOK_STRUCT TOK_IDENT TOK_GT
+        {
+           destroy($2,$5);
+           destroy($3);
+           $$ = $1->adopt($4);
+        }
         ;
 
 constant: TOK_INTCON                { $$ = $1; }
         | TOK_STRINGCON              { $$ = $1; }
         | TOK_CHARCON                { $$ = $1; }
         | TOK_NULLPTR                { $$ = $1; }
-        ;
-
-
-expr    : expr '=' expr         { $$ = $2->adopt ($1, $3); }
-        | expr '+' expr         { $$ = $2->adopt ($1, $3); }
-        | expr '-' expr         { $$ = $2->adopt ($1, $3); }
-        | expr '*' expr         { $$ = $2->adopt ($1, $3); }
-        | expr '/' expr         { $$ = $2->adopt ($1, $3); }
-        | expr '^' expr         { $$ = $2->adopt ($1, $3); }
-        | '+' expr %prec POS    { $$ = $1->adopt_sym ($2, POS); }
-        | '-' expr %prec NEG    { $$ = $1->adopt_sym ($2, NEG); }
-        | '(' expr ')'          { destroy ($1, $3); $$ = $2; }
-        | TOK_IDENT             { $$ = $1; }
-        | constant              { $$ = $1; }
-        | NUMBER                { $$ = $1; }
         ;
 
 %%
