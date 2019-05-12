@@ -63,9 +63,9 @@ struct : TOK_STRUCT TOK_IDENT '{' '}' ';'
          destroy($3,$5);
          $$ = $1->adopt($2);
        }
-       | TOK_STRUCT TOK_IDENT block ';'
+       | TOK_STRUCT TOK_IDENT block
        {
-         destroy($4);
+         // destroy($4);
          $$ = $1->adopt($2,$3);
        }
 
@@ -170,32 +170,33 @@ while: TOK_WHILE '(' express ')' select
        }
        ;
 
-select: block
+select: state
         {
            $$ = $1;
         }
-        | express ';'
-        {
-           destroy($2);
-           $$ = $1;
-        }
+      //   | state
+      //   {
+      //      destroy($2);
+      //      $$ = $1;
+      //   }
+      ;
 
 ifelse: TOK_IF '(' express ')' select
        {
          destroy($2,$4);
          $$ = $1-> adopt($3,$5);
        }
-       | TOK_ELSE TOK_IF '(' express ')' select
-       {
-          destroy($1,$3);
-          destroy($5);
-          $$ = $2->adopt($4,$6);
-         //  $$ = $->adopt($6);   
-       }
+      //  | TOK_ELSE TOK_IF '(' express ')' select
+      //  {
+      //     destroy($1,$3);
+      //     destroy($5);
+      //     $$ = $2->adopt($4,$6);
+      //    //  $$ = $->adopt($6);   
+      //  }
        |TOK_ELSE select
        {
           destroy($1);
-          $$ = $2;
+          $$ = $$->adopt($2);
          //  $$ = $->adopt($6);   
        }
        
@@ -213,13 +214,13 @@ return : TOK_RETURN ';'
         }
         ;
 
-alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' ')'
+alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' ')'
        {
          destroy($2,$4);
          destroy($5,$6);
          $$ = $1->adopt($3);
        }
-       | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express ')'
+       | TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' express ')'
        {
          destroy($2,$4);
          destroy($5,$7);
@@ -267,6 +268,9 @@ block: blockBody '}'
                   $$ = $1;
                }
       | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
+      | ';' {
+         $$ = new astree(BLOCK,$1->lloc,"{");
+      }
       ;
 
 

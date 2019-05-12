@@ -23,25 +23,25 @@ void strcat (string dest, string src) {
 }
 
 int main (int argc, array<string> argv) {
-   int length = 0;
-   int argi = 1;
-   while (argi < argc) {
-      length = length + strlen (argv[argi]) + 2;
-      argi = argi + 1;
-   }
-   putstr ("concat length = ");
-   putint (length);
-   putchr ('\n');
-   string concat = alloc<string> (length);
-   argi = 1;
-   putchr ('[');
-   while (argi < argc) {
-      strcat (concat, "(");
-      strcat (concat, argv[argi]);
-      strcat (concat, ")");
-      argi = argi + 1;
-   }
-   putstr (concat);
-   putstr ("]\n");
-   return SUCCESS;
+int length = 0;
+int argi = 1;
+while (argi < argc) {
+length = length + strlen (argv[argi]) + 2;
+argi = argi + 1;
+}
+putstr ("concat length = ");
+putint (length);
+putchr ('\n');
+string concat = alloc<string> ();
+//   argi = 1;
+//   putchr ('[');
+//   while (argi < argc) {
+//      strcat (concat, "(");
+//      strcat (concat, argv[argi]);
+//      strcat (concat, ")");
+//      argi = argi + 1;
+//   }
+//   putstr (concat);
+//   putstr ("]\n");
+//   return SUCCESS;
 }

@@ -14,13 +14,21 @@ Terminals unused in grammar
    '^'
 
 
-State 26 conflicts: 22 shift/reduce
-State 51 conflicts: 21 shift/reduce
+Rules useless in parser due to conflicts
+
+   26 ifelse: TOK_ELSE TOK_IF '(' express ')' select
+
+
+State 27 conflicts: 23 shift/reduce
+State 52 conflicts: 22 shift/reduce
 State 69 conflicts: 1 shift/reduce
-State 85 conflicts: 2 shift/reduce
+State 73 conflicts: 10 reduce/reduce
+State 76 conflicts: 10 reduce/reduce
+State 84 conflicts: 2 shift/reduce
+State 90 conflicts: 2 shift/reduce
 State 91 conflicts: 2 shift/reduce
-State 92 conflicts: 2 shift/reduce
-State 131 conflicts: 14 shift/reduce
+State 129 conflicts: 14 shift/reduce
+State 143 conflicts: 23 reduce/reduce
 
 
 Grammar
@@ -37,7 +45,7 @@ Grammar
     7        | %empty
 
     8 struct: TOK_STRUCT TOK_IDENT '{' '}' ';'
-    9       | TOK_STRUCT TOK_IDENT block ';'
+    9       | TOK_STRUCT TOK_IDENT block
 
    10 function: identif '(' ')' ';'
    11         | identif param ')' ';'
@@ -60,25 +68,25 @@ Grammar
 
    23 while: TOK_WHILE '(' express ')' select
 
-   24 select: block
-   25       | express ';'
+   24 select: state
 
-   26 ifelse: TOK_IF '(' express ')' select
-   27       | TOK_ELSE TOK_IF '(' express ')' select
-   28       | TOK_ELSE select
+   25 ifelse: TOK_IF '(' express ')' select
+   26       | TOK_ELSE TOK_IF '(' express ')' select
+   27       | TOK_ELSE select
 
-   29 return: TOK_RETURN ';'
-   30       | TOK_RETURN express ';'
+   28 return: TOK_RETURN ';'
+   29       | TOK_RETURN express ';'
 
-   31 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' ')'
-   32      | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express ')'
-   33      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express ')'
-   34      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' ')'
-   35      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')'
-   36      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express ')'
+   30 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' ')'
+   31      | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express ')'
+   32      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express ')'
+   33      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' ')'
+   34      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')'
+   35      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express ')'
 
-   37 block: blockBody '}'
-   38      | blockBody '}' ';'
+   36 block: blockBody '}'
+   37      | blockBody '}' ';'
+   38      | ';'
 
    39 blockBody: '{' state
    40          | blockBody state
@@ -139,20 +147,20 @@ Terminals, with rules where they appear
 
 $end (0) 0
 '%' (37) 66
-'(' (40) 10 12 17 19 21 23 26 27 31 32 33 34 35 36 52
-')' (41) 10 11 12 13 21 22 23 26 27 31 32 33 34 35 36 52
+'(' (40) 10 12 17 19 21 23 25 26 30 31 32 33 34 35 52
+')' (41) 10 11 12 13 21 22 23 25 26 30 31 32 33 34 35 52
 '*' (42) 64
 '+' (43) 62 67
 ',' (44) 18 20
 '-' (45) 63 68
 '/' (47) 65
-';' (59) 5 6 8 9 10 11 14 15 25 29 30 38 47
+';' (59) 5 6 8 10 11 14 15 28 29 37 38 47
 '=' (61) 15 55
 '[' (91) 71
 ']' (93) 71
 '^' (94)
 '{' (123) 8 39 41
-'}' (125) 8 37 38
+'}' (125) 8 36 37
 error (256) 5
 ROOT (258)
 IDENT (259)
@@ -170,26 +178,26 @@ TOK_GE (270) 59
 TOK_LE (271) 61
 TOK_EQ (272) 56
 TOK_NE (273) 57
-TOK_GT (274) 31 32 33 34 35 36 58 74 79
-TOK_LT (275) 31 32 33 34 35 36 60 74 79
-TOK_IF (276) 26 27
-TOK_ELSE (277) 27 28
-TOK_STRUCT (278) 8 9 33 34 79
-TOK_ARRAY (279) 35 36 74
+TOK_GT (274) 30 31 32 33 34 35 58 74 79
+TOK_LT (275) 30 31 32 33 34 35 60 74 79
+TOK_IF (276) 25 26
+TOK_ELSE (277) 26 27
+TOK_STRUCT (278) 8 9 32 33 79
+TOK_ARRAY (279) 34 35 74
 TOK_NOT (280) 69
-TOK_ALLOC (281) 31 32 33 34 35 36
+TOK_ALLOC (281) 30 31 32 33 34 35
 TOK_PTR (282) 79
 TOK_ARROW (283) 72
 TOK_WHILE (284) 23
 TOK_VOID (285) 78
-TOK_RETURN (286) 29 30
+TOK_RETURN (286) 28 29
 TOK_INT (287) 75
 TOK_CHAR (288) 77
 TOK_STRING (289) 76
 TOK_CHARCON (290) 82
-TOK_STRINGCON (291) 31 32 81
+TOK_STRINGCON (291) 30 31 81
 TOK_INTCON (292) 80
-TOK_IDENT (293) 8 9 14 15 16 19 21 33 34 70 72 79
+TOK_IDENT (293) 8 9 14 15 16 19 21 32 33 70 72 79
 POS (294)
 NEG (295)
 
@@ -219,22 +227,22 @@ call (65)
 while (66)
     on left: 23, on right: 44
 select (67)
-    on left: 24 25, on right: 23 26 27 28
+    on left: 24, on right: 23 25 26 27
 ifelse (68)
-    on left: 26 27 28, on right: 45
+    on left: 25 26 27, on right: 45
 return (69)
-    on left: 29 30, on right: 46
+    on left: 28 29, on right: 46
 alloc (70)
-    on left: 31 32 33 34 35 36, on right: 50
+    on left: 30 31 32 33 34 35, on right: 50
 block (71)
-    on left: 37 38, on right: 9 12 13 24 43
+    on left: 36 37 38, on right: 9 12 13 43
 blockBody (72)
-    on left: 39 40 41, on right: 37 38 40
+    on left: 39 40 41, on right: 36 37 40
 state (73)
-    on left: 42 43 44 45 46 47, on right: 39 40
+    on left: 42 43 44 45 46 47, on right: 24 39 40
 express (74)
-    on left: 48 49 50 51 52 53 54, on right: 15 19 20 23 25 26 27 30
-    32 33 36 47 48 52 67 68 69 71 72
+    on left: 48 49 50 51 52 53 54, on right: 15 19 20 23 25 26 29 31
+    32 35 47 48 52 67 68 69 71 72
 binop (75)
     on left: 55 56 57 58 59 60 61 62 63 64 65 66, on right: 48
 unop (76)
@@ -242,7 +250,7 @@ unop (76)
 var (77)
     on left: 70 71 72, on right: 53
 type (78)
-    on left: 73 74, on right: 14 15 16 35 36
+    on left: 73 74, on right: 14 15 16 34 35
 type_id (79)
     on left: 75 76 77 78 79, on right: 73 74
 constant (80)
@@ -312,7 +320,7 @@ State 4
 State 5
 
     8 struct: TOK_STRUCT . TOK_IDENT '{' '}' ';'
-    9       | TOK_STRUCT . TOK_IDENT block ';'
+    9       | TOK_STRUCT . TOK_IDENT block
 
     TOK_IDENT  shift, and go to state 20
 
@@ -425,12 +433,13 @@ State 19
 State 20
 
     8 struct: TOK_STRUCT TOK_IDENT . '{' '}' ';'
-    9       | TOK_STRUCT TOK_IDENT . block ';'
+    9       | TOK_STRUCT TOK_IDENT . block
 
-    '{'  shift, and go to state 26
+    ';'  shift, and go to state 26
+    '{'  shift, and go to state 27
 
-    block      go to state 27
-    blockBody  go to state 28
+    block      go to state 28
+    blockBody  go to state 29
 
 
 State 21
@@ -443,14 +452,14 @@ State 21
     TOK_CHAR    shift, and go to state 10
     TOK_STRING  shift, and go to state 11
 
-    type_id  go to state 29
+    type_id  go to state 30
 
 
 State 22
 
    79 type_id: TOK_PTR TOK_LT . TOK_STRUCT TOK_IDENT TOK_GT
 
-    TOK_STRUCT  shift, and go to state 30
+    TOK_STRUCT  shift, and go to state 31
 
 
 State 23
@@ -465,10 +474,10 @@ State 23
     TOK_INT     shift, and go to state 9
     TOK_CHAR    shift, and go to state 10
     TOK_STRING  shift, and go to state 11
-    ')'         shift, and go to state 31
+    ')'         shift, and go to state 32
 
-    identif  go to state 32
-    type     go to state 33
+    identif  go to state 33
+    type     go to state 34
     type_id  go to state 18
 
 
@@ -478,8 +487,8 @@ State 24
    13         | identif param . ')' block
    18 param: param . ',' identif
 
-    ')'  shift, and go to state 34
-    ','  shift, and go to state 35
+    ')'  shift, and go to state 35
+    ','  shift, and go to state 36
 
 
 State 25
@@ -488,40 +497,48 @@ State 25
    15        | type TOK_IDENT . '=' express ';'
    16 identif: type TOK_IDENT .
 
-    '='  shift, and go to state 36
-    ';'  shift, and go to state 37
+    '='  shift, and go to state 37
+    ';'  shift, and go to state 38
 
     $default  reduce using rule 16 (identif)
 
 
 State 26
 
+   38 block: ';' .
+
+    $default  reduce using rule 38 (block)
+
+
+State 27
+
     8 struct: TOK_STRUCT TOK_IDENT '{' . '}' ';'
    39 blockBody: '{' . state
    41          | '{' .
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_IF         shift, and go to state 39
-    TOK_ELSE       shift, and go to state 40
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_IF         shift, and go to state 40
+    TOK_ELSE       shift, and go to state 41
     TOK_ARRAY      shift, and go to state 6
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
     TOK_PTR        shift, and go to state 7
-    TOK_WHILE      shift, and go to state 43
+    TOK_WHILE      shift, and go to state 44
     TOK_VOID       shift, and go to state 8
-    TOK_RETURN     shift, and go to state 44
+    TOK_RETURN     shift, and go to state 45
     TOK_INT        shift, and go to state 9
     TOK_CHAR       shift, and go to state 10
     TOK_STRING     shift, and go to state 11
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '{'            shift, and go to state 51
-    '}'            shift, and go to state 52
-    '('            shift, and go to state 53
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    ';'            shift, and go to state 26
+    '{'            shift, and go to state 52
+    '}'            shift, and go to state 53
+    '('            shift, and go to state 54
 
     TOK_NULLPTR    [reduce using rule 41 (blockBody)]
     TOK_IF         [reduce using rule 41 (blockBody)]
@@ -542,135 +559,137 @@ State 26
     TOK_IDENT      [reduce using rule 41 (blockBody)]
     '+'            [reduce using rule 41 (blockBody)]
     '-'            [reduce using rule 41 (blockBody)]
+    ';'            [reduce using rule 41 (blockBody)]
     '{'            [reduce using rule 41 (blockBody)]
     '}'            [reduce using rule 41 (blockBody)]
     '('            [reduce using rule 41 (blockBody)]
 
-    vardecl    go to state 54
-    callParam  go to state 55
-    call       go to state 56
-    while      go to state 57
-    ifelse     go to state 58
-    return     go to state 59
-    alloc      go to state 60
-    block      go to state 61
-    blockBody  go to state 28
-    state      go to state 62
-    express    go to state 63
-    unop       go to state 64
-    var        go to state 65
-    type       go to state 66
+    vardecl    go to state 55
+    callParam  go to state 56
+    call       go to state 57
+    while      go to state 58
+    ifelse     go to state 59
+    return     go to state 60
+    alloc      go to state 61
+    block      go to state 62
+    blockBody  go to state 29
+    state      go to state 63
+    express    go to state 64
+    unop       go to state 65
+    var        go to state 66
+    type       go to state 67
     type_id    go to state 18
-    constant   go to state 67
-
-
-State 27
-
-    9 struct: TOK_STRUCT TOK_IDENT block . ';'
-
-    ';'  shift, and go to state 68
+    constant   go to state 68
 
 
 State 28
 
-   37 block: blockBody . '}'
-   38      | blockBody . '}' ';'
-   40 blockBody: blockBody . state
+    9 struct: TOK_STRUCT TOK_IDENT block .
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_IF         shift, and go to state 39
-    TOK_ELSE       shift, and go to state 40
-    TOK_ARRAY      shift, and go to state 6
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_PTR        shift, and go to state 7
-    TOK_WHILE      shift, and go to state 43
-    TOK_VOID       shift, and go to state 8
-    TOK_RETURN     shift, and go to state 44
-    TOK_INT        shift, and go to state 9
-    TOK_CHAR       shift, and go to state 10
-    TOK_STRING     shift, and go to state 11
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '{'            shift, and go to state 51
-    '}'            shift, and go to state 69
-    '('            shift, and go to state 53
-
-    vardecl    go to state 54
-    callParam  go to state 55
-    call       go to state 56
-    while      go to state 57
-    ifelse     go to state 58
-    return     go to state 59
-    alloc      go to state 60
-    block      go to state 61
-    blockBody  go to state 28
-    state      go to state 70
-    express    go to state 63
-    unop       go to state 64
-    var        go to state 65
-    type       go to state 66
-    type_id    go to state 18
-    constant   go to state 67
+    $default  reduce using rule 9 (struct)
 
 
 State 29
+
+   36 block: blockBody . '}'
+   37      | blockBody . '}' ';'
+   40 blockBody: blockBody . state
+
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_IF         shift, and go to state 40
+    TOK_ELSE       shift, and go to state 41
+    TOK_ARRAY      shift, and go to state 6
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_PTR        shift, and go to state 7
+    TOK_WHILE      shift, and go to state 44
+    TOK_VOID       shift, and go to state 8
+    TOK_RETURN     shift, and go to state 45
+    TOK_INT        shift, and go to state 9
+    TOK_CHAR       shift, and go to state 10
+    TOK_STRING     shift, and go to state 11
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    ';'            shift, and go to state 26
+    '{'            shift, and go to state 52
+    '}'            shift, and go to state 69
+    '('            shift, and go to state 54
+
+    vardecl    go to state 55
+    callParam  go to state 56
+    call       go to state 57
+    while      go to state 58
+    ifelse     go to state 59
+    return     go to state 60
+    alloc      go to state 61
+    block      go to state 62
+    blockBody  go to state 29
+    state      go to state 70
+    express    go to state 64
+    unop       go to state 65
+    var        go to state 66
+    type       go to state 67
+    type_id    go to state 18
+    constant   go to state 68
+
+
+State 30
 
    74 type: TOK_ARRAY TOK_LT type_id . TOK_GT
 
     TOK_GT  shift, and go to state 71
 
 
-State 30
+State 31
 
    79 type_id: TOK_PTR TOK_LT TOK_STRUCT . TOK_IDENT TOK_GT
 
     TOK_IDENT  shift, and go to state 72
 
 
-State 31
+State 32
 
    10 function: identif '(' ')' . ';'
    12         | identif '(' ')' . block
 
     ';'  shift, and go to state 73
-    '{'  shift, and go to state 51
+    '{'  shift, and go to state 52
 
     block      go to state 74
-    blockBody  go to state 28
+    blockBody  go to state 29
 
 
-State 32
+State 33
 
    17 param: '(' identif .
 
     $default  reduce using rule 17 (param)
 
 
-State 33
+State 34
 
    16 identif: type . TOK_IDENT
 
     TOK_IDENT  shift, and go to state 75
 
 
-State 34
+State 35
 
    11 function: identif param ')' . ';'
    13         | identif param ')' . block
 
     ';'  shift, and go to state 76
-    '{'  shift, and go to state 51
+    '{'  shift, and go to state 52
 
     block      go to state 77
-    blockBody  go to state 28
+    blockBody  go to state 29
 
 
-State 35
+State 36
 
    18 param: param ',' . identif
 
@@ -682,260 +701,278 @@ State 35
     TOK_STRING  shift, and go to state 11
 
     identif  go to state 78
-    type     go to state 33
+    type     go to state 34
     type_id  go to state 18
 
 
-State 36
+State 37
 
    15 vardecl: type TOK_IDENT '=' . express ';'
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
 
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
     express    go to state 79
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
-State 37
+State 38
 
    14 vardecl: type TOK_IDENT ';' .
 
     $default  reduce using rule 14 (vardecl)
 
 
-State 38
+State 39
 
    83 constant: TOK_NULLPTR .
 
     $default  reduce using rule 83 (constant)
 
 
-State 39
+State 40
 
-   26 ifelse: TOK_IF . '(' express ')' select
+   25 ifelse: TOK_IF . '(' express ')' select
 
     '('  shift, and go to state 80
 
 
-State 40
-
-   27 ifelse: TOK_ELSE . TOK_IF '(' express ')' select
-   28       | TOK_ELSE . select
-
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_IF         shift, and go to state 81
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '{'            shift, and go to state 51
-    '('            shift, and go to state 53
-
-    callParam  go to state 55
-    call       go to state 56
-    select     go to state 82
-    alloc      go to state 60
-    block      go to state 83
-    blockBody  go to state 28
-    express    go to state 84
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
-
-
 State 41
 
-   69 unop: TOK_NOT . express
+   26 ifelse: TOK_ELSE . TOK_IF '(' express ')' select
+   27       | TOK_ELSE . select
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_IF         shift, and go to state 81
+    TOK_ELSE       shift, and go to state 41
+    TOK_ARRAY      shift, and go to state 6
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_PTR        shift, and go to state 7
+    TOK_WHILE      shift, and go to state 44
+    TOK_VOID       shift, and go to state 8
+    TOK_RETURN     shift, and go to state 45
+    TOK_INT        shift, and go to state 9
+    TOK_CHAR       shift, and go to state 10
+    TOK_STRING     shift, and go to state 11
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    ';'            shift, and go to state 26
+    '{'            shift, and go to state 52
+    '('            shift, and go to state 54
 
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 85
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    vardecl    go to state 55
+    callParam  go to state 56
+    call       go to state 57
+    while      go to state 58
+    select     go to state 82
+    ifelse     go to state 59
+    return     go to state 60
+    alloc      go to state 61
+    block      go to state 62
+    blockBody  go to state 29
+    state      go to state 83
+    express    go to state 64
+    unop       go to state 65
+    var        go to state 66
+    type       go to state 67
+    type_id    go to state 18
+    constant   go to state 68
 
 
 State 42
 
-   31 alloc: TOK_ALLOC . TOK_LT TOK_STRINGCON TOK_GT '(' ')'
-   32      | TOK_ALLOC . TOK_LT TOK_STRINGCON TOK_GT '(' express ')'
-   33      | TOK_ALLOC . TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express ')'
-   34      | TOK_ALLOC . TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' ')'
-   35      | TOK_ALLOC . TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')'
-   36      | TOK_ALLOC . TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express ')'
+   69 unop: TOK_NOT . express
 
-    TOK_LT  shift, and go to state 86
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 84
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
 State 43
 
-   23 while: TOK_WHILE . '(' express ')' select
+   30 alloc: TOK_ALLOC . TOK_LT TOK_STRINGCON TOK_GT '(' ')'
+   31      | TOK_ALLOC . TOK_LT TOK_STRINGCON TOK_GT '(' express ')'
+   32      | TOK_ALLOC . TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express ')'
+   33      | TOK_ALLOC . TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' ')'
+   34      | TOK_ALLOC . TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')'
+   35      | TOK_ALLOC . TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express ')'
 
-    '('  shift, and go to state 87
+    TOK_LT  shift, and go to state 85
 
 
 State 44
 
-   29 return: TOK_RETURN . ';'
-   30       | TOK_RETURN . express ';'
+   23 while: TOK_WHILE . '(' express ')' select
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    ';'            shift, and go to state 88
-    '('            shift, and go to state 53
-
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 89
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    '('  shift, and go to state 86
 
 
 State 45
+
+   28 return: TOK_RETURN . ';'
+   29       | TOK_RETURN . express ';'
+
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    ';'            shift, and go to state 87
+    '('            shift, and go to state 54
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 88
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
+
+
+State 46
 
    82 constant: TOK_CHARCON .
 
     $default  reduce using rule 82 (constant)
 
 
-State 46
+State 47
 
    81 constant: TOK_STRINGCON .
 
     $default  reduce using rule 81 (constant)
 
 
-State 47
+State 48
 
    80 constant: TOK_INTCON .
 
     $default  reduce using rule 80 (constant)
 
 
-State 48
+State 49
 
    19 callParam: TOK_IDENT . '(' express
    21 call: TOK_IDENT . '(' ')'
    70 var: TOK_IDENT .
 
-    '('  shift, and go to state 90
+    '('  shift, and go to state 89
 
     $default  reduce using rule 70 (var)
 
 
-State 49
+State 50
 
    67 unop: '+' . express
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
 
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 91
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
-
-
-State 50
-
-   68 unop: '-' . express
-
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
-
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 92
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 90
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
 State 51
 
+   68 unop: '-' . express
+
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 91
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
+
+
+State 52
+
    39 blockBody: '{' . state
    41          | '{' .
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_IF         shift, and go to state 39
-    TOK_ELSE       shift, and go to state 40
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_IF         shift, and go to state 40
+    TOK_ELSE       shift, and go to state 41
     TOK_ARRAY      shift, and go to state 6
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
     TOK_PTR        shift, and go to state 7
-    TOK_WHILE      shift, and go to state 43
+    TOK_WHILE      shift, and go to state 44
     TOK_VOID       shift, and go to state 8
-    TOK_RETURN     shift, and go to state 44
+    TOK_RETURN     shift, and go to state 45
     TOK_INT        shift, and go to state 9
     TOK_CHAR       shift, and go to state 10
     TOK_STRING     shift, and go to state 11
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '{'            shift, and go to state 51
-    '('            shift, and go to state 53
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    ';'            shift, and go to state 26
+    '{'            shift, and go to state 52
+    '('            shift, and go to state 54
 
     TOK_NULLPTR    [reduce using rule 41 (blockBody)]
     TOK_IF         [reduce using rule 41 (blockBody)]
@@ -956,195 +993,189 @@ State 51
     TOK_IDENT      [reduce using rule 41 (blockBody)]
     '+'            [reduce using rule 41 (blockBody)]
     '-'            [reduce using rule 41 (blockBody)]
+    ';'            [reduce using rule 41 (blockBody)]
     '{'            [reduce using rule 41 (blockBody)]
     '('            [reduce using rule 41 (blockBody)]
     $default       reduce using rule 41 (blockBody)
 
-    vardecl    go to state 54
-    callParam  go to state 55
-    call       go to state 56
-    while      go to state 57
-    ifelse     go to state 58
-    return     go to state 59
-    alloc      go to state 60
-    block      go to state 61
-    blockBody  go to state 28
-    state      go to state 62
-    express    go to state 63
-    unop       go to state 64
-    var        go to state 65
-    type       go to state 66
+    vardecl    go to state 55
+    callParam  go to state 56
+    call       go to state 57
+    while      go to state 58
+    ifelse     go to state 59
+    return     go to state 60
+    alloc      go to state 61
+    block      go to state 62
+    blockBody  go to state 29
+    state      go to state 63
+    express    go to state 64
+    unop       go to state 65
+    var        go to state 66
+    type       go to state 67
     type_id    go to state 18
-    constant   go to state 67
-
-
-State 52
-
-    8 struct: TOK_STRUCT TOK_IDENT '{' '}' . ';'
-
-    ';'  shift, and go to state 93
+    constant   go to state 68
 
 
 State 53
 
-   52 express: '(' . express ')'
+    8 struct: TOK_STRUCT TOK_IDENT '{' '}' . ';'
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
-
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 94
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    ';'  shift, and go to state 92
 
 
 State 54
+
+   52 express: '(' . express ')'
+
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 93
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
+
+
+State 55
 
    42 state: vardecl .
 
     $default  reduce using rule 42 (state)
 
 
-State 55
+State 56
 
    20 callParam: callParam . ',' express
    22 call: callParam . ')'
 
-    ')'  shift, and go to state 95
-    ','  shift, and go to state 96
+    ')'  shift, and go to state 94
+    ','  shift, and go to state 95
 
 
-State 56
+State 57
 
    51 express: call .
 
     $default  reduce using rule 51 (express)
 
 
-State 57
+State 58
 
    44 state: while .
 
     $default  reduce using rule 44 (state)
 
 
-State 58
+State 59
 
    45 state: ifelse .
 
     $default  reduce using rule 45 (state)
 
 
-State 59
+State 60
 
    46 state: return .
 
     $default  reduce using rule 46 (state)
 
 
-State 60
+State 61
 
    50 express: alloc .
 
     $default  reduce using rule 50 (express)
 
 
-State 61
+State 62
 
    43 state: block .
 
     $default  reduce using rule 43 (state)
 
 
-State 62
+State 63
 
    39 blockBody: '{' state .
 
     $default  reduce using rule 39 (blockBody)
 
 
-State 63
+State 64
 
    47 state: express . ';'
    48 express: express . binop express
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ';'        shift, and go to state 110
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ';'        shift, and go to state 109
+    '['        shift, and go to state 110
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 64
+State 65
 
    49 express: unop .
 
     $default  reduce using rule 49 (express)
 
 
-State 65
+State 66
 
    53 express: var .
 
     $default  reduce using rule 53 (express)
 
 
-State 66
+State 67
 
    14 vardecl: type . TOK_IDENT ';'
    15        | type . TOK_IDENT '=' express ';'
 
-    TOK_IDENT  shift, and go to state 113
+    TOK_IDENT  shift, and go to state 112
 
 
-State 67
+State 68
 
    54 express: constant .
 
     $default  reduce using rule 54 (express)
 
 
-State 68
-
-    9 struct: TOK_STRUCT TOK_IDENT block ';' .
-
-    $default  reduce using rule 9 (struct)
-
-
 State 69
 
-   37 block: blockBody '}' .
-   38      | blockBody '}' . ';'
+   36 block: blockBody '}' .
+   37      | blockBody '}' . ';'
 
-    ';'  shift, and go to state 114
+    ';'  shift, and go to state 113
 
-    ';'       [reduce using rule 37 (block)]
-    $default  reduce using rule 37 (block)
+    ';'       [reduce using rule 36 (block)]
+    $default  reduce using rule 36 (block)
 
 
 State 70
@@ -1165,14 +1196,35 @@ State 72
 
    79 type_id: TOK_PTR TOK_LT TOK_STRUCT TOK_IDENT . TOK_GT
 
-    TOK_GT  shift, and go to state 115
+    TOK_GT  shift, and go to state 114
 
 
 State 73
 
    10 function: identif '(' ')' ';' .
+   38 block: ';' .
 
-    $default  reduce using rule 10 (function)
+    $end        reduce using rule 10 (function)
+    $end        [reduce using rule 38 (block)]
+    error       reduce using rule 10 (function)
+    error       [reduce using rule 38 (block)]
+    TOK_STRUCT  reduce using rule 10 (function)
+    TOK_STRUCT  [reduce using rule 38 (block)]
+    TOK_ARRAY   reduce using rule 10 (function)
+    TOK_ARRAY   [reduce using rule 38 (block)]
+    TOK_PTR     reduce using rule 10 (function)
+    TOK_PTR     [reduce using rule 38 (block)]
+    TOK_VOID    reduce using rule 10 (function)
+    TOK_VOID    [reduce using rule 38 (block)]
+    TOK_INT     reduce using rule 10 (function)
+    TOK_INT     [reduce using rule 38 (block)]
+    TOK_CHAR    reduce using rule 10 (function)
+    TOK_CHAR    [reduce using rule 38 (block)]
+    TOK_STRING  reduce using rule 10 (function)
+    TOK_STRING  [reduce using rule 38 (block)]
+    ';'         reduce using rule 10 (function)
+    ';'         [reduce using rule 38 (block)]
+    $default    reduce using rule 10 (function)
 
 
 State 74
@@ -1192,8 +1244,29 @@ State 75
 State 76
 
    11 function: identif param ')' ';' .
+   38 block: ';' .
 
-    $default  reduce using rule 11 (function)
+    $end        reduce using rule 11 (function)
+    $end        [reduce using rule 38 (block)]
+    error       reduce using rule 11 (function)
+    error       [reduce using rule 38 (block)]
+    TOK_STRUCT  reduce using rule 11 (function)
+    TOK_STRUCT  [reduce using rule 38 (block)]
+    TOK_ARRAY   reduce using rule 11 (function)
+    TOK_ARRAY   [reduce using rule 38 (block)]
+    TOK_PTR     reduce using rule 11 (function)
+    TOK_PTR     [reduce using rule 38 (block)]
+    TOK_VOID    reduce using rule 11 (function)
+    TOK_VOID    [reduce using rule 38 (block)]
+    TOK_INT     reduce using rule 11 (function)
+    TOK_INT     [reduce using rule 38 (block)]
+    TOK_CHAR    reduce using rule 11 (function)
+    TOK_CHAR    [reduce using rule 38 (block)]
+    TOK_STRING  reduce using rule 11 (function)
+    TOK_STRING  [reduce using rule 38 (block)]
+    ';'         reduce using rule 11 (function)
+    ';'         [reduce using rule 38 (block)]
+    $default    reduce using rule 11 (function)
 
 
 State 77
@@ -1217,720 +1290,689 @@ State 79
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ';'        shift, and go to state 116
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ';'        shift, and go to state 115
+    '['        shift, and go to state 110
 
-    binop  go to state 112
+    binop  go to state 111
 
 
 State 80
 
-   26 ifelse: TOK_IF '(' . express ')' select
+   25 ifelse: TOK_IF '(' . express ')' select
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
 
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 117
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 116
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
 State 81
 
-   27 ifelse: TOK_ELSE TOK_IF . '(' express ')' select
+   25 ifelse: TOK_IF . '(' express ')' select
+   26       | TOK_ELSE TOK_IF . '(' express ')' select
 
-    '('  shift, and go to state 118
+    '('  shift, and go to state 117
 
 
 State 82
 
-   28 ifelse: TOK_ELSE select .
+   27 ifelse: TOK_ELSE select .
 
-    $default  reduce using rule 28 (ifelse)
+    $default  reduce using rule 27 (ifelse)
 
 
 State 83
 
-   24 select: block .
+   24 select: state .
 
     $default  reduce using rule 24 (select)
 
 
 State 84
 
-   25 select: express . ';'
-   48 express: express . binop express
-   71 var: express . '[' express ']'
-   72    | express . TOK_ARROW TOK_IDENT
-
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ';'        shift, and go to state 119
-    '['        shift, and go to state 111
-
-    binop  go to state 112
-
-
-State 85
-
    48 express: express . binop express
    69 unop: TOK_NOT express .
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_ARROW  shift, and go to state 103
-    '['        shift, and go to state 111
+    TOK_ARROW  shift, and go to state 102
+    '['        shift, and go to state 110
 
     TOK_ARROW  [reduce using rule 69 (unop)]
     '['        [reduce using rule 69 (unop)]
     $default   reduce using rule 69 (unop)
 
-    binop  go to state 112
+    binop  go to state 111
+
+
+State 85
+
+   30 alloc: TOK_ALLOC TOK_LT . TOK_STRINGCON TOK_GT '(' ')'
+   31      | TOK_ALLOC TOK_LT . TOK_STRINGCON TOK_GT '(' express ')'
+   32      | TOK_ALLOC TOK_LT . TOK_STRUCT TOK_IDENT TOK_GT '(' express ')'
+   33      | TOK_ALLOC TOK_LT . TOK_STRUCT TOK_IDENT TOK_GT '(' ')'
+   34      | TOK_ALLOC TOK_LT . TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')'
+   35      | TOK_ALLOC TOK_LT . TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express ')'
+
+    TOK_STRUCT     shift, and go to state 118
+    TOK_ARRAY      shift, and go to state 119
+    TOK_STRINGCON  shift, and go to state 120
 
 
 State 86
 
-   31 alloc: TOK_ALLOC TOK_LT . TOK_STRINGCON TOK_GT '(' ')'
-   32      | TOK_ALLOC TOK_LT . TOK_STRINGCON TOK_GT '(' express ')'
-   33      | TOK_ALLOC TOK_LT . TOK_STRUCT TOK_IDENT TOK_GT '(' express ')'
-   34      | TOK_ALLOC TOK_LT . TOK_STRUCT TOK_IDENT TOK_GT '(' ')'
-   35      | TOK_ALLOC TOK_LT . TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')'
-   36      | TOK_ALLOC TOK_LT . TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express ')'
+   23 while: TOK_WHILE '(' . express ')' select
 
-    TOK_STRUCT     shift, and go to state 120
-    TOK_ARRAY      shift, and go to state 121
-    TOK_STRINGCON  shift, and go to state 122
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 121
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
 State 87
 
-   23 while: TOK_WHILE '(' . express ')' select
+   28 return: TOK_RETURN ';' .
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
-
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 123
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    $default  reduce using rule 28 (return)
 
 
 State 88
 
-   29 return: TOK_RETURN ';' .
-
-    $default  reduce using rule 29 (return)
-
-
-State 89
-
-   30 return: TOK_RETURN express . ';'
+   29 return: TOK_RETURN express . ';'
    48 express: express . binop express
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ';'        shift, and go to state 124
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ';'        shift, and go to state 122
+    '['        shift, and go to state 110
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 90
+State 89
 
    19 callParam: TOK_IDENT '(' . express
    21 call: TOK_IDENT '(' . ')'
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
-    ')'            shift, and go to state 125
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+    ')'            shift, and go to state 123
 
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 126
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 124
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
-State 91
+State 90
 
    48 express: express . binop express
    67 unop: '+' express .
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_ARROW  shift, and go to state 103
-    '['        shift, and go to state 111
+    TOK_ARROW  shift, and go to state 102
+    '['        shift, and go to state 110
 
     TOK_ARROW  [reduce using rule 67 (unop)]
     '['        [reduce using rule 67 (unop)]
     $default   reduce using rule 67 (unop)
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 92
+State 91
 
    48 express: express . binop express
    68 unop: '-' express .
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_ARROW  shift, and go to state 103
-    '['        shift, and go to state 111
+    TOK_ARROW  shift, and go to state 102
+    '['        shift, and go to state 110
 
     TOK_ARROW  [reduce using rule 68 (unop)]
     '['        [reduce using rule 68 (unop)]
     $default   reduce using rule 68 (unop)
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 93
+State 92
 
     8 struct: TOK_STRUCT TOK_IDENT '{' '}' ';' .
 
     $default  reduce using rule 8 (struct)
 
 
-State 94
+State 93
 
    48 express: express . binop express
    52        | '(' express . ')'
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ')'        shift, and go to state 127
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ')'        shift, and go to state 125
+    '['        shift, and go to state 110
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 95
+State 94
 
    22 call: callParam ')' .
 
     $default  reduce using rule 22 (call)
 
 
-State 96
+State 95
 
    20 callParam: callParam ',' . express
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
 
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 128
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 126
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
-State 97
+State 96
 
    59 binop: TOK_GE .
 
     $default  reduce using rule 59 (binop)
 
 
-State 98
+State 97
 
    61 binop: TOK_LE .
 
     $default  reduce using rule 61 (binop)
 
 
-State 99
+State 98
 
    56 binop: TOK_EQ .
 
     $default  reduce using rule 56 (binop)
 
 
-State 100
+State 99
 
    57 binop: TOK_NE .
 
     $default  reduce using rule 57 (binop)
 
 
-State 101
+State 100
 
    58 binop: TOK_GT .
 
     $default  reduce using rule 58 (binop)
 
 
-State 102
+State 101
 
    60 binop: TOK_LT .
 
     $default  reduce using rule 60 (binop)
 
 
-State 103
+State 102
 
    72 var: express TOK_ARROW . TOK_IDENT
 
-    TOK_IDENT  shift, and go to state 129
+    TOK_IDENT  shift, and go to state 127
 
 
-State 104
+State 103
 
    55 binop: '=' .
 
     $default  reduce using rule 55 (binop)
 
 
-State 105
+State 104
 
    62 binop: '+' .
 
     $default  reduce using rule 62 (binop)
 
 
-State 106
+State 105
 
    63 binop: '-' .
 
     $default  reduce using rule 63 (binop)
 
 
-State 107
+State 106
 
    64 binop: '*' .
 
     $default  reduce using rule 64 (binop)
 
 
-State 108
+State 107
 
    65 binop: '/' .
 
     $default  reduce using rule 65 (binop)
 
 
-State 109
+State 108
 
    66 binop: '%' .
 
     $default  reduce using rule 66 (binop)
 
 
-State 110
+State 109
 
    47 state: express ';' .
 
     $default  reduce using rule 47 (state)
 
 
-State 111
+State 110
 
    71 var: express '[' . express ']'
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
 
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 130
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 128
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
+
+
+State 111
+
+   48 express: express binop . express
+
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 129
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
 State 112
 
-   48 express: express binop . express
+   14 vardecl: type TOK_IDENT . ';'
+   15        | type TOK_IDENT . '=' express ';'
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
-
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 131
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    '='  shift, and go to state 37
+    ';'  shift, and go to state 38
 
 
 State 113
 
-   14 vardecl: type TOK_IDENT . ';'
-   15        | type TOK_IDENT . '=' express ';'
+   37 block: blockBody '}' ';' .
 
-    '='  shift, and go to state 36
-    ';'  shift, and go to state 37
+    $default  reduce using rule 37 (block)
 
 
 State 114
-
-   38 block: blockBody '}' ';' .
-
-    $default  reduce using rule 38 (block)
-
-
-State 115
 
    79 type_id: TOK_PTR TOK_LT TOK_STRUCT TOK_IDENT TOK_GT .
 
     $default  reduce using rule 79 (type_id)
 
 
-State 116
+State 115
 
    15 vardecl: type TOK_IDENT '=' express ';' .
 
     $default  reduce using rule 15 (vardecl)
 
 
-State 117
+State 116
 
-   26 ifelse: TOK_IF '(' express . ')' select
+   25 ifelse: TOK_IF '(' express . ')' select
    48 express: express . binop express
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ')'        shift, and go to state 132
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ')'        shift, and go to state 130
+    '['        shift, and go to state 110
 
-    binop  go to state 112
+    binop  go to state 111
+
+
+State 117
+
+   25 ifelse: TOK_IF '(' . express ')' select
+   26       | TOK_ELSE TOK_IF '(' . express ')' select
+
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 131
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
 State 118
 
-   27 ifelse: TOK_ELSE TOK_IF '(' . express ')' select
+   32 alloc: TOK_ALLOC TOK_LT TOK_STRUCT . TOK_IDENT TOK_GT '(' express ')'
+   33      | TOK_ALLOC TOK_LT TOK_STRUCT . TOK_IDENT TOK_GT '(' ')'
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
-
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 133
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    TOK_IDENT  shift, and go to state 132
 
 
 State 119
 
-   25 select: express ';' .
+   34 alloc: TOK_ALLOC TOK_LT TOK_ARRAY . TOK_LT type TOK_GT TOK_GT '(' ')'
+   35      | TOK_ALLOC TOK_LT TOK_ARRAY . TOK_LT type TOK_GT TOK_GT '(' express ')'
 
-    $default  reduce using rule 25 (select)
+    TOK_LT  shift, and go to state 133
 
 
 State 120
 
-   33 alloc: TOK_ALLOC TOK_LT TOK_STRUCT . TOK_IDENT TOK_GT '(' express ')'
-   34      | TOK_ALLOC TOK_LT TOK_STRUCT . TOK_IDENT TOK_GT '(' ')'
+   30 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON . TOK_GT '(' ')'
+   31      | TOK_ALLOC TOK_LT TOK_STRINGCON . TOK_GT '(' express ')'
 
-    TOK_IDENT  shift, and go to state 134
+    TOK_GT  shift, and go to state 134
 
 
 State 121
-
-   35 alloc: TOK_ALLOC TOK_LT TOK_ARRAY . TOK_LT type TOK_GT TOK_GT '(' ')'
-   36      | TOK_ALLOC TOK_LT TOK_ARRAY . TOK_LT type TOK_GT TOK_GT '(' express ')'
-
-    TOK_LT  shift, and go to state 135
-
-
-State 122
-
-   31 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON . TOK_GT '(' ')'
-   32      | TOK_ALLOC TOK_LT TOK_STRINGCON . TOK_GT '(' express ')'
-
-    TOK_GT  shift, and go to state 136
-
-
-State 123
 
    23 while: TOK_WHILE '(' express . ')' select
    48 express: express . binop express
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ')'        shift, and go to state 137
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ')'        shift, and go to state 135
+    '['        shift, and go to state 110
 
-    binop  go to state 112
-
-
-State 124
-
-   30 return: TOK_RETURN express ';' .
-
-    $default  reduce using rule 30 (return)
+    binop  go to state 111
 
 
-State 125
+State 122
+
+   29 return: TOK_RETURN express ';' .
+
+    $default  reduce using rule 29 (return)
+
+
+State 123
 
    21 call: TOK_IDENT '(' ')' .
 
     $default  reduce using rule 21 (call)
 
 
-State 126
+State 124
 
    19 callParam: TOK_IDENT '(' express .
    48 express: express . binop express
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    '['        shift, and go to state 110
 
     $default  reduce using rule 19 (callParam)
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 127
+State 125
 
    52 express: '(' express ')' .
 
     $default  reduce using rule 52 (express)
 
 
-State 128
+State 126
 
    20 callParam: callParam ',' express .
    48 express: express . binop express
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    '['        shift, and go to state 110
 
     $default  reduce using rule 20 (callParam)
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 129
+State 127
 
    72 var: express TOK_ARROW TOK_IDENT .
 
     $default  reduce using rule 72 (var)
 
 
-State 130
+State 128
 
    48 express: express . binop express
    71 var: express . '[' express ']'
    71    | express '[' express . ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    '['        shift, and go to state 111
-    ']'        shift, and go to state 138
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    '['        shift, and go to state 110
+    ']'        shift, and go to state 136
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 131
+State 129
 
    48 express: express . binop express
    48        | express binop express .
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    '['        shift, and go to state 110
 
     TOK_GE     [reduce using rule 48 (express)]
     TOK_LE     [reduce using rule 48 (express)]
@@ -1948,75 +1990,94 @@ State 131
     '['        [reduce using rule 48 (express)]
     $default   reduce using rule 48 (express)
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 132
+State 130
 
-   26 ifelse: TOK_IF '(' express ')' . select
+   25 ifelse: TOK_IF '(' express ')' . select
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '{'            shift, and go to state 51
-    '('            shift, and go to state 53
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_IF         shift, and go to state 40
+    TOK_ELSE       shift, and go to state 41
+    TOK_ARRAY      shift, and go to state 6
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_PTR        shift, and go to state 7
+    TOK_WHILE      shift, and go to state 44
+    TOK_VOID       shift, and go to state 8
+    TOK_RETURN     shift, and go to state 45
+    TOK_INT        shift, and go to state 9
+    TOK_CHAR       shift, and go to state 10
+    TOK_STRING     shift, and go to state 11
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    ';'            shift, and go to state 26
+    '{'            shift, and go to state 52
+    '('            shift, and go to state 54
 
-    callParam  go to state 55
-    call       go to state 56
-    select     go to state 139
-    alloc      go to state 60
-    block      go to state 83
-    blockBody  go to state 28
-    express    go to state 84
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    vardecl    go to state 55
+    callParam  go to state 56
+    call       go to state 57
+    while      go to state 58
+    select     go to state 137
+    ifelse     go to state 59
+    return     go to state 60
+    alloc      go to state 61
+    block      go to state 62
+    blockBody  go to state 29
+    state      go to state 83
+    express    go to state 64
+    unop       go to state 65
+    var        go to state 66
+    type       go to state 67
+    type_id    go to state 18
+    constant   go to state 68
 
 
-State 133
+State 131
 
-   27 ifelse: TOK_ELSE TOK_IF '(' express . ')' select
+   25 ifelse: TOK_IF '(' express . ')' select
+   26       | TOK_ELSE TOK_IF '(' express . ')' select
    48 express: express . binop express
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ')'        shift, and go to state 140
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ')'        shift, and go to state 138
+    '['        shift, and go to state 110
 
-    binop  go to state 112
-
-
-State 134
-
-   33 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT . TOK_GT '(' express ')'
-   34      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT . TOK_GT '(' ')'
-
-    TOK_GT  shift, and go to state 141
+    binop  go to state 111
 
 
-State 135
+State 132
 
-   35 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT . type TOK_GT TOK_GT '(' ')'
-   36      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT . type TOK_GT TOK_GT '(' express ')'
+   32 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT . TOK_GT '(' express ')'
+   33      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT . TOK_GT '(' ')'
+
+    TOK_GT  shift, and go to state 139
+
+
+State 133
+
+   34 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT . type TOK_GT TOK_GT '(' ')'
+   35      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT . type TOK_GT TOK_GT '(' express ')'
 
     TOK_ARRAY   shift, and go to state 6
     TOK_PTR     shift, and go to state 7
@@ -2025,327 +2086,411 @@ State 135
     TOK_CHAR    shift, and go to state 10
     TOK_STRING  shift, and go to state 11
 
-    type     go to state 142
+    type     go to state 140
     type_id  go to state 18
 
 
-State 136
+State 134
 
-   31 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT . '(' ')'
-   32      | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT . '(' express ')'
+   30 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT . '(' ')'
+   31      | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT . '(' express ')'
 
-    '('  shift, and go to state 143
+    '('  shift, and go to state 141
 
 
-State 137
+State 135
 
    23 while: TOK_WHILE '(' express ')' . select
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '{'            shift, and go to state 51
-    '('            shift, and go to state 53
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_IF         shift, and go to state 40
+    TOK_ELSE       shift, and go to state 41
+    TOK_ARRAY      shift, and go to state 6
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_PTR        shift, and go to state 7
+    TOK_WHILE      shift, and go to state 44
+    TOK_VOID       shift, and go to state 8
+    TOK_RETURN     shift, and go to state 45
+    TOK_INT        shift, and go to state 9
+    TOK_CHAR       shift, and go to state 10
+    TOK_STRING     shift, and go to state 11
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    ';'            shift, and go to state 26
+    '{'            shift, and go to state 52
+    '('            shift, and go to state 54
 
-    callParam  go to state 55
-    call       go to state 56
-    select     go to state 144
-    alloc      go to state 60
-    block      go to state 83
-    blockBody  go to state 28
-    express    go to state 84
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    vardecl    go to state 55
+    callParam  go to state 56
+    call       go to state 57
+    while      go to state 58
+    select     go to state 142
+    ifelse     go to state 59
+    return     go to state 60
+    alloc      go to state 61
+    block      go to state 62
+    blockBody  go to state 29
+    state      go to state 83
+    express    go to state 64
+    unop       go to state 65
+    var        go to state 66
+    type       go to state 67
+    type_id    go to state 18
+    constant   go to state 68
 
 
-State 138
+State 136
 
    71 var: express '[' express ']' .
 
     $default  reduce using rule 71 (var)
 
 
+State 137
+
+   25 ifelse: TOK_IF '(' express ')' select .
+
+    $default  reduce using rule 25 (ifelse)
+
+
+State 138
+
+   25 ifelse: TOK_IF '(' express ')' . select
+   26       | TOK_ELSE TOK_IF '(' express ')' . select
+
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_IF         shift, and go to state 40
+    TOK_ELSE       shift, and go to state 41
+    TOK_ARRAY      shift, and go to state 6
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_PTR        shift, and go to state 7
+    TOK_WHILE      shift, and go to state 44
+    TOK_VOID       shift, and go to state 8
+    TOK_RETURN     shift, and go to state 45
+    TOK_INT        shift, and go to state 9
+    TOK_CHAR       shift, and go to state 10
+    TOK_STRING     shift, and go to state 11
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    ';'            shift, and go to state 26
+    '{'            shift, and go to state 52
+    '('            shift, and go to state 54
+
+    vardecl    go to state 55
+    callParam  go to state 56
+    call       go to state 57
+    while      go to state 58
+    select     go to state 143
+    ifelse     go to state 59
+    return     go to state 60
+    alloc      go to state 61
+    block      go to state 62
+    blockBody  go to state 29
+    state      go to state 83
+    express    go to state 64
+    unop       go to state 65
+    var        go to state 66
+    type       go to state 67
+    type_id    go to state 18
+    constant   go to state 68
+
+
 State 139
 
-   26 ifelse: TOK_IF '(' express ')' select .
+   32 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT . '(' express ')'
+   33      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT . '(' ')'
 
-    $default  reduce using rule 26 (ifelse)
+    '('  shift, and go to state 144
 
 
 State 140
 
-   27 ifelse: TOK_ELSE TOK_IF '(' express ')' . select
+   34 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type . TOK_GT TOK_GT '(' ')'
+   35      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type . TOK_GT TOK_GT '(' express ')'
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '{'            shift, and go to state 51
-    '('            shift, and go to state 53
-
-    callParam  go to state 55
-    call       go to state 56
-    select     go to state 145
-    alloc      go to state 60
-    block      go to state 83
-    blockBody  go to state 28
-    express    go to state 84
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    TOK_GT  shift, and go to state 145
 
 
 State 141
 
-   33 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT . '(' express ')'
-   34      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT . '(' ')'
+   30 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' . ')'
+   31      | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' . express ')'
 
-    '('  shift, and go to state 146
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+    ')'            shift, and go to state 146
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 147
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
 
 
 State 142
-
-   35 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type . TOK_GT TOK_GT '(' ')'
-   36      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type . TOK_GT TOK_GT '(' express ')'
-
-    TOK_GT  shift, and go to state 147
-
-
-State 143
-
-   31 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' . ')'
-   32      | TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' . express ')'
-
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
-    ')'            shift, and go to state 148
-
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 149
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
-
-
-State 144
 
    23 while: TOK_WHILE '(' express ')' select .
 
     $default  reduce using rule 23 (while)
 
 
+State 143
+
+   25 ifelse: TOK_IF '(' express ')' select .
+   26       | TOK_ELSE TOK_IF '(' express ')' select .
+
+    TOK_NULLPTR    reduce using rule 25 (ifelse)
+    TOK_NULLPTR    [reduce using rule 26 (ifelse)]
+    TOK_IF         reduce using rule 25 (ifelse)
+    TOK_IF         [reduce using rule 26 (ifelse)]
+    TOK_ELSE       reduce using rule 25 (ifelse)
+    TOK_ELSE       [reduce using rule 26 (ifelse)]
+    TOK_ARRAY      reduce using rule 25 (ifelse)
+    TOK_ARRAY      [reduce using rule 26 (ifelse)]
+    TOK_NOT        reduce using rule 25 (ifelse)
+    TOK_NOT        [reduce using rule 26 (ifelse)]
+    TOK_ALLOC      reduce using rule 25 (ifelse)
+    TOK_ALLOC      [reduce using rule 26 (ifelse)]
+    TOK_PTR        reduce using rule 25 (ifelse)
+    TOK_PTR        [reduce using rule 26 (ifelse)]
+    TOK_WHILE      reduce using rule 25 (ifelse)
+    TOK_WHILE      [reduce using rule 26 (ifelse)]
+    TOK_VOID       reduce using rule 25 (ifelse)
+    TOK_VOID       [reduce using rule 26 (ifelse)]
+    TOK_RETURN     reduce using rule 25 (ifelse)
+    TOK_RETURN     [reduce using rule 26 (ifelse)]
+    TOK_INT        reduce using rule 25 (ifelse)
+    TOK_INT        [reduce using rule 26 (ifelse)]
+    TOK_CHAR       reduce using rule 25 (ifelse)
+    TOK_CHAR       [reduce using rule 26 (ifelse)]
+    TOK_STRING     reduce using rule 25 (ifelse)
+    TOK_STRING     [reduce using rule 26 (ifelse)]
+    TOK_CHARCON    reduce using rule 25 (ifelse)
+    TOK_CHARCON    [reduce using rule 26 (ifelse)]
+    TOK_STRINGCON  reduce using rule 25 (ifelse)
+    TOK_STRINGCON  [reduce using rule 26 (ifelse)]
+    TOK_INTCON     reduce using rule 25 (ifelse)
+    TOK_INTCON     [reduce using rule 26 (ifelse)]
+    TOK_IDENT      reduce using rule 25 (ifelse)
+    TOK_IDENT      [reduce using rule 26 (ifelse)]
+    '+'            reduce using rule 25 (ifelse)
+    '+'            [reduce using rule 26 (ifelse)]
+    '-'            reduce using rule 25 (ifelse)
+    '-'            [reduce using rule 26 (ifelse)]
+    ';'            reduce using rule 25 (ifelse)
+    ';'            [reduce using rule 26 (ifelse)]
+    '{'            reduce using rule 25 (ifelse)
+    '{'            [reduce using rule 26 (ifelse)]
+    '}'            reduce using rule 25 (ifelse)
+    '}'            [reduce using rule 26 (ifelse)]
+    '('            reduce using rule 25 (ifelse)
+    '('            [reduce using rule 26 (ifelse)]
+    $default       reduce using rule 25 (ifelse)
+
+
+State 144
+
+   32 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' . express ')'
+   33      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' . ')'
+
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+    ')'            shift, and go to state 148
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 149
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
+
+
 State 145
 
-   27 ifelse: TOK_ELSE TOK_IF '(' express ')' select .
+   34 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT . TOK_GT '(' ')'
+   35      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT . TOK_GT '(' express ')'
 
-    $default  reduce using rule 27 (ifelse)
+    TOK_GT  shift, and go to state 150
 
 
 State 146
 
-   33 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' . express ')'
-   34      | TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' . ')'
+   30 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' ')' .
 
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
-    ')'            shift, and go to state 150
-
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 151
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
+    $default  reduce using rule 30 (alloc)
 
 
 State 147
 
-   35 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT . TOK_GT '(' ')'
-   36      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT . TOK_GT '(' express ')'
+   31 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express . ')'
+   48 express: express . binop express
+   71 var: express . '[' express ']'
+   72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GT  shift, and go to state 152
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ')'        shift, and go to state 151
+    '['        shift, and go to state 110
+
+    binop  go to state 111
 
 
 State 148
 
-   31 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' ')' .
-
-    $default  reduce using rule 31 (alloc)
-
-
-State 149
-
-   32 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express . ')'
-   48 express: express . binop express
-   71 var: express . '[' express ']'
-   72    | express . TOK_ARROW TOK_IDENT
-
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ')'        shift, and go to state 153
-    '['        shift, and go to state 111
-
-    binop  go to state 112
-
-
-State 150
-
-   34 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' ')' .
-
-    $default  reduce using rule 34 (alloc)
-
-
-State 151
-
-   33 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express . ')'
-   48 express: express . binop express
-   71 var: express . '[' express ']'
-   72    | express . TOK_ARROW TOK_IDENT
-
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ')'        shift, and go to state 154
-    '['        shift, and go to state 111
-
-    binop  go to state 112
-
-
-State 152
-
-   35 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT . '(' ')'
-   36      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT . '(' express ')'
-
-    '('  shift, and go to state 155
-
-
-State 153
-
-   32 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express ')' .
-
-    $default  reduce using rule 32 (alloc)
-
-
-State 154
-
-   33 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express ')' .
+   33 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' ')' .
 
     $default  reduce using rule 33 (alloc)
 
 
-State 155
+State 149
 
-   35 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' . ')'
-   36      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' . express ')'
-
-    TOK_NULLPTR    shift, and go to state 38
-    TOK_NOT        shift, and go to state 41
-    TOK_ALLOC      shift, and go to state 42
-    TOK_CHARCON    shift, and go to state 45
-    TOK_STRINGCON  shift, and go to state 46
-    TOK_INTCON     shift, and go to state 47
-    TOK_IDENT      shift, and go to state 48
-    '+'            shift, and go to state 49
-    '-'            shift, and go to state 50
-    '('            shift, and go to state 53
-    ')'            shift, and go to state 156
-
-    callParam  go to state 55
-    call       go to state 56
-    alloc      go to state 60
-    express    go to state 157
-    unop       go to state 64
-    var        go to state 65
-    constant   go to state 67
-
-
-State 156
-
-   35 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')' .
-
-    $default  reduce using rule 35 (alloc)
-
-
-State 157
-
-   36 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express . ')'
+   32 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express . ')'
    48 express: express . binop express
    71 var: express . '[' express ']'
    72    | express . TOK_ARROW TOK_IDENT
 
-    TOK_GE     shift, and go to state 97
-    TOK_LE     shift, and go to state 98
-    TOK_EQ     shift, and go to state 99
-    TOK_NE     shift, and go to state 100
-    TOK_GT     shift, and go to state 101
-    TOK_LT     shift, and go to state 102
-    TOK_ARROW  shift, and go to state 103
-    '='        shift, and go to state 104
-    '+'        shift, and go to state 105
-    '-'        shift, and go to state 106
-    '*'        shift, and go to state 107
-    '/'        shift, and go to state 108
-    '%'        shift, and go to state 109
-    ')'        shift, and go to state 158
-    '['        shift, and go to state 111
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ')'        shift, and go to state 152
+    '['        shift, and go to state 110
 
-    binop  go to state 112
+    binop  go to state 111
 
 
-State 158
+State 150
 
-   36 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express ')' .
+   34 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT . '(' ')'
+   35      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT . '(' express ')'
 
-    $default  reduce using rule 36 (alloc)
+    '('  shift, and go to state 153
+
+
+State 151
+
+   31 alloc: TOK_ALLOC TOK_LT TOK_STRINGCON TOK_GT '(' express ')' .
+
+    $default  reduce using rule 31 (alloc)
+
+
+State 152
+
+   32 alloc: TOK_ALLOC TOK_LT TOK_STRUCT TOK_IDENT TOK_GT '(' express ')' .
+
+    $default  reduce using rule 32 (alloc)
+
+
+State 153
+
+   34 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' . ')'
+   35      | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' . express ')'
+
+    TOK_NULLPTR    shift, and go to state 39
+    TOK_NOT        shift, and go to state 42
+    TOK_ALLOC      shift, and go to state 43
+    TOK_CHARCON    shift, and go to state 46
+    TOK_STRINGCON  shift, and go to state 47
+    TOK_INTCON     shift, and go to state 48
+    TOK_IDENT      shift, and go to state 49
+    '+'            shift, and go to state 50
+    '-'            shift, and go to state 51
+    '('            shift, and go to state 54
+    ')'            shift, and go to state 154
+
+    callParam  go to state 56
+    call       go to state 57
+    alloc      go to state 61
+    express    go to state 155
+    unop       go to state 65
+    var        go to state 66
+    constant   go to state 68
+
+
+State 154
+
+   34 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' ')' .
+
+    $default  reduce using rule 34 (alloc)
+
+
+State 155
+
+   35 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express . ')'
+   48 express: express . binop express
+   71 var: express . '[' express ']'
+   72    | express . TOK_ARROW TOK_IDENT
+
+    TOK_GE     shift, and go to state 96
+    TOK_LE     shift, and go to state 97
+    TOK_EQ     shift, and go to state 98
+    TOK_NE     shift, and go to state 99
+    TOK_GT     shift, and go to state 100
+    TOK_LT     shift, and go to state 101
+    TOK_ARROW  shift, and go to state 102
+    '='        shift, and go to state 103
+    '+'        shift, and go to state 104
+    '-'        shift, and go to state 105
+    '*'        shift, and go to state 106
+    '/'        shift, and go to state 107
+    '%'        shift, and go to state 108
+    ')'        shift, and go to state 156
+    '['        shift, and go to state 110
+
+    binop  go to state 111
+
+
+State 156
+
+   35 alloc: TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT type TOK_GT TOK_GT '(' express ')' .
+
+    $default  reduce using rule 35 (alloc)
