@@ -48,7 +48,7 @@
 start : program               { $$ = $1 = nullptr; }
       ;
 
-program : program state         { $$ = $1->adopt($2); }
+program : program struct         { $$ = $1->adopt($2); }
         | program vardecl       { $$ = $1->adopt($2); }
         | program function      { $$ = $1->adopt($2); }
         | program error ';'     { destroy ($3); $$ = $1; }
