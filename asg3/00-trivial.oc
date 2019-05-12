@@ -1,5 +1,5 @@
 //test output
 if (argc == 1) putstr ("one");
    else if (argc == 2) putstr ("two");
-   //else if (argc == 3) putstr ("three");
-   //else putstr ("many");
+   else if (argc == 3) putstr ("three");
+   else putstr ("many");

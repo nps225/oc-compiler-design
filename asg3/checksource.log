@@ -1,1 +1,10 @@
-./mk.build: line 12: /afs/cats.ucsc.edu/courses/cmps104a-wm/bin/checksource: No such file or directory
+checksource: improper character \x09 = ^I (tab)
+   file "parser.y": 1 errors: line 94
+checksource: line length > 72 characters
+   file "astree.cpp": 5 errors: lines 65, 99--100, 104--105
+   file "parser.tab.c": 44 errors: lines 5, 18, 260, 281, 311--313, 358, 
+        374--382, 426, 489, 491, 746, 815--820, 822--823, 832, 1312, 
+        1425, 1562, 1581--1583, 2130, 2191, 2273, 2408, 2429, 2481, 
+        3172, 3223
+   file "parser.tab.h": 2 errors: lines 5, 18
+checksource: TOTAL COMPLAINTS: 52
