@@ -25,13 +25,14 @@
 }
 
 %token  ROOT IDENT NUMBER TYPE_ID FUNCTION TOK_PARAM TOK_PROTOTYPE
-%token  BLOCK TOK_NULLPTR TOK_INDEX CALL NOELSE
+%token  BLOCK TOK_NULLPTR TOK_INDEX CALL ENDIF
 %token  TOK_GE TOK_LE TOK_EQ TOK_NE TOK_GT TOK_LT
 %token  TOK_IF TOK_ELSE TOK_STRUCT TOK_ARRAY TOK_NOT
 %token  TOK_ALLOC TOK_PTR TOK_ARROW TOK_WHILE TOK_VOID
 %token  TOK_RETURN TOK_INT TOK_CHAR TOK_STRING
 %token  TOK_CHARCON TOK_STRINGCON TOK_INTCON TOK_IDENT
 
+%nonassoc TOK_NULLPTR TOK_WHILE
 %right TOK_IF TOK_ELSE
 %right  '='
 %left   TOK_EQ TOK_NE TOK_LT TOK_LE TOK_GT TOK_GE
@@ -68,17 +69,6 @@ struct : TOK_STRUCT TOK_IDENT '{' '}' ';'
          $$ = $1->adopt($2,$3);
        }
 
-// blockStruct: '{' state
-//                {
-//                   destroy($1);
-//                   $$ = $2;
-//                }
-//             | blockStruct state
-//                {
-//                   $$ = $1->adopt($2);
-//                }
-//       ;
- 
 
 function : identif '(' ')' ';' 
                {  
@@ -173,26 +163,42 @@ call: TOK_IDENT '(' ')'
       }
       ;
 
-while: TOK_WHILE '(' express ')' block
+while: TOK_WHILE '(' express ')' select
        {
          destroy($2,$4);
          $$ = $1->adopt($3,$5);
        }
        ;
 
-ifelse: TOK_IF '(' express ')' block
+select: block
+        {
+           $$ = $1;
+        }
+        | express ';'
+        {
+           destroy($2);
+           $$ = $1;
+        }
+
+ifelse: TOK_IF '(' express ')' select
        {
          destroy($2,$4);
          $$ = $1-> adopt($3,$5);
        }
-       | TOK_IF '(' express ')' block TOK_ELSE block 
+       | TOK_ELSE TOK_IF '(' express ')' select
        {
-          destroy($2,$4);
-          destroy($6);
-          $1 = $1->adopt($3,$5);
-          $1 = $1->adopt($7);
-          $$ = $1;          
+          destroy($1,$3);
+          destroy($5);
+          $$ = $2->adopt($4,$6);
+         //  $$ = $->adopt($6);   
        }
+       |TOK_ELSE select
+       {
+          destroy($1);
+          $$ = $2;
+         //  $$ = $->adopt($6);   
+       }
+       
        ;
 
 return : TOK_RETURN ';'
