@@ -1,0 +1,6 @@
+
+int main() {
+   {if (not ("nullptr" == nullptr)) fail ("\"nullptr\" == nullptr", "07-assert.oc", 6);};
+   return 1;
+}
+

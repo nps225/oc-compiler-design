@@ -7,6 +7,6 @@ int atoi (string str) {
    int num = 0;
    int digit = 0;
   assert (str != nullptr);
-}
+};
 
 
