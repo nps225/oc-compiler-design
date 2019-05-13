@@ -67,6 +67,13 @@ struct : TOK_STRUCT TOK_IDENT blockS
          // destroy($4);
          $$ = $1->adopt($2,$3);
        }
+       | TOK_STRUCT TOK_IDENT '{''}' ';'
+       {
+          destroy($1,$4);
+          destroy($5);
+          $3 = $3->symChange($3,BLOCK);
+          $$ = $1->adopt($2,$3);
+       }
 
 
 function : identif '(' ')' ';' 
@@ -90,7 +97,7 @@ function : identif '(' ')' ';'
                  $$ = $$->adopt($1,$2);
                  $$ = $$->adopt($4);
                }
-	| identif param ')' block
+	      | identif param ')' block
                {
                  destroy($3);
                  $$ = new astree(FUNCTION,$1->lloc,"");
@@ -271,7 +278,6 @@ blockBodyS:  multiState
                 
                $$ = $1;
              }
-         |  %empty
             // {
             //    $$ = $1->symChange($1,BLOCK);
             // }
@@ -284,7 +290,11 @@ block: '{' blockBody '}'
                   $$ = $1->symChange($1,BLOCK);
                   $$ = $$->adopt($2);
                }
-      // | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
+         | '{' '}'
+               {
+                  destroy($2);
+                  $$ = $1->symChange($1,BLOCK);
+               }
       ;
 
 
@@ -293,10 +303,6 @@ blockBody:  multiState
                 
                $$ = $1;
              }
-         |  %empty
-            // {
-            //    $$ = $1->symChange($1,BLOCK);
-            // }
          ;
 
 multiState: state 
