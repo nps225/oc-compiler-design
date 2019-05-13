@@ -1,0 +1,7 @@
+  0     0.000    258    ROOT            
+  3     3.001    262    FUNCTION        
+  3     3.001    261    TYPE_ID         
+  3     3.001    288    TOK_INT         int
+  3     3.005    294    TOK_IDENT       main
+  3     3.009    263    TOK_PARAM       (
+  3     3.011    265    BLOCK           {

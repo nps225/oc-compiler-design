@@ -1,0 +1,10 @@
+checksource: improper character \x09 = ^I (tab)
+   file "parser.y": 1 errors: line 93
+checksource: line length > 72 characters
+   file "astree.cpp": 1 errors: line 65
+   file "parser.tab.c": 48 errors: lines 5, 18, 261, 282, 312--314, 359, 
+        375--383, 427, 489, 491, 493, 496--498, 744, 814--819, 821--822, 
+        831, 1341, 1454, 1591, 1610--1612, 2189, 2250, 2332, 2482, 2503, 
+        2555, 3295, 3346
+   file "parser.tab.h": 2 errors: lines 5, 18
+checksource: TOTAL COMPLAINTS: 52

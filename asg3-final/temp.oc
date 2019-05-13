@@ -1,0 +1,5 @@
+int atoi (string str) {
+  {};   
+  // {if (not (str != nullptr)) fail ("str != nullptr", "help", 6);};
+}
+

@@ -1,0 +1,12 @@
+  0     0.000    258    ROOT            
+  3     1.001    262    FUNCTION        
+  3     1.001    261    TYPE_ID         
+  3     1.001    288    TOK_INT         int
+  3     1.005    294    TOK_IDENT       atoi
+  3     1.010    263    TOK_PARAM       (
+  3     1.011    261    TYPE_ID         
+  3     1.011    290    TOK_STRING      string
+  3     1.018    294    TOK_IDENT       str
+  3     1.023    265    BLOCK           {
+  3     2.003    265    BLOCK           {
+  3     2.005    265    BLOCK           {

@@ -1,0 +1,14 @@
+  0     0.000    258    ROOT            
+  4    11.001    262    FUNCTION        
+  4    11.001    261    TYPE_ID         
+  4    11.001    286    TOK_VOID        void
+  4    11.006    294    TOK_IDENT       foo
+  4    11.009    263    TOK_PARAM       (
+  4    12.001    262    FUNCTION        
+  4    12.001    261    TYPE_ID         
+  4    12.001    286    TOK_VOID        void
+  4    12.006    294    TOK_IDENT       foo
+  4    12.010    263    TOK_PARAM       (
+  4    12.011    261    TYPE_ID         
+  4    12.011    288    TOK_INT         int
+  4    12.015    294    TOK_IDENT       a
