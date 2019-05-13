@@ -1,4 +1,11 @@
-struct move{
-   int a;
-   int b;
-};
+int main(){
+
+   if(a == b){
+     b = c;
+   }else if( c == d){
+     d = e;
+   }else{
+     f = g;
+   }
+
+}

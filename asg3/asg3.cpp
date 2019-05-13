@@ -38,7 +38,7 @@ void scanToFile(string filename){
   }else{
      fprintf (stderr, "issue parsing");
   }
-
+  //  delete parser::root;
    destroy(parser::root);
    fclose(outSTR);
    fclose(outTOK);

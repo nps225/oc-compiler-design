@@ -1,10 +1,27 @@
   0     0.000    258    ROOT            
-  3     1.001    278    TOK_STRUCT      struct
-  3     1.008    293    TOK_IDENT       move
-  3     1.012    265    BLOCK           {
-  3     2.004    261    TYPE_ID         
-  3     2.004    287    TOK_INT         int
-  3     2.008    293    TOK_IDENT       a
-  3     3.004    261    TYPE_ID         
-  3     3.004    287    TOK_INT         int
-  3     3.008    293    TOK_IDENT       b
+  3     1.001    262    FUNCTION        
+  3     1.001    261    TYPE_ID         
+  3     1.001    288    TOK_INT         int
+  3     1.005    294    TOK_IDENT       main
+  3     1.009    263    TOK_PARAM       (
+  3     1.011    265    BLOCK           {
+  3     3.004    277    TOK_IF          if
+  3     3.009    273    TOK_EQ          ==
+  3     3.007    294    TOK_IDENT       a
+  3     3.012    294    TOK_IDENT       b
+  3     3.014    265    BLOCK           {
+  3     4.008     61    '='             =
+  3     4.006    294    TOK_IDENT       b
+  3     4.010    294    TOK_IDENT       c
+  3     5.010    277    TOK_IF          if
+  3     5.016    273    TOK_EQ          ==
+  3     5.014    294    TOK_IDENT       c
+  3     5.019    294    TOK_IDENT       d
+  3     5.021    265    BLOCK           {
+  3     6.008     61    '='             =
+  3     6.006    294    TOK_IDENT       d
+  3     6.010    294    TOK_IDENT       e
+  3     7.009    265    BLOCK           {
+  3     8.008     61    '='             =
+  3     8.006    294    TOK_IDENT       f
+  3     8.010    294    TOK_IDENT       g

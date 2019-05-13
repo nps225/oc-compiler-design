@@ -85,7 +85,6 @@ ROOT "" 0.0.0
                   TOK_STRINGCON ""str != nullptr"" 6.9.37
                   TOK_STRINGCON ""23-atoi.oc"" 6.9.55
                   TOK_INTCON "9" 6.9.69
-               ';' ";" 6.9.71
          BLOCK "{" 6.9.73
          TOK_IF "if" 6.10.4
             TOK_NE "!=" 6.10.15
@@ -109,7 +108,6 @@ ROOT "" 0.0.0
                      '=' "=" 6.13.14
                         TOK_IDENT "neg" 6.13.10
                         TOK_INTCON "1" 6.13.16
-                  '}' "}" 6.14.7
                TYPE_ID "" 6.15.7
                   TOK_INT "int" 6.15.7
                   TOK_IDENT "contin" 6.15.11
@@ -168,8 +166,6 @@ ROOT "" 0.0.0
                      TOK_IDENT "num" 6.27.16
                      NEG "-" 6.27.22
                         TOK_IDENT "num" 6.27.24
-                  ';' ";" 6.27.27
-            '}' "}" 6.28.4
          TOK_RETURN "return" 6.29.4
             TOK_IDENT "num" 6.29.11
    FUNCTION "" 6.32.1
