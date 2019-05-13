@@ -32,7 +32,6 @@
 %token  TOK_RETURN TOK_INT TOK_CHAR TOK_STRING
 %token  TOK_CHARCON TOK_STRINGCON TOK_INTCON TOK_IDENT
 
-%nonassoc TOK_NULLPTR TOK_WHILE
 %right TOK_IF TOK_ELSE
 %right  '='
 %left   TOK_EQ TOK_NE TOK_LT TOK_LE TOK_GT TOK_GE
@@ -40,6 +39,11 @@
 %left   '*' '/' '%'
 %right  '^'
 %right  POS NEG TOK_NOT
+%left   TOK_ARROW '['
+%nonassoc '('
+
+%precedence TOK_NULLPTR TOK_WHILE
+
 
 %start  start
 
@@ -48,22 +52,17 @@
 start : program               { $$ = $1 = nullptr; }
       ;
 
-program : program struct         { $$ = $1->adopt($2); }
+program : program struct        { $$ = $1->adopt($2); }
         | program vardecl       { $$ = $1->adopt($2); }
         | program function      { $$ = $1->adopt($2); }
         | program error ';'     { destroy ($3); $$ = $1; }
+        | program error '}'     { destroy ($3); $$ = $1; }
         | program ';'           { destroy ($2); $$ = $1; }
-        |                       { $$ = parser::root; }
+        | %empty                { $$ = parser::root; }
         ;
 
 
-struct : TOK_STRUCT TOK_IDENT '{' '}' ';'
-       {
-         destroy($4);
-         destroy($3,$5);
-         $$ = $1->adopt($2);
-       }
-       | TOK_STRUCT TOK_IDENT block
+struct : TOK_STRUCT TOK_IDENT blockS
        {
          // destroy($4);
          $$ = $1->adopt($2,$3);
@@ -174,33 +173,28 @@ select: state
         {
            $$ = $1;
         }
-      //   | state
-      //   {
-      //      destroy($2);
-      //      $$ = $1;
-      //   }
       ;
 
-ifelse: TOK_IF '(' express ')' select
+ifelse: TOK_IF '(' express ')' select else
        {
          destroy($2,$4);
          $$ = $1-> adopt($3,$5);
+         $$ = $$->adopt($6);
        }
-      //  | TOK_ELSE TOK_IF '(' express ')' select
-      //  {
-      //     destroy($1,$3);
-      //     destroy($5);
-      //     $$ = $2->adopt($4,$6);
-      //    //  $$ = $->adopt($6);   
-      //  }
        |TOK_ELSE select
        {
           destroy($1);
-          $$ = $$->adopt($2);
-         //  $$ = $->adopt($6);   
+          $$ = $$->adopt($2);  
        }
        
        ;
+
+else: TOK_ELSE state 
+      {
+         destroy($1);
+         $$ = $2;
+      }
+      | %empty %prec TOK_IF
 
 return : TOK_RETURN ';'
         {
@@ -262,35 +256,57 @@ alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' ')'
        ;
 
 
-block: blockBody '}'
+blockS: '{' blockBodyS '}' ';'
                {
-                  destroy($2);
-                  $$ = $1;
+                  destroy($3,$4);
+                  $$ = $1->symChange($1,BLOCK);
+                  $$ = $$->adopt($2);
                }
-      | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
-      | ';' {
-         $$ = new astree(BLOCK,$1->lloc,"{");
-      }
+      // | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
       ;
 
 
-blockBody: '{' state 
+blockBodyS:  multiState 
              { 
-               // destroy($1); 
-               $$ = new astree(BLOCK,$1->lloc,"{"); 
-               $$ = $$->adopt($2);
+                
+               $$ = $1;
              }
-         |  blockBody state
-            {
-               $$ = $1->symChange($1,BLOCK);
-               $1 = $1->adopt($2);
-            }
-         |  '{'
-            {
-               $$ = $1->symChange($1,BLOCK);
-            }
+         |  %empty
+            // {
+            //    $$ = $1->symChange($1,BLOCK);
+            // }
          ;
 
+
+block: '{' blockBody '}'
+               {
+                  destroy($3);
+                  $$ = $1->symChange($1,BLOCK);
+                  $$ = $$->adopt($2);
+               }
+      // | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
+      ;
+
+
+blockBody:  multiState 
+             { 
+                
+               $$ = $1;
+             }
+         |  %empty
+            // {
+            //    $$ = $1->symChange($1,BLOCK);
+            // }
+         ;
+
+multiState: state 
+           {
+              $$ = $1;
+           }
+           | multiState state
+           {
+              $$ = $1->adopt($2);
+           }
 
 state:   vardecl
          {
@@ -317,6 +333,10 @@ state:   vardecl
             destroy($2);
             $$=$1;
          }
+         | ';'
+         {
+             $$ = new astree(BLOCK,$1->lloc,"{");
+         }
          ;
 
 // old code that may need later
@@ -329,9 +349,9 @@ state:   vardecl
 //          ;
 
 
-express: express binop express
+express: binop
          {
-            $$ = $2->adopt ($1, $3); 
+            $$ = $1;
          }
          |unop 
          {
@@ -361,53 +381,53 @@ express: express binop express
          }
          ;
 
-binop: '=' 
+binop: express '=' express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | TOK_EQ
+      | express TOK_EQ express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | TOK_NE
+      | express TOK_NE express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | TOK_GT
+      | express TOK_GT express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | TOK_GE
+      | express TOK_GE express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | TOK_LT
+      | express TOK_LT express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | TOK_LE
+      | express TOK_LE express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | '+'
+      | express '+' express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | '-'
+      | express '-' express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | '*'
+      | express '*' express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | '/' 
+      | express '/' express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
-      | '%' 
+      | express '%' express
         {
-           $$ = $1;
+           $$ = $2->adopt($1,$3);
         }
       ;
 
