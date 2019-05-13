@@ -278,34 +278,55 @@ blockBodyS:  multiState
          ;
 
 
-block: '{' blockBody '}'
+// block: blockBody '}'
+//                {
+//                   destroy($2);
+//                   $$ = $1;
+//                }
+//       // | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
+//       ;
+
+
+// blockBody:  state 
+//              {  
+//                $$ = $1;
+//              }
+//              | blockBody state
+//              {
+//                 $$ = new astree()
+//              }
+         
+//          ;
+
+block: blockBody '}'
                {
-                  destroy($3);
-                  $$ = $1->symChange($1,BLOCK);
-                  $$ = $$->adopt($2);
+                  destroy($2);
+                  $$ = $1;
                }
-      // | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
       ;
 
 
-blockBody:  multiState 
+blockBody: multiState 
              { 
-                
+               // destroy($1); 
+               // $$ = new astree(BLOCK,$1->lloc,"{"); 
                $$ = $1;
              }
-         |  %empty
-            // {
-            //    $$ = $1->symChange($1,BLOCK);
-            // }
+         | '{'
+            {
+                $$ = new astree(BLOCK,$1->lloc,"{"); 
+            }
          ;
 
-multiState: state 
+multiState: '{' state 
            {
-              $$ = $1;
+              $$ = $1->symChange($1,BLOCK);
+              $$ = $$ ->adopt($2);
            }
            | multiState state
            {
-              $$ = $1->adopt($2);
+              $$ = $1->symChange($1,BLOCK);
+              $1 = $1->adopt($2);
            }
 
 state:   vardecl

@@ -1,0 +1,22 @@
+  0     0.000    258    ROOT            
+  3     1.001    262    FUNCTION        
+  3     1.001    261    TYPE_ID         
+  3     1.001    287    TOK_INT         int
+  3     1.005    293    TOK_IDENT       main
+  3     1.009    263    TOK_PARAM       (
+  3     1.011    265    BLOCK           {
+  3     3.004    261    TYPE_ID         
+  3     3.004    287    TOK_INT         int
+  3     3.008    293    TOK_IDENT       a
+  3     3.012    292    TOK_INTCON      5
+  3     4.007    268    CALL            (
+  3     4.004    293    TOK_IDENT       fac
+  3     4.008    293    TOK_IDENT       n
+  3     5.008    268    CALL            (
+  3     5.004    293    TOK_IDENT       temp
+  3     5.009    293    TOK_IDENT       n
+  3     6.007    268    CALL            (
+  3     6.004    293    TOK_IDENT       fac
+  3     6.012    268    CALL            (
+  3     6.008    293    TOK_IDENT       temp
+  3     6.013    293    TOK_IDENT       n
