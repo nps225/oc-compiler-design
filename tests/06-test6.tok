@@ -1,0 +1,138 @@
+# 1 "06-test6.oc"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "06-test6.oc"
+# 1 "oclib.h"
+# 22 "oclib.h"
+# 4 "06-test6.oc"
+  0     0.000    258    ROOT            
+  5    22.001    262    FUNCTION        
+  5    22.001    261    TYPE_ID         
+  5    22.001    285    TOK_VOID        void
+  5    22.006    293    TOK_IDENT       fail
+  5    22.011    263    TOK_PARAM       (
+  5    22.012    261    TYPE_ID         
+  5    22.012    289    TOK_STRING      string
+  5    22.019    293    TOK_IDENT       expr
+  5    22.025    261    TYPE_ID         
+  5    22.025    289    TOK_STRING      string
+  5    22.032    293    TOK_IDENT       file
+  5    22.038    261    TYPE_ID         
+  5    22.038    287    TOK_INT         int
+  5    22.042    293    TOK_IDENT       line
+  5    24.001    262    FUNCTION        
+  5    24.001    261    TYPE_ID         
+  5    24.001    285    TOK_VOID        void
+  5    24.006    293    TOK_IDENT       putchr
+  5    24.013    263    TOK_PARAM       (
+  5    24.014    261    TYPE_ID         
+  5    24.014    287    TOK_INT         int
+  5    24.018    293    TOK_IDENT       chr
+  5    25.001    262    FUNCTION        
+  5    25.001    261    TYPE_ID         
+  5    25.001    285    TOK_VOID        void
+  5    25.006    293    TOK_IDENT       putint
+  5    25.013    263    TOK_PARAM       (
+  5    25.014    261    TYPE_ID         
+  5    25.014    287    TOK_INT         int
+  5    25.018    293    TOK_IDENT       num
+  5    26.001    262    FUNCTION        
+  5    26.001    261    TYPE_ID         
+  5    26.001    285    TOK_VOID        void
+  5    26.006    293    TOK_IDENT       putstr
+  5    26.013    263    TOK_PARAM       (
+  5    26.014    261    TYPE_ID         
+  5    26.014    289    TOK_STRING      string
+  5    26.021    293    TOK_IDENT       str
+  5    28.001    262    FUNCTION        
+  5    28.001    261    TYPE_ID         
+  5    28.001    287    TOK_INT         int
+  5    28.005    293    TOK_IDENT       getchr
+  5    28.011    263    TOK_PARAM       (
+  5    29.001    262    FUNCTION        
+  5    29.001    261    TYPE_ID         
+  5    29.001    289    TOK_STRING      string
+  5    29.008    293    TOK_IDENT       getstr
+  5    29.014    263    TOK_PARAM       (
+  5    30.001    262    FUNCTION        
+  5    30.001    261    TYPE_ID         
+  5    30.001    289    TOK_STRING      string
+  5    30.008    293    TOK_IDENT       getln
+  5    30.013    263    TOK_PARAM       (
+  6     5.001    278    TOK_STRUCT      struct
+  6     5.008    293    TOK_IDENT       foo
+  6     5.012    265    BLOCK           {
+  6     6.001    278    TOK_STRUCT      struct
+  6     6.008    293    TOK_IDENT       bar
+  6     6.012    265    BLOCK           {
+  6     8.001    262    FUNCTION        
+  6     8.001    261    TYPE_ID         
+  6     8.001    287    TOK_INT         int
+  6     8.005    293    TOK_IDENT       f0
+  6     8.007    263    TOK_PARAM       (
+  6     9.001    262    FUNCTION        
+  6     9.001    261    TYPE_ID         
+  6     9.001    287    TOK_INT         int
+  6     9.005    293    TOK_IDENT       f1
+  6     9.008    263    TOK_PARAM       (
+  6     9.009    261    TYPE_ID         
+  6     9.009    287    TOK_INT         int
+  6     9.013    293    TOK_IDENT       a
+  6    10.001    262    FUNCTION        
+  6    10.001    261    TYPE_ID         
+  6    10.001    287    TOK_INT         int
+  6    10.005    293    TOK_IDENT       f2
+  6    10.008    263    TOK_PARAM       (
+  6    10.009    261    TYPE_ID         
+  6    10.009    287    TOK_INT         int
+  6    10.013    293    TOK_IDENT       a
+  6    10.016    261    TYPE_ID         
+  6    10.016    287    TOK_INT         int
+  6    10.020    293    TOK_IDENT       b
+  6    11.001    262    FUNCTION        
+  6    11.001    261    TYPE_ID         
+  6    11.001    287    TOK_INT         int
+  6    11.005    293    TOK_IDENT       f3
+  6    11.008    263    TOK_PARAM       (
+  6    11.009    261    TYPE_ID         
+  6    11.009    289    TOK_STRING      string
+  6    11.016    293    TOK_IDENT       a
+  6    11.019    261    TYPE_ID         
+  6    11.019    289    TOK_STRING      string
+  6    11.026    293    TOK_IDENT       b
+  6    11.029    261    TYPE_ID         
+  6    11.029    289    TOK_STRING      string
+  6    11.036    293    TOK_IDENT       c
+  6    12.001    262    FUNCTION        
+  6    12.001    261    TYPE_ID         
+  6    12.001    287    TOK_INT         int
+  6    12.005    293    TOK_IDENT       f4
+  6    12.008    263    TOK_PARAM       (
+  6    12.009    261    TYPE_ID         
+  6    12.009    282    TOK_PTR         ptr
+  6    12.020    293    TOK_IDENT       foo
+  6    12.025    293    TOK_IDENT       a
+  6    12.028    261    TYPE_ID         
+  6    12.028    282    TOK_PTR         ptr
+  6    12.039    293    TOK_IDENT       bar
+  6    12.044    293    TOK_IDENT       b
+  6    14.001    262    FUNCTION        
+  6    14.001    261    TYPE_ID         
+  6    14.001    287    TOK_INT         int
+  6    14.005    293    TOK_IDENT       main
+  6    14.009    263    TOK_PARAM       (
+  6    14.012    265    BLOCK           {
+  6    15.004    261    TYPE_ID         
+  6    15.004    289    TOK_STRING      string
+  6    15.011    293    TOK_IDENT       s
+  6    15.015    291    TOK_STRINGCON   "a"
+  6    16.004    261    TYPE_ID         
+  6    16.004    279    TOK_ARRAY       array
+  6    16.010    289    TOK_STRING      string
+  6    16.018    293    TOK_IDENT       sa
+  6    16.023    281    TOK_ALLOC       alloc
+  6    16.029    279    TOK_ARRAY       array
+  6    16.035    289    TOK_STRING      string
+  6    16.044    292    TOK_INTCON      10
+  6    17.004    286    TOK_RETURN      return
+  6    17.011    292    TOK_INTCON      0

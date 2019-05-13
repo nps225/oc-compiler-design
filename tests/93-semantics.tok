@@ -1,0 +1,35 @@
+# 1 "93-semantics.oc"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "93-semantics.oc"
+  0     0.000    258    ROOT            
+  3     9.001    262    FUNCTION        
+  3     9.001    261    TYPE_ID         
+  3     9.001    287    TOK_INT         int
+  3     9.005    293    TOK_IDENT       main
+  3     9.009    263    TOK_PARAM       (
+  3     9.012    265    BLOCK           {
+  3    10.004    261    TYPE_ID         
+  3    10.004    287    TOK_INT         int
+  3    10.008    293    TOK_IDENT       c
+  3    10.014     43    '+'             +
+  3    10.012    293    TOK_IDENT       a
+  3    10.016    293    TOK_IDENT       b
+  3    11.004    261    TYPE_ID         
+  3    11.004    285    TOK_VOID        void
+  3    11.009    293    TOK_IDENT       n
+  3    11.013    293    TOK_IDENT       null
+  3    12.004    261    TYPE_ID         
+  3    12.004    287    TOK_INT         int
+  3    12.008    293    TOK_IDENT       x
+  3    12.014    275    TOK_LT          <
+  3    12.012    293    TOK_IDENT       a
+  3    12.016    293    TOK_IDENT       b
+  3    13.004    261    TYPE_ID         
+  3    13.004    287    TOK_INT         int
+  3    13.008    293    TOK_IDENT       y
+  3    13.013    272    TOK_EQ          ==
+  3    13.012    293    TOK_IDENT       a
+  3    13.015    293    TOK_IDENT       b
+  3    14.004    286    TOK_RETURN      return
+  3    14.011    291    TOK_STRINGCON   "foobar"

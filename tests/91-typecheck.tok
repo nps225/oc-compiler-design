@@ -1,0 +1,19 @@
+# 1 "91-typecheck.oc"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "91-typecheck.oc"
+# 9 "91-typecheck.oc"
+  0     0.000    258    ROOT            
+  4    11.001    262    FUNCTION        
+  4    11.001    261    TYPE_ID         
+  4    11.001    285    TOK_VOID        void
+  4    11.006    293    TOK_IDENT       foo
+  4    11.009    263    TOK_PARAM       (
+  4    12.001    262    FUNCTION        
+  4    12.001    261    TYPE_ID         
+  4    12.001    285    TOK_VOID        void
+  4    12.006    293    TOK_IDENT       foo
+  4    12.010    263    TOK_PARAM       (
+  4    12.011    261    TYPE_ID         
+  4    12.011    287    TOK_INT         int
+  4    12.015    293    TOK_IDENT       a

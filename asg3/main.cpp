@@ -70,10 +70,7 @@ int main(int argc, char** argv) {
    //scans the file + parses it -> generates output
    //scanToFile(outfile);//this applies asg2
    scanToFile(outfile);
-//   outfile += ".str";
-//   FILE* out = fopen (outfile.c_str(), "w");
-//   string_set::dump (out);
-  return exec::exit_status;
+   return exec::exit_status;
 }
 
 /*

@@ -1,0 +1,83 @@
+# 1 "07-assert.oc"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "07-assert.oc"
+# 1 "oclib.h"
+# 22 "oclib.h"
+# 4 "07-assert.oc"
+  0     0.000    258    ROOT            
+  5    22.001    262    FUNCTION        
+  5    22.001    261    TYPE_ID         
+  5    22.001    285    TOK_VOID        void
+  5    22.006    293    TOK_IDENT       fail
+  5    22.011    263    TOK_PARAM       (
+  5    22.012    261    TYPE_ID         
+  5    22.012    289    TOK_STRING      string
+  5    22.019    293    TOK_IDENT       expr
+  5    22.025    261    TYPE_ID         
+  5    22.025    289    TOK_STRING      string
+  5    22.032    293    TOK_IDENT       file
+  5    22.038    261    TYPE_ID         
+  5    22.038    287    TOK_INT         int
+  5    22.042    293    TOK_IDENT       line
+  5    24.001    262    FUNCTION        
+  5    24.001    261    TYPE_ID         
+  5    24.001    285    TOK_VOID        void
+  5    24.006    293    TOK_IDENT       putchr
+  5    24.013    263    TOK_PARAM       (
+  5    24.014    261    TYPE_ID         
+  5    24.014    287    TOK_INT         int
+  5    24.018    293    TOK_IDENT       chr
+  5    25.001    262    FUNCTION        
+  5    25.001    261    TYPE_ID         
+  5    25.001    285    TOK_VOID        void
+  5    25.006    293    TOK_IDENT       putint
+  5    25.013    263    TOK_PARAM       (
+  5    25.014    261    TYPE_ID         
+  5    25.014    287    TOK_INT         int
+  5    25.018    293    TOK_IDENT       num
+  5    26.001    262    FUNCTION        
+  5    26.001    261    TYPE_ID         
+  5    26.001    285    TOK_VOID        void
+  5    26.006    293    TOK_IDENT       putstr
+  5    26.013    263    TOK_PARAM       (
+  5    26.014    261    TYPE_ID         
+  5    26.014    289    TOK_STRING      string
+  5    26.021    293    TOK_IDENT       str
+  5    28.001    262    FUNCTION        
+  5    28.001    261    TYPE_ID         
+  5    28.001    287    TOK_INT         int
+  5    28.005    293    TOK_IDENT       getchr
+  5    28.011    263    TOK_PARAM       (
+  5    29.001    262    FUNCTION        
+  5    29.001    261    TYPE_ID         
+  5    29.001    289    TOK_STRING      string
+  5    29.008    293    TOK_IDENT       getstr
+  5    29.014    263    TOK_PARAM       (
+  5    30.001    262    FUNCTION        
+  5    30.001    261    TYPE_ID         
+  5    30.001    289    TOK_STRING      string
+  5    30.008    293    TOK_IDENT       getln
+  5    30.013    263    TOK_PARAM       (
+  6     5.001    262    FUNCTION        
+  6     5.001    261    TYPE_ID         
+  6     5.001    287    TOK_INT         int
+  6     5.005    293    TOK_IDENT       main
+  6     5.009    263    TOK_PARAM       (
+  6     5.012    265    BLOCK           {
+  6     6.004    265    BLOCK           {
+  6     6.005    276    TOK_IF          if
+  6     6.009    295    NEG             not
+  6     6.013    263    TOK_PARAM       (
+  6     6.024    272    TOK_EQ          ==
+  6     6.014    291    TOK_STRINGCON   "nullptr"
+  6     6.027    266    TOK_NULLPTR     nullptr
+  6     6.042    268    CALL            (
+  6     6.037    293    TOK_IDENT       fail
+  6     6.043    291    TOK_STRINGCON   "\"nullptr\" == nullptr"
+  6     6.069    291    TOK_STRINGCON   "07-assert.oc"
+  6     6.085    292    TOK_INTCON      6
+  6     6.087     59    ';'             ;
+  6     6.089    265    BLOCK           {
+  6     7.004    286    TOK_RETURN      return
+  6     7.011    292    TOK_INTCON      1

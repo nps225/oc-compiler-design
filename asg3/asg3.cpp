@@ -39,12 +39,11 @@ void scanToFile(string filename){
     string_set::dump (outSTR);
   }
 
-  destroy(parser::root);  
-
   fclose(outAST);
   fclose(outSTR);
   fclose(outTOK);
   
+  destroy(parser::root);
 
 }
 
