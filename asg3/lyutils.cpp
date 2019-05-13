@@ -16,6 +16,8 @@ vector<string> lexer::filenames;
 
 astree* parser::root = nullptr;
 
+extern FILE* outstream;
+
 const string* lexer::filename (int filenr) {
    return &lexer::filenames.at(filenr);
 }
@@ -64,6 +66,7 @@ void lexer::include() {
                   linenr, filename);
       }
       lexer::lloc.linenr = linenr - 1;
+      fprintf(outstream, "# %zd \"%s\"\n", linenr, filename);
       lexer::newfilename (filename);
    }
 }

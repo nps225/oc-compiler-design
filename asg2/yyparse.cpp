@@ -1,12 +1,5 @@
 /* A Bison parser, made by GNU Bison 3.0.4.  */
-/*
- *  *  oc-compiler yyparse.cpp
- *   *  CMPS 104A Assignment 2: Scanner
- *    *  Author: 
- *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
- *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
- *      Date: 2019.04.29
- */
+
 /* Bison implementation for Yacc-like parsers in C
 
    Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
@@ -74,12 +67,12 @@
 // $Id: parser.y,v 1.22 2019-04-23 14:07:52-07 - - $
 // Dummy parser for scanner project.
 /*
- *  oc-compiler main.cpp
- *  CMPS 104A Assignment 1: StringSet generator
- *  Author: 
- *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
- *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
- *  Date: 2019.04.29
+ *  *  oc-compiler parser.y
+ *   *  CMPS 104A Assignment 2: Scanner
+ *    *  Author: 
+ *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
+ *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
+ *      Date: 2019.04.29
  */
 
 #include <cassert>

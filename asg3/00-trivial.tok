@@ -1,0 +1,12 @@
+# 1 "00-trivial.oc"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "00-trivial.oc"
+  0     0.000    258    ROOT            
+  3     2.010    263    TOK_PARAM       (
+  3     2.001    262    FUNCTION        
+  3     2.001    261    TYPE_ID         
+  3     2.001    285    TOK_VOID        void
+  3     2.006    293    TOK_IDENT       main
+  3     2.010    263    TOK_PARAM       (
+  3     2.012    265    BLOCK           {
