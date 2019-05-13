@@ -196,7 +196,12 @@ ifelse: TOK_IF '(' express ')' select TOK_ELSE select
          destroy($2,$4);
          $$ = $1->adopt($3,$5);
       }
-      
+      | TOK_ELSE select
+      {
+         destroy($1);
+         $$ = $$->adopt($2);
+      }
+
 //old version of my if else handling -> produced
 //dangling else
 // ifelse: TOK_IF '(' express ')' select else
