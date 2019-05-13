@@ -1,0 +1,7 @@
+ROOT "" 0.0.0
+   FUNCTION "" 3.2.1
+      TYPE_ID "" 3.2.1
+         TOK_INT "int" 3.2.1
+         TOK_IDENT "main" 3.2.5
+      TOK_PARAM "(" 3.2.9
+      BLOCK "{" 3.2.11

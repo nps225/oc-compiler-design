@@ -36,6 +36,7 @@ void scanToFile(string filename){
   }else{
     astree::print(outstream,parser::root);
     parser::root -> astree::dump_tree(outAST,0);
+    string_set::dump (outSTR);
   }
 
   destroy(parser::root);  

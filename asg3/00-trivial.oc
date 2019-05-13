@@ -1,2 +1,2 @@
-struct main{};
-void main(){}
+//struct main{};
+int main(){}
