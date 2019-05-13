@@ -35,7 +35,10 @@ void scanToFile(string filename){
     parser::root-> astree::dump_tree(outAST,0);
     string_set::dump (outSTR);
     astree::print(outTOK,parser::root,0);
+  }else{
+     fprintf (stderr, "issue parsing");
   }
+
    destroy(parser::root);
    fclose(outSTR);
    fclose(outTOK);
