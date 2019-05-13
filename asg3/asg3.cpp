@@ -31,11 +31,14 @@ void scanToFile(string filename){
    outstream = outTOK;
   //call yyparse to construct our tree
   int val = yyparse();
-  if( val == 0){
-     astree::print(outstream,parser::root);
-     parser::root -> astree::dump_tree(outAST,0);
+  if( val ){
+    errprintf("parse failed: %d\n",val);
+  }else{
+    astree::print(outstream,parser::root);
+    parser::root -> astree::dump_tree(outAST,0);
   }
-  
+
+  destroy(parser::root);  
 
   fclose(outAST);
   fclose(outSTR);
