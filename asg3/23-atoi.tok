@@ -109,14 +109,7 @@
   6    13.014     61    '='             =
   6    13.010    293    TOK_IDENT       neg
   6    13.016    292    TOK_INTCON      1
-  6    12.016     61    '='             =
-  6    12.010    293    TOK_IDENT       digit
-  6    12.024     43    '+'             +
-  6    12.018    293    TOK_IDENT       digit
-  6    12.026    292    TOK_INTCON      1
-  6    13.014     61    '='             =
-  6    13.010    293    TOK_IDENT       neg
-  6    13.016    292    TOK_INTCON      1
+  6    14.007    125    '}'             }
   6    15.007    261    TYPE_ID         
   6    15.007    287    TOK_INT         int
   6    15.011    293    TOK_IDENT       contin
@@ -176,88 +169,7 @@
   6    27.022    295    NEG             -
   6    27.024    293    TOK_IDENT       num
   6    27.027     59    ';'             ;
-  6    11.007    276    TOK_IF          if
-  6    11.018    272    TOK_EQ          ==
-  6    11.014    267    TOK_INDEX       [
-  6    11.011    293    TOK_IDENT       str
-  6    11.015    292    TOK_INTCON      0
-  6    11.021    290    TOK_CHARCON     '-'
-  6    11.026    265    BLOCK           {
-  6    12.016     61    '='             =
-  6    12.010    293    TOK_IDENT       digit
-  6    12.024     43    '+'             +
-  6    12.018    293    TOK_IDENT       digit
-  6    12.026    292    TOK_INTCON      1
-  6    13.014     61    '='             =
-  6    13.010    293    TOK_IDENT       neg
-  6    13.016    292    TOK_INTCON      1
-  6    12.016     61    '='             =
-  6    12.010    293    TOK_IDENT       digit
-  6    12.024     43    '+'             +
-  6    12.018    293    TOK_IDENT       digit
-  6    12.026    292    TOK_INTCON      1
-  6    13.014     61    '='             =
-  6    13.010    293    TOK_IDENT       neg
-  6    13.016    292    TOK_INTCON      1
-  6    15.007    261    TYPE_ID         
-  6    15.007    287    TOK_INT         int
-  6    15.011    293    TOK_IDENT       contin
-  6    15.020    292    TOK_INTCON      1
-  6    16.007    284    TOK_WHILE       while
-  6    16.014    293    TOK_IDENT       contin
-  6    16.022    265    BLOCK           {
-  6    17.010    276    TOK_IF          if
-  6    17.025    272    TOK_EQ          ==
-  6    17.017    267    TOK_INDEX       [
-  6    17.014    293    TOK_IDENT       str
-  6    17.018    293    TOK_IDENT       digit
-  6    17.028    290    TOK_CHARCON     '\0'
-  6    17.034    265    BLOCK           {
-  6    18.020     61    '='             =
-  6    18.013    293    TOK_IDENT       contin
-  6    18.022    292    TOK_INTCON      0
-  6    19.016    265    BLOCK           {
-  6    20.013    261    TYPE_ID         
-  6    20.013    287    TOK_INT         int
-  6    20.017    293    TOK_IDENT       chr
-  6    20.026    267    TOK_INDEX       [
-  6    20.023    293    TOK_IDENT       str
-  6    20.027    293    TOK_IDENT       digit
-  6    21.019     61    '='             =
-  6    21.013    293    TOK_IDENT       digit
-  6    21.027     43    '+'             +
-  6    21.021    293    TOK_IDENT       digit
-  6    21.029    292    TOK_INTCON      1
-  6    22.013    276    TOK_IF          if
-  6    22.021    275    TOK_LT          <
-  6    22.017    293    TOK_IDENT       chr
-  6    22.023    290    TOK_CHARCON     '0'
-  6    22.035     61    '='             =
-  6    22.028    293    TOK_IDENT       contin
-  6    22.037    292    TOK_INTCON      0
-  6    23.018    276    TOK_IF          if
-  6    23.026    274    TOK_GT          >
-  6    23.022    293    TOK_IDENT       chr
-  6    23.028    290    TOK_CHARCON     '9'
-  6    23.040     61    '='             =
-  6    23.033    293    TOK_IDENT       contin
-  6    23.042    292    TOK_INTCON      0
-  6    24.022     61    '='             =
-  6    24.018    293    TOK_IDENT       num
-  6    24.039     45    '-'             -
-  6    24.033     43    '+'             +
-  6    24.028     42    '*'             *
-  6    24.024    293    TOK_IDENT       num
-  6    24.030    292    TOK_INTCON      10
-  6    24.035    293    TOK_IDENT       chr
-  6    24.041    290    TOK_CHARCON     '0'
-  6    27.007    276    TOK_IF          if
-  6    27.011    293    TOK_IDENT       neg
-  6    27.020     61    '='             =
-  6    27.016    293    TOK_IDENT       num
-  6    27.022    295    NEG             -
-  6    27.024    293    TOK_IDENT       num
-  6    27.027     59    ';'             ;
+  6    28.004    125    '}'             }
   6    29.004    286    TOK_RETURN      return
   6    29.011    293    TOK_IDENT       num
   6    32.001    262    FUNCTION        

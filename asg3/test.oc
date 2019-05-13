@@ -1,7 +1,4 @@
-int main(){
-   //fac( fac(n));
-   int a = 5;
-   fac(n);
-   temp(n);
-   fac(temp(n));
-}
+struct move{
+   int a;
+   int b;
+};

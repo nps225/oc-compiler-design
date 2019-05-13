@@ -256,25 +256,25 @@ alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' ')'
        ;
 
 
-blockS: '{' blockBodyS '}' ';'
+blockS: blockBodyS '}' ';'
                {
-                  destroy($3,$4);
-                  $$ = $1->symChange($1,BLOCK);
-                  $$ = $$->adopt($2);
+                  destroy($2,$3);
+                  $$ = $1;
                }
       // | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
       ;
 
 
-blockBodyS:  multiState 
+blockBodyS: multiState 
              { 
-                
+               // destroy($1); 
+               // $$ = new astree(BLOCK,$1->lloc,"{"); 
                $$ = $1;
              }
-         |  %empty
-            // {
-            //    $$ = $1->symChange($1,BLOCK);
-            // }
+         | '{'
+            {
+                $$ = new astree(BLOCK,$1->lloc,"{"); 
+            }
          ;
 
 
