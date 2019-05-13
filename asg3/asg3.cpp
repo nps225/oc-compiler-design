@@ -16,13 +16,32 @@ FILE* outstream;
 
 void scanToFile(string filename){
   //here we parse the file
-  string filenameTOK = filename + ".tok";
-  string filenameSTR = filename + ".str";
-
+   string filenameTOK = filename + ".tok";
+   string filenameSTR = filename + ".str";
+   string filenameAST = filename + ".ast";
+   FILE* outSTR = fopen (filenameSTR.c_str(), "w");
+   if (!outSTR)
+      fprintf (stderr, "Error creating str file");
+   FILE* outTOK = fopen (filenameTOK.c_str(), "w");
+   if (!outTOK)
+      fprintf (stderr, "Error creating tok file");
+   outstream = outTOK;
+   FILE* outAST = fopen (filenameAST.c_str(), "w");
+   if (!outAST)
+      fprintf (stderr, "Error creating tok file");
   //call yyparse to construct our tree
   int val = yyparse();
+  if(val == 0){
+    parser::root-> astree::dump_tree(outAST,0);
+    string_set::dump (outSTR);
+    astree::print(outTOK,parser::root,0);
+  }
+   destroy(parser::root);
+   fclose(outSTR);
+   fclose(outTOK);
+   fclose(outAST);
+   
 
-  parser::root -> astree::dump_tree(stdout,0);
 
 }
 

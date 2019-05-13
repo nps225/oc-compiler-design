@@ -1,0 +1,225 @@
+  0     0.000    258    ROOT            
+  5    22.001    262    FUNCTION        
+  5    22.001    261    TYPE_ID         
+  5    22.001    285    TOK_VOID        void
+  5    22.006    293    TOK_IDENT       fail
+  5    22.011    263    TOK_PARAM       (
+  5    22.012    261    TYPE_ID         
+  5    22.012    289    TOK_STRING      string
+  5    22.019    293    TOK_IDENT       expr
+  5    22.025    261    TYPE_ID         
+  5    22.025    289    TOK_STRING      string
+  5    22.032    293    TOK_IDENT       file
+  5    22.038    261    TYPE_ID         
+  5    22.038    287    TOK_INT         int
+  5    22.042    293    TOK_IDENT       line
+  5    24.001    262    FUNCTION        
+  5    24.001    261    TYPE_ID         
+  5    24.001    285    TOK_VOID        void
+  5    24.006    293    TOK_IDENT       putchr
+  5    24.013    263    TOK_PARAM       (
+  5    24.014    261    TYPE_ID         
+  5    24.014    287    TOK_INT         int
+  5    24.018    293    TOK_IDENT       chr
+  5    25.001    262    FUNCTION        
+  5    25.001    261    TYPE_ID         
+  5    25.001    285    TOK_VOID        void
+  5    25.006    293    TOK_IDENT       putint
+  5    25.013    263    TOK_PARAM       (
+  5    25.014    261    TYPE_ID         
+  5    25.014    287    TOK_INT         int
+  5    25.018    293    TOK_IDENT       num
+  5    26.001    262    FUNCTION        
+  5    26.001    261    TYPE_ID         
+  5    26.001    285    TOK_VOID        void
+  5    26.006    293    TOK_IDENT       putstr
+  5    26.013    263    TOK_PARAM       (
+  5    26.014    261    TYPE_ID         
+  5    26.014    289    TOK_STRING      string
+  5    26.021    293    TOK_IDENT       str
+  5    28.001    262    FUNCTION        
+  5    28.001    261    TYPE_ID         
+  5    28.001    287    TOK_INT         int
+  5    28.005    293    TOK_IDENT       getchr
+  5    28.011    263    TOK_PARAM       (
+  5    29.001    262    FUNCTION        
+  5    29.001    261    TYPE_ID         
+  5    29.001    289    TOK_STRING      string
+  5    29.008    293    TOK_IDENT       getstr
+  5    29.014    263    TOK_PARAM       (
+  5    30.001    262    FUNCTION        
+  5    30.001    261    TYPE_ID         
+  5    30.001    289    TOK_STRING      string
+  5    30.008    293    TOK_IDENT       getln
+  5    30.013    263    TOK_PARAM       (
+  6     8.001    262    FUNCTION        
+  6     8.001    261    TYPE_ID         
+  6     8.001    287    TOK_INT         int
+  6     8.005    293    TOK_IDENT       strlen
+  6     8.012    263    TOK_PARAM       (
+  6     8.013    261    TYPE_ID         
+  6     8.013    289    TOK_STRING      string
+  6     8.020    293    TOK_IDENT       str
+  6     8.025    265    BLOCK           {
+  6     9.004    261    TYPE_ID         
+  6     9.004    287    TOK_INT         int
+  6     9.008    293    TOK_IDENT       len
+  6     9.014    292    TOK_INTCON      0
+  6    10.004    284    TOK_WHILE       while
+  6    10.020    273    TOK_NE          !=
+  6    10.014    267    TOK_INDEX       [
+  6    10.011    293    TOK_IDENT       str
+  6    10.015    293    TOK_IDENT       len
+  6    10.023    290    TOK_CHARCON     '\0'
+  6    10.033     61    '='             =
+  6    10.029    293    TOK_IDENT       len
+  6    10.039     43    '+'             +
+  6    10.035    293    TOK_IDENT       len
+  6    10.041    292    TOK_INTCON      1
+  6    11.004    286    TOK_RETURN      return
+  6    11.011    293    TOK_IDENT       len
+  6    14.001    262    FUNCTION        
+  6    14.001    261    TYPE_ID         
+  6    14.001    285    TOK_VOID        void
+  6    14.006    293    TOK_IDENT       strcat
+  6    14.013    263    TOK_PARAM       (
+  6    14.014    261    TYPE_ID         
+  6    14.014    289    TOK_STRING      string
+  6    14.021    293    TOK_IDENT       dest
+  6    14.027    261    TYPE_ID         
+  6    14.027    289    TOK_STRING      string
+  6    14.034    293    TOK_IDENT       src
+  6    14.039    265    BLOCK           {
+  6    15.004    261    TYPE_ID         
+  6    15.004    287    TOK_INT         int
+  6    15.008    293    TOK_IDENT       pos
+  6    15.021    268    CALL            (
+  6    15.014    293    TOK_IDENT       strlen
+  6    15.022    293    TOK_IDENT       dest
+  6    16.004    261    TYPE_ID         
+  6    16.004    287    TOK_INT         int
+  6    16.008    293    TOK_IDENT       srcix
+  6    16.016    292    TOK_INTCON      0
+  6    17.004    284    TOK_WHILE       while
+  6    17.022    273    TOK_NE          !=
+  6    17.014    267    TOK_INDEX       [
+  6    17.011    293    TOK_IDENT       src
+  6    17.015    293    TOK_IDENT       srcix
+  6    17.025    290    TOK_CHARCON     '\0'
+  6    17.031    265    BLOCK           {
+  6    18.017     61    '='             =
+  6    18.011    267    TOK_INDEX       [
+  6    18.007    293    TOK_IDENT       dest
+  6    18.012    293    TOK_IDENT       pos
+  6    18.022    267    TOK_INDEX       [
+  6    18.019    293    TOK_IDENT       src
+  6    18.023    293    TOK_IDENT       srcix
+  6    19.011     61    '='             =
+  6    19.007    293    TOK_IDENT       pos
+  6    19.017     43    '+'             +
+  6    19.013    293    TOK_IDENT       pos
+  6    19.019    292    TOK_INTCON      1
+  6    20.013     61    '='             =
+  6    20.007    293    TOK_IDENT       srcix
+  6    20.021     43    '+'             +
+  6    20.015    293    TOK_IDENT       srcix
+  6    20.023    292    TOK_INTCON      1
+  6    22.014     61    '='             =
+  6    22.008    267    TOK_INDEX       [
+  6    22.004    293    TOK_IDENT       dest
+  6    22.009    293    TOK_IDENT       pos
+  6    22.016    290    TOK_CHARCON     '\0'
+  6    25.001    262    FUNCTION        
+  6    25.001    261    TYPE_ID         
+  6    25.001    287    TOK_INT         int
+  6    25.005    293    TOK_IDENT       main
+  6    25.010    263    TOK_PARAM       (
+  6    25.011    261    TYPE_ID         
+  6    25.011    287    TOK_INT         int
+  6    25.015    293    TOK_IDENT       argc
+  6    25.021    261    TYPE_ID         
+  6    25.021    279    TOK_ARRAY       array
+  6    25.027    289    TOK_STRING      string
+  6    25.035    293    TOK_IDENT       argv
+  6    25.041    265    BLOCK           {
+  6    26.001    261    TYPE_ID         
+  6    26.001    287    TOK_INT         int
+  6    26.005    293    TOK_IDENT       length
+  6    26.014    292    TOK_INTCON      0
+  6    27.001    261    TYPE_ID         
+  6    27.001    287    TOK_INT         int
+  6    27.005    293    TOK_IDENT       argi
+  6    27.012    292    TOK_INTCON      1
+  6    28.001    284    TOK_WHILE       while
+  6    28.013    275    TOK_LT          <
+  6    28.008    293    TOK_IDENT       argi
+  6    28.015    293    TOK_IDENT       argc
+  6    28.021    265    BLOCK           {
+  6    29.008     61    '='             =
+  6    29.001    293    TOK_IDENT       length
+  6    29.039     43    '+'             +
+  6    29.017     43    '+'             +
+  6    29.010    293    TOK_IDENT       length
+  6    29.026    268    CALL            (
+  6    29.019    293    TOK_IDENT       strlen
+  6    29.031    267    TOK_INDEX       [
+  6    29.027    293    TOK_IDENT       argv
+  6    29.032    293    TOK_IDENT       argi
+  6    29.041    292    TOK_INTCON      2
+  6    30.006     61    '='             =
+  6    30.001    293    TOK_IDENT       argi
+  6    30.013     43    '+'             +
+  6    30.008    293    TOK_IDENT       argi
+  6    30.015    292    TOK_INTCON      1
+  6    32.008    268    CALL            (
+  6    32.001    293    TOK_IDENT       putstr
+  6    32.009    291    TOK_STRINGCON   "concat length = "
+  6    33.008    268    CALL            (
+  6    33.001    293    TOK_IDENT       putint
+  6    33.009    293    TOK_IDENT       length
+  6    34.008    268    CALL            (
+  6    34.001    293    TOK_IDENT       putchr
+  6    34.009    290    TOK_CHARCON     '\n'
+  6    35.001    261    TYPE_ID         
+  6    35.001    289    TOK_STRING      string
+  6    35.008    293    TOK_IDENT       concat
+  6    35.017    281    TOK_ALLOC       alloc
+  6    35.023    289    TOK_STRING      string
+  6    36.006     61    '='             =
+  6    36.001    293    TOK_IDENT       argi
+  6    36.008    292    TOK_INTCON      1
+  6    37.008    268    CALL            (
+  6    37.001    293    TOK_IDENT       putchr
+  6    37.009    290    TOK_CHARCON     '['
+  6    38.001    284    TOK_WHILE       while
+  6    38.013    275    TOK_LT          <
+  6    38.008    293    TOK_IDENT       argi
+  6    38.015    293    TOK_IDENT       argc
+  6    38.021    265    BLOCK           {
+  6    39.008    268    CALL            (
+  6    39.001    293    TOK_IDENT       strcat
+  6    39.009    293    TOK_IDENT       concat
+  6    39.017    291    TOK_STRINGCON   "("
+  6    40.008    268    CALL            (
+  6    40.001    293    TOK_IDENT       strcat
+  6    40.009    293    TOK_IDENT       concat
+  6    40.021    267    TOK_INDEX       [
+  6    40.017    293    TOK_IDENT       argv
+  6    40.022    293    TOK_IDENT       argi
+  6    41.008    268    CALL            (
+  6    41.001    293    TOK_IDENT       strcat
+  6    41.009    293    TOK_IDENT       concat
+  6    41.017    291    TOK_STRINGCON   ")"
+  6    42.006     61    '='             =
+  6    42.001    293    TOK_IDENT       argi
+  6    42.013     43    '+'             +
+  6    42.008    293    TOK_IDENT       argi
+  6    42.015    292    TOK_INTCON      1
+  6    44.008    268    CALL            (
+  6    44.001    293    TOK_IDENT       putstr
+  6    44.009    293    TOK_IDENT       concat
+  6    45.008    268    CALL            (
+  6    45.001    293    TOK_IDENT       putstr
+  6    45.009    291    TOK_STRINGCON   "]\n"
+  6    46.001    286    TOK_RETURN      return
+  6    46.008    292    TOK_INTCON      0
