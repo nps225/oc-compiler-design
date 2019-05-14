@@ -38,35 +38,35 @@
 ; 6. 23:    return 0;
 ; 6. 24: }
 ; 6. 25: 
-; 6. 26: void insertion_sort (int size, array<string> array) {
+; 6. 26: void insertion_sort (int size, array<string> words) {
 ; 6. 27:    int sorted = 1;
 ; 6. 28:    int slot = 0;
 ; 6. 29:    string element = nullptr;
 ; 6. 30:    int contin = 0;
 ; 6. 31:    while (sorted < size) {
 ; 6. 32:       slot = sorted;
-; 6. 33:       element = array[slot];
+; 6. 33:       element = words[slot];
 ; 6. 34:       contin = 1;
 ; 6. 35:       while (contin) {
 ; 6. 36:          if (slot == 0) {
 ; 6. 37:             contin = 0;
-; 6. 38:          }else if (strcmp (array[slot - 1], element) <= 0) {
+; 6. 38:          }else if (strcmp (words[slot - 1], element) <= 0) {
 ; 6. 39:             contin = 0;
 ; 6. 40:          }else {
-; 6. 41:             array[slot] = array[slot - 1];
+; 6. 41:             words[slot] = words[slot - 1];
 ; 6. 42:             slot = slot - 1;
 ; 6. 43:          }
 ; 6. 44:       }
-; 6. 45:       array[slot] = element;
+; 6. 45:       words[slot] = element;
 ; 6. 46:       sorted = sorted + 1;
 ; 6. 47:    }
 ; 6. 48: }
 ; 6. 49: 
 ; 6. 50: 
-; 6. 51: void print_array (int size, array<string> array) {
+; 6. 51: void print_array (int size, array<string> words) {
 ; 6. 52:    int index = 0;
 ; 6. 53:    while (index < size) {
-; 6. 54:       putstr (array[index]);
+; 6. 54:       putstr (words[index]);
 ; 6. 55:       putchr ('\n');
 ; 6. 56:       index = index + 1;
 ; 6. 57:    }

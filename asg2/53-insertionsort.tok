@@ -164,7 +164,7 @@
   6    26.037    274    TOK_LT          <
   6    26.038    260    TOK_STRING      string
   6    26.044    276    TOK_GT          >
-  6    26.046    268    TOK_ARRAY       array
+  6    26.046    279    TOK_IDENT       words
   6    26.051     41    ')'             )
   6    26.053    123    '{'             {
   6    27.004    259    TOK_INT         int
@@ -200,7 +200,7 @@
   6    32.020     59    ';'             ;
   6    33.007    279    TOK_IDENT       element
   6    33.015     61    '='             =
-  6    33.017    268    TOK_ARRAY       array
+  6    33.017    279    TOK_IDENT       words
   6    33.022     91    '['             [
   6    33.023    279    TOK_IDENT       slot
   6    33.027     93    ']'             ]
@@ -231,7 +231,7 @@
   6    38.019     40    '('             (
   6    38.020    279    TOK_IDENT       strcmp
   6    38.027     40    '('             (
-  6    38.028    268    TOK_ARRAY       array
+  6    38.028    279    TOK_IDENT       words
   6    38.033     91    '['             [
   6    38.034    279    TOK_IDENT       slot
   6    38.039     45    '-'             -
@@ -251,12 +251,12 @@
   6    40.010    125    '}'             }
   6    40.011    263    TOK_ELSE        else
   6    40.016    123    '{'             {
-  6    41.013    268    TOK_ARRAY       array
+  6    41.013    279    TOK_IDENT       words
   6    41.018     91    '['             [
   6    41.019    279    TOK_IDENT       slot
   6    41.023     93    ']'             ]
   6    41.025     61    '='             =
-  6    41.027    268    TOK_ARRAY       array
+  6    41.027    279    TOK_IDENT       words
   6    41.032     91    '['             [
   6    41.033    279    TOK_IDENT       slot
   6    41.038     45    '-'             -
@@ -271,7 +271,7 @@
   6    42.028     59    ';'             ;
   6    43.010    125    '}'             }
   6    44.007    125    '}'             }
-  6    45.007    268    TOK_ARRAY       array
+  6    45.007    279    TOK_IDENT       words
   6    45.012     91    '['             [
   6    45.013    279    TOK_IDENT       slot
   6    45.017     93    ']'             ]
@@ -296,7 +296,7 @@
   6    51.034    274    TOK_LT          <
   6    51.035    260    TOK_STRING      string
   6    51.041    276    TOK_GT          >
-  6    51.043    268    TOK_ARRAY       array
+  6    51.043    279    TOK_IDENT       words
   6    51.048     41    ')'             )
   6    51.050    123    '{'             {
   6    52.004    259    TOK_INT         int
@@ -313,7 +313,7 @@
   6    53.025    123    '{'             {
   6    54.007    279    TOK_IDENT       putstr
   6    54.014     40    '('             (
-  6    54.015    268    TOK_ARRAY       array
+  6    54.015    279    TOK_IDENT       words
   6    54.020     91    '['             [
   6    54.021    279    TOK_IDENT       index
   6    54.026     93    ']'             ]

@@ -61,22 +61,24 @@
   6     6.011    279    TOK_IDENT       data
   6     6.015     59    ';'             ;
   6     7.004    271    TOK_PTR         ptr
-  6     7.007    274    TOK_LT          <
-  6     7.008    279    TOK_IDENT       node
-  6     7.012    276    TOK_GT          >
-  6     7.014    279    TOK_IDENT       link
-  6     7.018     59    ';'             ;
+  6     7.008    274    TOK_LT          <
+  6     7.009    266    TOK_STRUCT      struct
+  6     7.016    279    TOK_IDENT       node
+  6     7.020    276    TOK_GT          >
+  6     7.022    279    TOK_IDENT       link
+  6     7.026     59    ';'             ;
   6     8.001    125    '}'             }
   6     8.002     59    ';'             ;
   6    10.001    266    TOK_STRUCT      struct
   6    10.008    279    TOK_IDENT       stack
   6    10.014    123    '{'             {
   6    11.004    271    TOK_PTR         ptr
-  6    11.007    274    TOK_LT          <
-  6    11.008    279    TOK_IDENT       node
-  6    11.012    276    TOK_GT          >
-  6    11.014    279    TOK_IDENT       top
-  6    11.017     59    ';'             ;
+  6    11.008    274    TOK_LT          <
+  6    11.009    266    TOK_STRUCT      struct
+  6    11.016    279    TOK_IDENT       node
+  6    11.020    276    TOK_GT          >
+  6    11.022    279    TOK_IDENT       top
+  6    11.025     59    ';'             ;
   6    12.001    125    '}'             }
   6    12.002     59    ';'             ;
   6    14.001    259    TOK_INT         int
@@ -168,18 +170,20 @@
   6    25.047     41    ')'             )
   6    25.049    123    '{'             {
   6    26.004    271    TOK_PTR         ptr
-  6    26.007    274    TOK_LT          <
-  6    26.008    279    TOK_IDENT       node
-  6    26.012    276    TOK_GT          >
-  6    26.014    279    TOK_IDENT       tmp
-  6    26.018     61    '='             =
-  6    26.020    270    TOK_ALLOC       alloc
-  6    26.025    274    TOK_LT          <
-  6    26.026    279    TOK_IDENT       node
-  6    26.030    276    TOK_GT          >
-  6    26.031     40    '('             (
-  6    26.032     41    ')'             )
-  6    26.033     59    ';'             ;
+  6    26.008    274    TOK_LT          <
+  6    26.009    266    TOK_STRUCT      struct
+  6    26.016    279    TOK_IDENT       node
+  6    26.020    276    TOK_GT          >
+  6    26.022    279    TOK_IDENT       tmp
+  6    26.026     61    '='             =
+  6    26.028    270    TOK_ALLOC       alloc
+  6    26.033    274    TOK_LT          <
+  6    26.034    266    TOK_STRUCT      struct
+  6    26.041    279    TOK_IDENT       node
+  6    26.045    276    TOK_GT          >
+  6    26.046     40    '('             (
+  6    26.047     41    ')'             )
+  6    26.048     59    ';'             ;
   6    27.004    123    '{'             {
   6    27.005    262    TOK_IF          if
   6    27.008     40    '('             (

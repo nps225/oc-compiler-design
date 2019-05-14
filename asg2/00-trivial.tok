@@ -1,0 +1,10 @@
+# 1 "00-trivial.oc"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "00-trivial.oc"
+  3     3.001    259    TOK_INT         int
+  3     3.005    279    TOK_IDENT       main
+  3     3.009     40    '('             (
+  3     3.010     41    ')'             )
+  3     3.011    123    '{'             {
+  3     3.012    125    '}'             }

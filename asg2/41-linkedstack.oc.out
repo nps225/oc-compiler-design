@@ -19,11 +19,11 @@
 ; 6.  4: 
 ; 6.  5: struct node {
 ; 6.  6:    string data;
-; 6.  7:    ptr<node> link;
+; 6.  7:    ptr <struct node> link;
 ; 6.  8: };
 ; 6.  9: 
 ; 6. 10: struct stack {
-; 6. 11:    ptr<node> top;
+; 6. 11:    ptr <struct node> top;
 ; 6. 12: };
 ; 6. 13: 
 ; 6. 14: int empty (ptr<struct stack> stack) {
@@ -38,7 +38,7 @@
 ; 6. 23: }
 ; 6. 24: 
 ; 6. 25: void push (ptr<struct stack> stack, string str) {
-; 6. 26:    ptr<node> tmp = alloc<node>();
+; 6. 26:    ptr <struct node> tmp = alloc<struct node>();
 ; 6. 27:    {if (not (stack != nullptr)) fail ("stack != nullptr", "41-linkedstack.oc", 27);};
 ; 6. 28:    tmp->data = str;
 ; 6. 29:    tmp->link = stack->top;

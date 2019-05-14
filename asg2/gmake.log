@@ -1,1 +1,5 @@
-gmake: Nothing to be done for 'all'.
+g++ -std=gnu++17 -g -O0 -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -fdiagnostics-color=never -c astree.cpp
+g++ -std=gnu++17 -g -O0 -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -fdiagnostics-color=never -c lyutils.cpp
+g++ -std=gnu++17 -g -O0 -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -fdiagnostics-color=never -c asg2.cpp
+g++ -std=gnu++17 -g -O0 -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -fdiagnostics-color=never -c main.cpp
+g++ -std=gnu++17 -g -O0 -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -fdiagnostics-color=never -ooc  astree.o lyutils.o string_set.o auxlib.o asg2.o main.o yylex.o yyparse.o

@@ -175,14 +175,6 @@ select: state
         }
       ;
 
-// ifelse: TOK_IF '(' express ')' select TOK_ELSE select
-//         {
-//            destroy($2,$4);
-//            destroy($6);
-//            $$ = $1->adopt($3,$5);
-//            $$ = $$->adopt($7);
-//         }
-//         | TOK_ELSE select 
 
 ifelse: TOK_IF '(' express ')' select TOK_ELSE select
       {
@@ -202,28 +194,6 @@ ifelse: TOK_IF '(' express ')' select TOK_ELSE select
          $$ = $$->adopt($2);
       }
 
-//old version of my if else handling -> produced
-//dangling else
-// ifelse: TOK_IF '(' express ')' select else
-//        {
-//          destroy($2,$4);
-//          $$ = $1-> adopt($3,$5);
-//          $$ = $$->adopt($6);
-//        }
-//        |TOK_ELSE select
-//        {
-//           destroy($1);
-//           $$ = $$->adopt($2);  
-//        }
-       
-//        ;
-
-// else: TOK_ELSE state 
-//       {
-//          destroy($1);
-//          $$ = $2;
-//       }
-//       | %empty %prec TOK_IF
 
 return : TOK_RETURN ';'
         {
@@ -367,14 +337,6 @@ state:   vardecl
          }
          ;
 
-// old code that may need later
-//          | statement expr ';'
-//             {
-//                destroy($3);
-//                $$ = new astree(TOK_PARAM,$1->lloc,"");
-//                $$ = $$->adopt($1,$2);
-//             }
-//          ;
 
 
 express: binop
