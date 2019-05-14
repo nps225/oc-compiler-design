@@ -1,7 +1,6 @@
 gmake --no-print-directory deps
 flex --outfile=yylex.cpp scanner.l
 bison --defines=yyparse.h --output=yyparse.cpp parser.y
-parser.y: warning: 1 shift/reduce conflict [-Wconflicts-sr]
 g++ -std=gnu++17 -MM astree.cpp lyutils.cpp string_set.cpp auxlib.cpp asg3.cpp main.cpp yylex.cpp yyparse.cpp >>Makefile.deps
 g++ -std=gnu++17 -g -O0 -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -fdiagnostics-color=never -c astree.cpp
 g++ -std=gnu++17 -g -O0 -Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast -fdiagnostics-color=never -c lyutils.cpp

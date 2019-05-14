@@ -90,7 +90,7 @@ function : identif '(' ')' ';'
                  $$ = $$->adopt($1,$2);
                  $$ = $$->adopt($4);
                }
-	| identif param ')' block
+          | identif param ')' block
                {
                  destroy($3);
                  $$ = new astree(FUNCTION,$1->lloc,"");

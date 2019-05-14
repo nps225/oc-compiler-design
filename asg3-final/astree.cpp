@@ -62,7 +62,8 @@ void astree::dump_node (FILE* outfile) {
             parser::get_tname (symbol),
             lexinfo->c_str(),lloc.filenr, 
             lloc.linenr, lloc.offset);
-   // fprintf(outfile, "%s %zd.%zd.%zd",lexinfo->c_str(),lloc.filenr, lloc.linenr, lloc.offset);
+   // fprintf(outfile, "%s %zd.%zd.%zd",lexinfo->
+   // c_str(),lloc.filenr, lloc.linenr, lloc.offset);
    for (size_t child = 0; child < children.size(); ++child) {
       // fprintf (outfile, " %p",
       //          static_cast<const void*> (children.at(child)));

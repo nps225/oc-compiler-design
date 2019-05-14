@@ -2,9 +2,7 @@ Done processing asg2.cpp
 Done processing asg2.h
 Done processing asg3.cpp
 Done processing asg3.h
-astree.cpp:65:  Lines should very rarely be longer than 90 characters  [whitespace/line_length] [4]
 Done processing astree.cpp
-Total errors found: 1
 Done processing astree.h
 Done processing auxlib.cpp
 Done processing auxlib.h

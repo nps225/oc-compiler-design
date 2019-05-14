@@ -10,10 +10,10 @@
 96-unterminated.oc:9:8: warning: missing terminating " character [enabled by default]
     s = "abc|\
         ^
-Èû.:5.15: bad string
-Èû.:5.20: syntax error, unexpected ';'
-Èû.:6.15: bad string
-Èû.:6.49: invalid source character (\)
-Èû.:6.50: bad string
-Èû.:6.61: syntax error, unexpected TOK_IDENT
-Èû.:6.64: invalid source character (|)
+ÈÛ:5.15: bad string
+ÈÛ:5.20: syntax error, unexpected ';'
+ÈÛ:6.15: bad string
+ÈÛ:6.49: invalid source character (\)
+ÈÛ:6.50: bad string
+ÈÛ:6.61: syntax error, unexpected TOK_IDENT
+ÈÛ:6.64: invalid source character (|)
