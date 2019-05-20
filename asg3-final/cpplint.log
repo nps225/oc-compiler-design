@@ -15,7 +15,6 @@ Done processing oclib.h
 Done processing octypes.h
 Ignoring parser.tab.c; not a valid file name (cc, h, cpp, cu, cuh)
 Done processing parser.tab.c
-Done processing parser.tab.h
 Done processing string_set.cpp
 Done processing string_set.h
 Done processing wm-main.cpp

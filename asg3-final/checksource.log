@@ -3,5 +3,4 @@ checksource: line length > 72 characters
         375--383, 427, 489, 491, 493, 496--498, 740, 810--815, 817--818, 
         827, 1337, 1450, 1587, 1606--1608, 2185, 2246, 2328, 2478, 2499, 
         2551, 3282, 3333
-   file "parser.tab.h": 2 errors: lines 5, 18
-checksource: TOTAL COMPLAINTS: 50
+checksource: TOTAL COMPLAINTS: 48

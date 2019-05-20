@@ -1,0 +1,4 @@
+int main(){
+    if(a==b){b=c;}
+    if(c==d){g=h;}else{i=j;}
+}

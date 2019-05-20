@@ -1,0 +1,27 @@
+  0     0.000    258    ROOT            
+  3     1.001    262    FUNCTION        
+  3     1.001    261    TYPE_ID         
+  3     1.001    288    TOK_INT         int
+  3     1.005    294    TOK_IDENT       main
+  3     1.009    263    TOK_PARAM       (
+  3     1.011    265    BLOCK           {
+  3     2.005    277    TOK_IF          if
+  3     2.009    273    TOK_EQ          ==
+  3     2.008    294    TOK_IDENT       a
+  3     2.011    294    TOK_IDENT       b
+  3     2.013    265    BLOCK           {
+  3     2.015     61    '='             =
+  3     2.014    294    TOK_IDENT       b
+  3     2.016    294    TOK_IDENT       c
+  3     3.005    277    TOK_IF          if
+  3     3.009    273    TOK_EQ          ==
+  3     3.008    294    TOK_IDENT       c
+  3     3.011    294    TOK_IDENT       d
+  3     3.013    265    BLOCK           {
+  3     3.015     61    '='             =
+  3     3.014    294    TOK_IDENT       g
+  3     3.016    294    TOK_IDENT       h
+  3     3.023    265    BLOCK           {
+  3     3.025     61    '='             =
+  3     3.024    294    TOK_IDENT       i
+  3     3.026    294    TOK_IDENT       j

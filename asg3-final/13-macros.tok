@@ -87,13 +87,13 @@
   6    11.012    292    TOK_STRINGCON   "] compiled "
   6    12.011    268    CALL            (
   6    12.004    294    TOK_IDENT       putstr
-  6    12.012    292    TOK_STRINGCON   "May 13 2019"
+  6    12.012    292    TOK_STRINGCON   "May 14 2019"
   6    13.011    268    CALL            (
   6    13.004    294    TOK_IDENT       putstr
   6    13.012    292    TOK_STRINGCON   " "
   6    14.011    268    CALL            (
   6    14.004    294    TOK_IDENT       putstr
-  6    14.012    292    TOK_STRINGCON   "17:48:12"
+  6    14.012    292    TOK_STRINGCON   "10:17:51"
   6    15.011    268    CALL            (
   6    15.004    294    TOK_IDENT       putstr
   6    15.012    292    TOK_STRINGCON   "\n"

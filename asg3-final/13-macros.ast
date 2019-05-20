@@ -87,13 +87,13 @@ ROOT "" 0.0.0
             TOK_STRINGCON ""] compiled "" 6.11.12
          CALL "(" 6.12.11
             TOK_IDENT "putstr" 6.12.4
-            TOK_STRINGCON ""May 13 2019"" 6.12.12
+            TOK_STRINGCON ""May 14 2019"" 6.12.12
          CALL "(" 6.13.11
             TOK_IDENT "putstr" 6.13.4
             TOK_STRINGCON "" "" 6.13.12
          CALL "(" 6.14.11
             TOK_IDENT "putstr" 6.14.4
-            TOK_STRINGCON ""17:48:12"" 6.14.12
+            TOK_STRINGCON ""10:17:51"" 6.14.12
          CALL "(" 6.15.11
             TOK_IDENT "putstr" 6.15.4
             TOK_STRINGCON ""\n"" 6.15.12
