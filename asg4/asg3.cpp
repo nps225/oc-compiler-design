@@ -11,6 +11,8 @@
 #include "string_set.h"
 #include "lyutils.h"
 #include "yyparse.h"
+#include "typeChecker.h"
+#include "symbol.h"
 
 FILE* outstream;
 
@@ -32,6 +34,8 @@ void scanToFile(string filename){
   //call yyparse to construct our tree
   int val = yyparse();
   if(val == 0){
+    //handle symbol table part of code
+    post_order(parser::root);
     parser::root-> astree::dump_tree(outAST,0);
     string_set::dump (outSTR);
     astree::print(outTOK,parser::root,0);

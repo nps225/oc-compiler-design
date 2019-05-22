@@ -1,0 +1,14 @@
+string_set[   1]:    5344662657899890615 0x55bcede90e98->";"
+                      21606623943142546 0x55bcede90bb8->"{"
+string_set[   3]:   12597418120160561823 0x55bcede908c8->"int"
+string_set[   4]:    7995238595416485409 0x55bcede90e08->"5"
+string_set[   9]:   12868445110721718657 0x55bcede90b28->")"
+string_set[  10]:    6142509188972423790 0x55bcede8b6e8->""
+                   11868120863286193964 0x55bcede90958->"main"
+string_set[  11]:    4993892634952068459 0x55bcede90c98->"a"
+string_set[  13]:   13686721134187162920 0x55bcede90ef8->"}"
+                   15816506932648033945 0x55bcede90a28->"("
+string_set[  16]:   11597697714117577063 0x55bcede90998->"="
+load_factor = 0.647
+bucket_count = 17
+max_bucket_size = 2
