@@ -1,0 +1,65 @@
+  0     0.000    258    ROOT            
+  5    22.001    262    FUNCTION        
+  5    22.001    261    TYPE_ID         
+  5    22.001    286    TOK_VOID        void
+  5    22.006    294    TOK_IDENT       fail
+  5    22.011    263    TOK_PARAM       (
+  5    22.012    261    TYPE_ID         
+  5    22.012    290    TOK_STRING      string
+  5    22.019    294    TOK_IDENT       expr
+  5    22.025    261    TYPE_ID         
+  5    22.025    290    TOK_STRING      string
+  5    22.032    294    TOK_IDENT       file
+  5    22.038    261    TYPE_ID         
+  5    22.038    288    TOK_INT         int
+  5    22.042    294    TOK_IDENT       line
+  5    24.001    262    FUNCTION        
+  5    24.001    261    TYPE_ID         
+  5    24.001    286    TOK_VOID        void
+  5    24.006    294    TOK_IDENT       putchr
+  5    24.013    263    TOK_PARAM       (
+  5    24.014    261    TYPE_ID         
+  5    24.014    288    TOK_INT         int
+  5    24.018    294    TOK_IDENT       chr
+  5    25.001    262    FUNCTION        
+  5    25.001    261    TYPE_ID         
+  5    25.001    286    TOK_VOID        void
+  5    25.006    294    TOK_IDENT       putint
+  5    25.013    263    TOK_PARAM       (
+  5    25.014    261    TYPE_ID         
+  5    25.014    288    TOK_INT         int
+  5    25.018    294    TOK_IDENT       num
+  5    26.001    262    FUNCTION        
+  5    26.001    261    TYPE_ID         
+  5    26.001    286    TOK_VOID        void
+  5    26.006    294    TOK_IDENT       putstr
+  5    26.013    263    TOK_PARAM       (
+  5    26.014    261    TYPE_ID         
+  5    26.014    290    TOK_STRING      string
+  5    26.021    294    TOK_IDENT       str
+  5    28.001    262    FUNCTION        
+  5    28.001    261    TYPE_ID         
+  5    28.001    288    TOK_INT         int
+  5    28.005    294    TOK_IDENT       getchr
+  5    28.011    263    TOK_PARAM       (
+  5    29.001    262    FUNCTION        
+  5    29.001    261    TYPE_ID         
+  5    29.001    290    TOK_STRING      string
+  5    29.008    294    TOK_IDENT       getstr
+  5    29.014    263    TOK_PARAM       (
+  5    30.001    262    FUNCTION        
+  5    30.001    261    TYPE_ID         
+  5    30.001    290    TOK_STRING      string
+  5    30.008    294    TOK_IDENT       getln
+  5    30.013    263    TOK_PARAM       (
+  6     6.001    262    FUNCTION        
+  6     6.001    261    TYPE_ID         
+  6     6.001    288    TOK_INT         int
+  6     6.005    294    TOK_IDENT       main
+  6     6.009    263    TOK_PARAM       (
+  6     6.012    265    BLOCK           {
+  6     7.011    268    CALL            (
+  6     7.004    294    TOK_IDENT       putstr
+  6     7.012    292    TOK_STRINGCON   "Hello, world!\n"
+  6     8.004    287    TOK_RETURN      return
+  6     8.011    293    TOK_INTCON      0

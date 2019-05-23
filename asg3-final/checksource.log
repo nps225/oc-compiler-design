@@ -1,0 +1,6 @@
+checksource: line length > 72 characters
+   file "parser.tab.c": 48 errors: lines 5, 18, 261, 282, 312--314, 359, 
+        375--383, 427, 489, 491, 493, 496--498, 740, 810--815, 817--818, 
+        827, 1337, 1450, 1587, 1606--1608, 2185, 2246, 2328, 2478, 2499, 
+        2551, 3282, 3333
+checksource: TOTAL COMPLAINTS: 48

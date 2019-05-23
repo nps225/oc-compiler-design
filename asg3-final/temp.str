@@ -1,0 +1,13 @@
+string_set[   0]:      21606623943142546 0x1b4f138->"{"
+                    1583576014053361350 0x1b4ef18->"str"
+string_set[   1]:   13686721134187162920 0x1b4f228->"}"
+string_set[   3]:   15816506932648033945 0x1b4eaa8->"("
+                   12597418120160561823 0x1b4eaf8->"int"
+string_set[   4]:    5344662657899890615 0x1b4f2e8->";"
+string_set[   5]:   13497578857207247412 0x1b4eda8->"string"
+string_set[   6]:    6142509188972423790 0x1b4a9b8->""
+string_set[   7]:   12868445110721718657 0x1b4f098->")"
+string_set[   8]:    6378628904606585349 0x1b4a9d8->"atoi"
+load_factor = 0.909
+bucket_count = 11
+max_bucket_size = 2

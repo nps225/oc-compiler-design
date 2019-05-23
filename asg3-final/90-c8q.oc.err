@@ -1,0 +1,12 @@
+ˆ[0:1.7: syntax error, unexpected '[', expecting '('
+ˆ[0:2.2: invalid source character (|)
+ˆ[0:2.19: invalid source character (?)
+ˆ[0:2.20: invalid source character (!)
+ˆ[0:2.33: invalid source character (:)
+ˆ[0:3.14: invalid source character (&)
+ˆ[0:3.16: invalid source character (|)
+ˆ[0:3.18: invalid source character (&)
+ˆ[0:3.20: invalid source character (|)
+ˆ[0:3.21: invalid source character (|)
+ˆ[0:3.29: invalid source character (|)
+ˆ[0:3.33: invalid source character (|)

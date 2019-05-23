@@ -1,10 +1,3 @@
-# 1 "11-numbers.oc"
-# 1 "<built-in>"
-# 1 "<command-line>"
-# 1 "11-numbers.oc"
-# 1 "oclib.h"
-# 22 "oclib.h"
-# 4 "11-numbers.oc"
   0     0.000    258    ROOT            
   5    22.001    262    FUNCTION        
   5    22.001    261    TYPE_ID         
@@ -90,7 +83,7 @@
   6    11.029     61    '='             =
   6    11.024    293    TOK_IDENT       done
   6    11.031    292    TOK_INTCON      1
-  6    12.007    293    TOK_IDENT       number
+  6    11.032     59    ';'             ;
   6    12.014     61    '='             =
   6    12.007    293    TOK_IDENT       number
   6    12.023     43    '+'             +

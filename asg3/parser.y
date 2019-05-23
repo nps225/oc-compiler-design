@@ -25,14 +25,14 @@
 }
 
 %token  ROOT IDENT NUMBER TYPE_ID FUNCTION TOK_PARAM TOK_PROTOTYPE
-%token  BLOCK TOK_NULLPTR TOK_INDEX CALL ENDIF
+%token  BLOCK TOK_NULLPTR TOK_INDEX CALL ENDIF TOK_IFELSE
 %token  TOK_GE TOK_LE TOK_EQ TOK_NE TOK_GT TOK_LT
 %token  TOK_IF TOK_ELSE TOK_STRUCT TOK_ARRAY TOK_NOT
 %token  TOK_ALLOC TOK_PTR TOK_ARROW TOK_WHILE TOK_VOID
 %token  TOK_RETURN TOK_INT TOK_CHAR TOK_STRING
 %token  TOK_CHARCON TOK_STRINGCON TOK_INTCON TOK_IDENT
 
-%right TOK_IF TOK_ELSE
+%right TOK_IFELSE TOK_IF TOK_ELSE
 %right  '='
 %left   TOK_EQ TOK_NE TOK_LT TOK_LE TOK_GT TOK_GE
 %left   '+' '-'
@@ -67,13 +67,6 @@ struct : TOK_STRUCT TOK_IDENT blockS
          // destroy($4);
          $$ = $1->adopt($2,$3);
        }
-       | TOK_STRUCT TOK_IDENT '{''}' ';'
-       {
-          destroy($1,$4);
-          destroy($5);
-          $3 = $3->symChange($3,BLOCK);
-          $$ = $1->adopt($2,$3);
-       }
 
 
 function : identif '(' ')' ';' 
@@ -97,7 +90,7 @@ function : identif '(' ')' ';'
                  $$ = $$->adopt($1,$2);
                  $$ = $$->adopt($4);
                }
-	      | identif param ')' block
+	| identif param ')' block
                {
                  destroy($3);
                  $$ = new astree(FUNCTION,$1->lloc,"");
@@ -182,26 +175,25 @@ select: state
         }
       ;
 
-ifelse: TOK_IF '(' express ')' select else
-       {
-         destroy($2,$4);
-         $$ = $1-> adopt($3,$5);
-         $$ = $$->adopt($6);
-       }
-       |TOK_ELSE select
-       {
-          destroy($1);
-          $$ = $$->adopt($2);  
-       }
-       
-       ;
 
-else: TOK_ELSE state 
+ifelse: TOK_IF '(' express ')' select TOK_ELSE select
+      {
+         destroy($2,$4);
+         destroy($6);
+         $$ = $1->adopt($3,$5);
+         $$ = $$->adopt($7);
+      }
+      | TOK_IF '(' express ')' select 
+      {
+         destroy($2,$4);
+         $$ = $1->adopt($3,$5);
+      }
+      | TOK_ELSE select
       {
          destroy($1);
-         $$ = $2;
+         $$ = $$->adopt($2);
       }
-      | %empty %prec TOK_IF
+
 
 return : TOK_RETURN ';'
         {
@@ -263,55 +255,55 @@ alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' ')'
        ;
 
 
-blockS: '{' blockBodyS '}' ';'
+blockS: blockBodyS '}' ';'
                {
-                  destroy($3,$4);
-                  $$ = $1->symChange($1,BLOCK);
-                  $$ = $$->adopt($2);
+                  destroy($2,$3  );
+                  $$ = $1;
                }
       // | blockBody '}' ';' {destroy($2,$3); $$ = $1;}
       ;
 
 
-blockBodyS:  multiState 
+blockBodyS: multiState 
              { 
-                
+               // destroy($1); 
+               // $$ = new astree(BLOCK,$1->lloc,"{"); 
                $$ = $1;
              }
-            // {
-            //    $$ = $1->symChange($1,BLOCK);
-            // }
+         | '{'
+            {
+                $$ = new astree(BLOCK,$1->lloc,"{"); 
+            }
          ;
 
 
-block: '{' blockBody '}'
-               {
-                  destroy($3);
-                  $$ = $1->symChange($1,BLOCK);
-                  $$ = $$->adopt($2);
-               }
-         | '{' '}'
+block: blockBody '}'
                {
                   destroy($2);
-                  $$ = $1->symChange($1,BLOCK);
+                  $$ = $1;
                }
       ;
 
 
-blockBody:  multiState 
+blockBody: multiState 
              { 
-                
                $$ = $1;
              }
+         | '{'
+            {
+                $$ = new astree(BLOCK,$1->lloc,"{"); 
+            }
          ;
 
-multiState: state 
+multiState: '{' state 
            {
-              $$ = $1;
+              $$ = $1->symChange($1,BLOCK);
+              $$ = $$ ->adopt($2);
            }
            | multiState state
            {
-              $$ = $1->adopt($2);
+              $$ = $1->symChange($1,BLOCK);
+              $1 = $1->adopt($2);
            }
 
 state:   vardecl
@@ -345,14 +337,6 @@ state:   vardecl
          }
          ;
 
-// old code that may need later
-//          | statement expr ';'
-//             {
-//                destroy($3);
-//                $$ = new astree(TOK_PARAM,$1->lloc,"");
-//                $$ = $$->adopt($1,$2);
-//             }
-//          ;
 
 
 express: binop

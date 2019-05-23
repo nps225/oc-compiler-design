@@ -1,0 +1,28 @@
+; 0.  1: # 1 "91-typecheck.oc"; 0.  0: 
+; 0.  1: # 1 "<built-in>"
+; 1.  1: # 1 "<command-line>"
+; 2.  1: # 1 "91-typecheck.oc"
+; 3.  1: # 9 "91-typecheck.oc"
+; 4.  9: int[] a = null;
+; 4. 10: reference[] a = new string[10];
+; 4. 11: void foo();
+; 4. 12: void foo (int a);
+; 4. 13: void foo (int[] a, int[] b) {int x = a + b;}
+; 4. 14: struct foo { int a; int b; }
+; 4. 15: 
+; 4. 16: int main() {
+; 4. 17:    a + b;
+; 4. 18:    f();
+; 4. 19:    f (x, y+3, z);
+; 4. 20:    foo + bar;
+; 4. 21:    a = b = c = d;
+; 4. 22:    test = abc + def + ghi;
+; 4. 23:    this + 23 * a + "hello";
+; 4. 24:    while (a < b) f = f + 1;
+; 4. 25:    return 3 + 4;
+; 4. 26:    a[i] = b[j];
+; 4. 27:    return;
+; 4. 28:    while (TRUE) {a = 3; b = 4; }
+; 4. 29:    if (a == b) f (x);
+; 4. 30:    if (a != b) y = 3; else f (y, z);
+; 4. 31: }

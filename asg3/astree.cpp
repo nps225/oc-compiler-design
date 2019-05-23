@@ -93,16 +93,6 @@ void astree::dump (FILE* outfile, astree* tree) {
 * 
 */
 
-/*
-*  1st 1 digit
-*  2nd 2 digits
-*  .
-*  3 digits padded 0
-*  3 digits 3 digits right aligned
-*  string length 13
-* 
-*/
-
 void astree::print (FILE* outfile, astree* tree, int depth) {
    //fprintf (outfile, "; %*s", depth * 3, "");
    // fprintf (outfile, "%s \"%s\" (%zd.%zd.%zd)\n",
@@ -110,22 +100,31 @@ void astree::print (FILE* outfile, astree* tree, int depth) {
    //          tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset);
 
    // out = outfile;
-
-   fprintf(outfile, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n",
+ 
+   fprintf(outfile, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n", 
                tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
-               tree->symbol,parser::get_tname (tree->symbol),
+               tree->symbol,parser::get_tname (tree->symbol), 
                   tree->lexinfo->c_str());
    // fprintf(outfile, "   %zd  ", tree->lloc.filenr);
    //  fprintf(outfile, "\n");
-
+   
    for (astree* child: tree->children) {
       astree::print (outfile, child, depth + 1);
    }
 }
 
+// void astree::print (FILE* outfile, astree* tree, int depth) {
+//    fprintf (outfile, "; %*s", depth * 3, "");
+//    fprintf (outfile, "%s \"%s\" (%zd.%zd.%zd)\n",
+//             parser::get_tname (tree->symbol), tree->lexinfo->c_str(),
+//             tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset);
+//    for (astree* child: tree->children) {
+//       astree::print (outfile, child, depth + 1);
+//    }
+// }
 
 void destroy (astree* tree1, astree* tree2) {
-   // if (tree1 != nullptr) delete tree1;
+   if (tree1 != nullptr) delete tree1;
    if (tree2 != nullptr) delete tree2;
 }
 

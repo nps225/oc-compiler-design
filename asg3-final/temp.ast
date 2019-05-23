@@ -1,0 +1,12 @@
+ROOT "" 0.0.0
+   FUNCTION "" 3.1.1
+      TYPE_ID "" 3.1.1
+         TOK_INT "int" 3.1.1
+         TOK_IDENT "atoi" 3.1.5
+      TOK_PARAM "(" 3.1.10
+         TYPE_ID "" 3.1.11
+            TOK_STRING "string" 3.1.11
+            TOK_IDENT "str" 3.1.18
+      BLOCK "{" 3.1.23
+         BLOCK "{" 3.2.3
+         BLOCK "{" 3.2.5
