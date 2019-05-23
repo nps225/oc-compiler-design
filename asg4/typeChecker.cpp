@@ -17,9 +17,13 @@
 #include "symbol.h"
 
 
+symbol_table* global;
+symbol_table* local;
+
 void post_order(astree* tree){
 
     for (astree* child: tree->children) {
+      //put switch here on direct decendents
       post_order(child);
     }
 
@@ -28,3 +32,5 @@ void post_order(astree* tree){
                tree->symbol,parser::get_tname (tree->symbol), 
                   tree->lexinfo->c_str());
 }
+
+
