@@ -2,7 +2,7 @@
 /*
  *  *  oc-compiler astree.h
  *   *  CMPS 104A Assignment 3
- *    *  Author: 
+ *    *  Author:
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
  *      Date: 2019.04.29
@@ -16,6 +16,13 @@
 using namespace std;
 
 #include "auxlib.h"
+
+enum class attr unsigned {
+    VOID, INT, NULLPTR_T, STRING, STRUCT, ARRAY, FUNCTION, VARIABLE,
+    FIELD, TYPEID, PARAM, LOCAL, LVAL, CONST, VREG, VADDR, BITSET_SIZE,
+};
+
+using attr_bitset = bitset<size_t(attr::BITSET_SIZE)>;
 
 struct location {
    size_t filenr;
@@ -31,6 +38,9 @@ struct astree {
    const string* lexinfo;    // pointer to lexical information
    vector<astree*> children; // children of this n-way node
 
+   //asg4
+   attr_bitset attributes;
+
    // Functions.
    astree (int symbol, const location&, const char* lexinfo);
    ~astree();
@@ -41,7 +51,7 @@ struct astree {
    void dump_tree (FILE*, int depth = 0);
    static void dump (FILE* outfile, astree* tree);
    static void print (FILE* outfile, astree* tree, int depth = 0);
-   
+
 };
 
 void destroy (astree* tree1, astree* tree2 = nullptr);

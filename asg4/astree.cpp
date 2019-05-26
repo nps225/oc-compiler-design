@@ -2,7 +2,7 @@
 /*
  *  *  oc-compiler astree.cpp
  *   *  CMPS 104A Assignment 3
- *    *  Author: 
+ *    *  Author:
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
  *      Date: 2019.04.29
@@ -19,10 +19,11 @@
 #include "string_set.h"
 #include "lyutils.h"
 
-astree::astree (int symbol_, const location& lloc_, const char* info) {
+astree::astree (int symbol_, const location& lloc_, const char* info, attr_bitset attributes_) {
    symbol = symbol_;
    lloc = lloc_;
    lexinfo = string_set::intern (info);
+   attributes = attributes_;
    // vector defaults to empty -- no children
 }
 
@@ -60,7 +61,7 @@ astree* astree::symChange (astree* tree, int symbol_) {
 void astree::dump_node (FILE* outfile) {
    fprintf (outfile, "%s \"%s\" %zd.%zd.%zd",
             parser::get_tname (symbol),
-            lexinfo->c_str(),lloc.filenr, 
+            lexinfo->c_str(),lloc.filenr,
             lloc.linenr, lloc.offset);
    // fprintf(outfile, "%s %zd.%zd.%zd",lexinfo->
    // c_str(),lloc.filenr, lloc.linenr, lloc.offset);
@@ -91,7 +92,7 @@ void astree::dump (FILE* outfile, astree* tree) {
 *  3 digits padded 0
 *  3 digits 3 digits right aligned
 *  string length 13
-* 
+*
 */
 
 void astree::print (FILE* outfile, astree* tree, int depth) {
@@ -101,14 +102,14 @@ void astree::print (FILE* outfile, astree* tree, int depth) {
    //          tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset);
 
    // out = outfile;
- 
-   fprintf(outfile, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n", 
+
+   fprintf(outfile, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n",
                tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
-               tree->symbol,parser::get_tname (tree->symbol), 
+               tree->symbol,parser::get_tname (tree->symbol),
                   tree->lexinfo->c_str());
    // fprintf(outfile, "   %zd  ", tree->lloc.filenr);
    //  fprintf(outfile, "\n");
-   
+
    for (astree* child: tree->children) {
       astree::print (outfile, child, depth + 1);
    }
@@ -134,7 +135,7 @@ void errllocprintf (const location& lloc, const char* format,
    static char buffer[0x1000];
    assert (sizeof buffer > strlen (format) + strlen (arg));
    snprintf (buffer, sizeof buffer, format, arg);
-   errprintf ("%s:%zd.%zd: %s", 
+   errprintf ("%s:%zd.%zd: %s",
               lexer::filename (lloc.filenr), lloc.linenr, lloc.offset,
               buffer);
 }
