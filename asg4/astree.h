@@ -13,11 +13,12 @@
 
 #include <string>
 #include <vector>
+#include <bitset>
 using namespace std;
 
 #include "auxlib.h"
 
-enum class attr unsigned {
+enum class attr {
     VOID, INT, NULLPTR_T, STRING, STRUCT, ARRAY, FUNCTION, VARIABLE,
     FIELD, TYPEID, PARAM, LOCAL, LVAL, CONST, VREG, VADDR, BITSET_SIZE,
 };

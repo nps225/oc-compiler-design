@@ -19,11 +19,10 @@
 #include "string_set.h"
 #include "lyutils.h"
 
-astree::astree (int symbol_, const location& lloc_, const char* info, attr_bitset attributes_) {
+astree::astree (int symbol_, const location& lloc_, const char* info) {
    symbol = symbol_;
    lloc = lloc_;
    lexinfo = string_set::intern (info);
-   attributes = attributes_;
    // vector defaults to empty -- no children
 }
 
