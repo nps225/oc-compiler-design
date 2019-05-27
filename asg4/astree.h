@@ -44,6 +44,7 @@ struct astree {
 
    //asg4
    attr_bitset attributes;
+   size_t block_nr;
 
    // Functions.
    astree (int symbol, const location&, const char* lexinfo);

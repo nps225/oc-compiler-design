@@ -5,6 +5,7 @@ ROOT "" 0.0.0
          TOK_IDENT "main" 3.1.5
       TOK_PARAM "(" 3.1.9
       BLOCK "{" 3.1.11
+<<<<<<< HEAD
          TOK_WHILE "while" 3.3.4
             TOK_EQ "==" 3.3.12
                TOK_IDENT "a" 3.3.10
@@ -14,3 +15,5 @@ ROOT "" 0.0.0
                   TOK_INT "int" 3.4.8
                   TOK_IDENT "c" 3.4.12
                   TOK_INTCON "5" 3.4.16
+=======
+>>>>>>> asg4: dump symboltable

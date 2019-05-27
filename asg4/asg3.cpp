@@ -1,7 +1,7 @@
 /*
  *  *  oc-compiler asg3.cpp
- *   *  CMPS 104A Assignment 3 
- *    *  Author: 
+ *   *  CMPS 104A Assignment 3
+ *    *  Author:
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
  *      Date: 2019.04.29
@@ -15,6 +15,8 @@
 #include "symbol.h"
 
 FILE* outstream;
+extern SymbolTable globalTable ;
+
 
 void scanToFile(string filename){
   //here we parse the file
@@ -42,12 +44,14 @@ void scanToFile(string filename){
   }else{
      fprintf (stderr, "issue parsing");
   }
+  ConstructTable(parser::root);
+  globalTable.dump(stdout);
   //  delete parser::root;
    destroy(parser::root);
    fclose(outSTR);
    fclose(outTOK);
    fclose(outAST);
-   
+
 
 
 }
@@ -68,7 +72,7 @@ void scanToFile(string filename){
 //    while(val != YYEOF){
 //       astree::print(outstream,yylval);
 //       //yylval is our token in this case scenario
-        
+
 //       string_set::intern(yytext);
 //       //printf("%d\n", yylval->symbol);//token title
 //       //printf("%s\n",yylval->lexinfo->c_str());//actual string rep

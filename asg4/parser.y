@@ -77,14 +77,14 @@ struct : TOK_STRUCT TOK_IDENT blockS
        }
 
 
-function : identif '(' ')' ';' 
-               {  
-                  destroy ( $3, $4) ; 
+function : identif '(' ')' ';'
+               {
+                  destroy ( $3, $4) ;
                   $2 = $2->symChange($2,TOK_PARAM);
                   $$ = new astree(FUNCTION, $1->lloc, "");
                   $$ = $$->adopt($1,$2);
                }
-         | identif param ')' ';' 
+         | identif param ')' ';'
                {
                   destroy($3,$4);
                   $$ = new astree(FUNCTION, $1->lloc, "");
@@ -122,14 +122,14 @@ vardecl : type TOK_IDENT ';'
                }
          ;
 
-identif : type TOK_IDENT     
+identif : type TOK_IDENT
                {
                   $$ = new astree(TYPE_ID, $1->lloc,"");
                   $$ = $$->adopt($1,$2);
                }
          ;
 
-param : '(' identif 
+param : '(' identif
                {
                   $$ = new astree(TOK_PARAM, $1->lloc, "(");
                   $$ = $$->adopt($2);
@@ -146,15 +146,15 @@ param : '(' identif
 callParam : TOK_IDENT '(' express
                {
                   $$ = $2->symChange($2,CALL);
-                  $$ = $$->adopt($1,$3); 
-                  
+                  $$ = $$->adopt($1,$3);
+
                }
             | callParam ',' express
                {
                   destroy($2);
                   $$ = $1->adopt($3);
                }
-             
+
       ;
 
 call: TOK_IDENT '(' ')'
@@ -190,9 +190,9 @@ select: state
 //            $$ = $1->adopt($3,$5);
 //            $$ = $$->adopt($7);
 //         }
-//         | TOK_ELSE select 
+//         | TOK_ELSE select
 
-ifelse: TOK_IF '(' express ')' select %prec TOK_IF 
+ifelse: TOK_IF '(' express ')' select %prec TOK_IF
       {
          destroy($2,$4);
          $$ = $1->adopt($3,$5);
@@ -216,12 +216,12 @@ ifelse: TOK_IF '(' express ')' select %prec TOK_IF
 //        |TOK_ELSE select
 //        {
 //           destroy($1);
-//           $$ = $$->adopt($2);  
+//           $$ = $$->adopt($2);
 //        }
-       
+
 //        ;
 
-// else: TOK_ELSE state 
+// else: TOK_ELSE state
 //       {
 //          destroy($1);
 //          $$ = $2;
@@ -297,15 +297,15 @@ blockS: blockBodyS '}' ';'
       ;
 
 
-blockBodyS: multiState 
-             { 
-               // destroy($1); 
-               // $$ = new astree(BLOCK,$1->lloc,"{"); 
+blockBodyS: multiState
+             {
+               // destroy($1);
+               // $$ = new astree(BLOCK,$1->lloc,"{");
                $$ = $1;
              }
          | '{'
             {
-                $$ = new astree(BLOCK,$1->lloc,"{"); 
+                $$ = new astree(BLOCK,$1->lloc,"{");
             }
          ;
 
@@ -318,17 +318,17 @@ block: blockBody '}'
       ;
 
 
-blockBody: multiState 
-             { 
+blockBody: multiState
+             {
                $$ = $1;
              }
          | '{'
             {
-                $$ = new astree(BLOCK,$1->lloc,"{"); 
+                $$ = new astree(BLOCK,$1->lloc,"{");
             }
          ;
 
-multiState: '{' state 
+multiState: '{' state
            {
               $$ = $1->symChange($1,BLOCK);
               $$ = $$ ->adopt($2);
@@ -355,7 +355,7 @@ state:   vardecl
          {
             $$ = $1;
          }
-         | return 
+         | return
          {
             $$ = $1;
          }
@@ -384,7 +384,7 @@ express: binop
          {
             $$ = $1;
          }
-         |unop 
+         |unop
          {
             $$ = $1;
          }
@@ -392,7 +392,7 @@ express: binop
          {
             $$ = $1;
          }
-         |call 
+         |call
          {
             $$ = $1;
          }
@@ -406,7 +406,7 @@ express: binop
          {
             $$ = $1;
          }
-         | constant 
+         | constant
          {
             $$ = $1;
          }
@@ -462,22 +462,22 @@ binop: express '=' express
         }
       ;
 
-unop: '+' express %prec POS    
+unop: '+' express %prec POS
          {
-            $$ = $1->adopt_sym ($2, POS); 
+            $$ = $1->adopt_sym ($2, POS);
          }
-    | '-' express %prec NEG    
+    | '-' express %prec NEG
          {
-           $$ = $1->adopt_sym ($2, NEG); 
+           $$ = $1->adopt_sym ($2, NEG);
          }
-    | TOK_NOT express %prec NEG    
+    | TOK_NOT express %prec NEG
          {
-           $$ = $1->adopt_sym ($2, NEG); 
+           $$ = $1->adopt_sym ($2, NEG);
          }
      ;
 
 
-var     : TOK_IDENT 
+var     : TOK_IDENT
                {
                   $$ = $1;
                }
@@ -495,7 +495,7 @@ var     : TOK_IDENT
          ;
 
 type    : type_id                { $$ = $1; }
-        | TOK_ARRAY TOK_LT type_id TOK_GT 
+        | TOK_ARRAY TOK_LT type_id TOK_GT
         {
            destroy($2,$4);
            $$ = $1->adopt($3);

@@ -14,6 +14,7 @@ struct symbol{
     attr_bitset attributes;
     size_t sequence = 0;
     unordered_map<const string*,symbol*>* fields = nullptr;
+    const strign* typeid;
     location lloc;
     size_t block_nr = 0;
     vector<symbol*>* parameters = nullptr;
@@ -39,8 +40,14 @@ class SymbolTable {
     void insertIntoTable(const string* name, symbol* sym);
     void addFields(symbol* dest, symbol_table* fields);
     void addFunc(const string* name, SymbolTable* table_);
-    void dump (FILE destination);
+    void dump (FILE* destination);
 };
+
+void ConstructTable(astree* root);
+vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl);
+void ParseBlock(astree* node, SymbolTable* table);
+void ParseBlock(astree* node, symbol_table* table);
+
 
 
 #endif
