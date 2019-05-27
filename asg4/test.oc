@@ -1,5 +1,5 @@
-int main(){
-   int b = 5;
-}
-
-int a();
+//int main(){
+//   int b = 5;
+//}
+struct node{};
+//int a();

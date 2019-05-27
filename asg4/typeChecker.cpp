@@ -15,11 +15,15 @@
 #include "lyutils.h"
 #include "asg3.h"
 #include "symbol.h"
+#include "astree.h"
 
 
 symbol_table* global;
 symbol_table* local;
+void traverse_struct(astree* node);
 void traverse_function(astree* node);
+void traverse_params(astree* node);
+void traverse_block(astree* node);
 
 void post_order(astree* tree){
   for (astree* child: tree->children) {
@@ -32,20 +36,37 @@ void post_order(astree* tree){
              traverse_function(child);
         break;
         case TOK_STRUCT://handles structs
-             fprintf(stdout,"hello\n");
+             traverse_struct(child);
         break;
         case TYPE_ID://handles vars
              fprintf(stdout,"hello\n");
-        break;
-        default:
-        post_order(child);
         break;
       }
   }
     
 }
 
+void traverse_struct(astree* node){
+  fprintf(stdout,"%s\n",parser::get_tname(node->symbol));
+  node->attributes.set(size_t(attr:: STRUCT));
+  //you have two children -- the name and the block
+  int i = 0;
+      for(astree* child: node->children){
+        switch (i){
+          case 0://TYPEID
+          fprintf(stdout,"%s\n",parser::get_tname (child->symbol));
+          i++;
+          break;
+          case 1://TOK_PARAM
+          //traverse_block(child);
+          i++;
+          break;
+      }
 
+}
+}
+
+//traverses functions and prototypes
 void traverse_function(astree* node){
     fprintf(stdout,"%s\n",parser::get_tname(node->symbol));
     // fprintf(stdout,"%d\n",node->children.size()); 
@@ -59,7 +80,7 @@ void traverse_function(astree* node){
           i++;
           break;
           case 1://TOK_PARAM
-          fprintf(stdout,"%s\n",parser::get_tname (child->symbol));
+          traverse_params(child);
           i++;
           break;
           case 2://TOK_BLOCK
@@ -78,12 +99,19 @@ void traverse_function(astree* node){
           i++;
           break;
           case 1://TOK_PARAM
-          fprintf(stdout,"%s\n",parser::get_tname (child->symbol));
+          traverse_params(child);
           i++;
           break;
         }
       }
     }
+}
+
+void traverse_params(astree* node){
+     fprintf(stdout,"%s\n",parser::get_tname (node->symbol));
+     for(astree* child: node->children){
+       fprintf(stdout,"%s\n",parser::get_tname (child->symbol));
+     }
 }
 
 

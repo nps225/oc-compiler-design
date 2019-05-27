@@ -1,4 +1,0 @@
-string_set[   0]:    6142509188972423790 0x55d533fd8788->""
-load_factor = 0.333
-bucket_count = 3
-max_bucket_size = 1
