@@ -18,9 +18,8 @@
 // #include "typeChecker.h"
 
 vector<symbol*>* ParseParameters(astree* func);
-SymbolTable* ParseBlock(astree* node, SymbolTable* tbl);
-symbol_table* ParseStruct(astree* node);
-
+void ParseBlock(astree* node, SymbolTable* tbl);
+void ParseBlock(astree* node, symbol_table* tbl);
 
 SymbolTable globalTable = new SymbolTable(nullptr);
 size_t SymbolTable::blk_nr = 0;
@@ -34,10 +33,13 @@ size_t SymbolTable::blk_nr = 0;
  */
 SymbolTable::SymbolTable(SymbolTable* parent_) {
     this->parent = parent_;
-    if(parent == nullptr)
+    if(parent == nullptr){
         this->current_blk = 0;
-    else
+    }
+    else{
         this->current_blk = ++SymbolTable::blk_nr;
+    }
+
 }
 
 /*
@@ -99,6 +101,10 @@ void SymbolTable::addFunc(const string* name, SymbolTable* table_){
     subtables.insert(make_pair<const string*&,SymbolTable*&>(name, table_));
 }
 
+void SymbolTable::dump (FILE destination){
+    
+}
+
 /*
  *
  * Begin helper function definitions to construct a series of symbol tables
@@ -146,7 +152,8 @@ void ConstructTable(astree* root){
         if(root->attributes.test(size_t(attr::STRUCT))){
             symbol* structSym = globalTable.newSymbol(root->children.at(i)->attributes, root->children.at(i)->lloc, nullptr);
             globalTable.insertIntoTable(root->children.at(i)->children.at(0)->lexinfo, structSym);
-            symbol_table* fields = ParseStruct(root->children.at(i)->children.at(1));
+            symbol_table* fields = new symbol_table;
+            ParseBlock(root->children.at(i)->children.at(1), fields);
             globalTable.addFields(structSym, fields);
         }
         else if(root->attributes.test(size_t(attr::FUNCTION))){
@@ -155,8 +162,10 @@ void ConstructTable(astree* root){
             globalTable.newSymbol(root->children.at(i)->attributes, root->children.at(i)->lloc, params);
             if(root->children.at(i)->children.size() == 2)
               globalTable.addFunc(root->children.at(i)->children.at(0)->children.at(1)->lexinfo, nullptr);
-            else
-              globalTable.addFunc(root->children.at(i)->children.at(0)->children.at(1)->lexinfo, ParseBlock(root->children.at(i)->children.at(3), tbl));
+            else{
+              ParseBlock(root->children.at(i)->children.at(3), tbl);
+              globalTable.addFunc(root->children.at(i)->children.at(0)->children.at(1)->lexinfo, tbl);
+            }
         }
         else if (root->attributes.test(size_t(attr::TYPEID))){
             symbol* sym = globalTable.newSymbol(root->children.at(i)->attributes, root->children.at(i)->lloc, nullptr);
@@ -166,51 +175,52 @@ void ConstructTable(astree* root){
     }
 }
 
-vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
+vector<symbol*>* ParseParameters(astree* func){
     // std::vector<astree*>::iterator it;
     astree* param = func->children.at(1);
     vector<symbol*>* retVal = new vector<symbol*>;
     //for(it = param->children.begin(); it != param->children.end(); it++){
     //    symbol newSym = SymbolTable::newSymbol(*it->children.at(1)->lexinfo, *it->attributes, *it->it->children.at(1)->lloc, nullptr);
     for(size_t i = 0; i < param->children.size(); i++){
-        symbol* newSym = tbl->newSymbol(param->children.at(i)->attributes, param->children.at(i)->lloc, nullptr);
+        symbol* newSym = globalTable.newSymbol(param->children.at(i)->attributes, param->children.at(i)->lloc, nullptr);
         retVal->push_back(newSym);
     }
     return retVal;
 }
 
 void ParseBlock(astree* node, SymbolTable* table) {
+   symbol* sym;
     for(size_t i = 0; i < node->children.size(); i++){
-        switch(node->children.at(i)->symbol){
+        astree* test = node->children.at(i);
+        switch(test->symbol){
             case TYPE_ID:
-
-            break;
-            case '=':
-
+            sym = globalTable.newSymbol(test->attributes, test->lloc, nullptr);
+            table->insertIntoTable(test->children.at(1)->lexinfo, sym);
+            // if(test->children.size == 3)
+            // perform semantic checks for type on this
             break;
             case BLOCK:
-
+            ParseBlock(test, table);
             break;
-            case CALL:
+        }
+    }
+}
 
+
+void ParseBlock(astree* node, symbol_table* table) {
+    symbol* sym;
+    for(size_t i = 0; i < node->children.size(); i++){
+        astree* test = node->children.at(i);
+        switch(test->symbol){
+            case TYPE_ID:
+            sym = globalTable.newSymbol(test->attributes, test->lloc, nullptr);
+            table->insert(make_pair<const string*&,symbol*&>(test->children.at(1)->lexinfo, sym));
+            // if(test->children.size == 3)
+            // perform semantic checks for type on this
             break;
-            case WHILE:
-
+            case BLOCK:
+            ParseBlock(test, table);
             break;
-
-            case TOK_IF:
-
-            break;
-
-            case RETURN:
-
-            break;
-
-            case TOK_INDEX:
-
-            break;
-            
-
         }
     }
 }

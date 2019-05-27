@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include "astree.h"
+#include "lyutils.h"
 
 
 // symbol node
