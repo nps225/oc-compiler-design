@@ -21,16 +21,27 @@ symbol_table* global;
 symbol_table* local;
 
 void post_order(astree* tree){
-
-    for (astree* child: tree->children) {
-      //put switch here on direct decendents
-      post_order(child);
-    }
-
-    fprintf(stdout, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n", 
-               tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
-               tree->symbol,parser::get_tname (tree->symbol), 
-                  tree->lexinfo->c_str());
+  for (astree* child: tree->children) {
+      fprintf(stdout, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n", 
+               child->lloc.filenr, child->lloc.linenr, child->lloc.offset,
+               child->symbol,parser::get_tname (child->symbol), 
+                  child->lexinfo->c_str());
+      switch(child->symbol){
+        case FUNCTION://handles functions
+             fprintf(stdout,"hello\n");
+        break;
+        case TOK_STRUCT://handles structs
+             fprintf(stdout,"hello\n");
+        break;
+        case TYPE_ID://handles vars
+             fprintf(stdout,"hello\n");
+        break;
+        default:
+        post_order(child);
+        break;
+      }
+  }
+    
 }
 
 

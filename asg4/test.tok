@@ -7,5 +7,17 @@
   3     1.011    265    BLOCK           {
   3     2.004    261    TYPE_ID         
   3     2.004    288    TOK_INT         int
-  3     2.008    294    TOK_IDENT       a
+  3     2.008    294    TOK_IDENT       b
   3     2.012    293    TOK_INTCON      5
+  3     4.001    279    TOK_STRUCT      struct
+  3     4.008    294    TOK_IDENT       a
+  3     4.009    265    BLOCK           {
+  3     5.001    261    TYPE_ID         
+  3     5.001    288    TOK_INT         int
+  3     5.005    294    TOK_IDENT       a
+  3     7.001    261    TYPE_ID         
+  3     7.001    288    TOK_INT         int
+  3     7.005    294    TOK_IDENT       b
+  3     7.010    267    TOK_INDEX       [
+  3     7.009    294    TOK_IDENT       a
+  3     7.011    293    TOK_INTCON      4

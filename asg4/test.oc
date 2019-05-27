@@ -1,2 +1,7 @@
 int main(){
+   int b = 5;
 }
+struct a{};
+int a;
+
+int b = a[4];
