@@ -152,7 +152,6 @@ void traverse_expr(astree* node){//has more conditions to handle
     // printf("%s\n",parser::get_tname(node->attributes);
 }
 
-<<<<<<< HEAD
 void traverse_block(astree* node){
   
 }
@@ -228,10 +227,3 @@ void traverse_block(astree* node){
 
 
 
-=======
-    //fprintf(stdout, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n",
-    //           tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
-    //           tree->symbol,parser::get_tname (tree->symbol),
-    //              tree->lexinfo->c_str());
-}
->>>>>>> asg4: dump symboltable
