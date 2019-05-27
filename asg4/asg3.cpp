@@ -15,8 +15,6 @@
 #include "symbol.h"
 
 FILE* outstream;
-extern SymbolTable globalTable ;
-
 
 void scanToFile(string filename){
   //here we parse the file
@@ -45,7 +43,7 @@ void scanToFile(string filename){
      fprintf (stderr, "issue parsing");
   }
   ConstructTable(parser::root);
-  globalTable.dump(stdout);
+  SymbolTable::dump(stdout, SymbolTable::getGlobalTable());
   //  delete parser::root;
    destroy(parser::root);
    fclose(outSTR);

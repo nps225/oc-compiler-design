@@ -41,7 +41,7 @@ void post_order(astree* tree){
           break;
       }
      }
-    
+
 }
 
 void traverse_struct(astree* node){
@@ -67,10 +67,10 @@ void traverse_function(astree* node){
 
 void traverse_typeid(astree* node){
   //if it is size == 3 or 2
-  if(node->children.size() == 3){//size = 3 
+  if(node->children.size() == 3){//size = 3
     switch(node->children.at(0)->symbol){
       case TOK_INDEX://function to handle this
-           
+
       break;
       case TOK_INT:
            node->attributes.set(size_t(attr::TYPEID));
@@ -153,7 +153,7 @@ void traverse_expr(astree* node){//has more conditions to handle
 }
 
 void traverse_block(astree* node){
-  
+  return;
 }
 
 
@@ -180,7 +180,7 @@ void traverse_block(astree* node){
 // //traverses functions and prototypes
 // void traverse_function(astree* node){
 //     fprintf(stdout,"%s\n",parser::get_tname(node->symbol));
-//     // fprintf(stdout,"%d\n",node->children.size()); 
+//     // fprintf(stdout,"%d\n",node->children.size());
 //     //prototype = 2 children; functions = 3 children
 //     if(node->children.size() == 3){
 //       int i = 0;
@@ -226,4 +226,11 @@ void traverse_block(astree* node){
 // }
 
 
+<<<<<<< HEAD
 
+=======
+    //fprintf(stdout, "  %1zd    %2zd.%.3zd    %3d    %-13s   %s\n",
+    //           tree->lloc.filenr, tree->lloc.linenr, tree->lloc.offset,
+    //           tree->symbol,parser::get_tname (tree->symbol),
+    //              tree->lexinfo->c_str());
+>>>>>>> attempts at fixing tabledumping
