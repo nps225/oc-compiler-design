@@ -9,15 +9,8 @@ ROOT "" 0.0.0
             TOK_INT "int" 3.2.4
             TOK_IDENT "b" 3.2.8
             TOK_INTCON "5" 3.2.12
-   TOK_STRUCT "struct" 3.4.1
-      TOK_IDENT "a" 3.4.8
-      BLOCK "{" 3.4.9
-   TYPE_ID "" 3.5.1
-      TOK_INT "int" 3.5.1
-      TOK_IDENT "a" 3.5.5
-   TYPE_ID "" 3.7.1
-      TOK_INT "int" 3.7.1
-      TOK_IDENT "b" 3.7.5
-      TOK_INDEX "[" 3.7.10
-         TOK_IDENT "a" 3.7.9
-         TOK_INTCON "4" 3.7.11
+   FUNCTION "" 3.5.1
+      TYPE_ID "" 3.5.1
+         TOK_INT "int" 3.5.1
+         TOK_IDENT "a" 3.5.5
+      TOK_PARAM "(" 3.5.6
