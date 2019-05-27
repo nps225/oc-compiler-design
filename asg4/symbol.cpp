@@ -229,6 +229,91 @@ void ParseBlock(astree* node, SymbolTable* table) {
             case BLOCK:
             ParseBlock(test, table);
             break;
+            case TYPE_ID:
+            sym = globalTable.newSymbol(test->attributes, test->lloc, nullptr);
+            table->insertIntoTable(test->children.at(1)->lexinfo, sym);
+            // if(test->children.size == 3)
+            // perform semantic checks for type on this
+            break;
+            case BLOCK:
+            ParseBlock(test, table);
+            break;
+            case: TYPE_ID://vars-funcs
+            break;
+            case: FUNCTION:
+            break;
+            case: TOK_STRUCT:
+            break;
+            case: TOK_PARAM:
+            break;
+            case: BLOCK:
+            break;
+            case: TOK_NULLPTR:
+            break;
+            case: TOK_INDEX:
+            break;
+            case: CALL:
+            break;
+            case: TOK_GE:
+            break;
+            case: TOK_LE:
+            break;
+            case: TOK_EQ:
+            break;
+            case: TOK_NE:
+            break;
+            break;
+            case '+':
+            break;
+            case '-':
+            break;
+            case '*':
+            break;
+            case '/':
+            break;
+            case '^':
+            break;
+            case '%':
+            break;
+            case: TOK_INDEX:
+            break;
+            case: TOK_IF:
+            break;
+            case TOK_ELSE:
+            break;
+            case TOK_ARRAY:
+            break;
+            case TOK_ALLOC:
+            break;
+            case TOK_PTR:
+            break;
+            case TOK_RETURN:
+            break;
+            case TOK_NOT:
+            break;
+            case TOK_ARROW:
+            break;
+            case TOK_VOID:
+            break;
+            case TOK_INT:
+            break;
+            case TOK_STRING:
+            break;
+            case TOK_CHAR:
+            break;
+            case TOK_CHARCON:
+                node->attributes.set(size_t(attr::CONST));
+                node->attributes.set(size_t(attr::CHAR));
+            break;
+            case TOK_STRINGCON:
+                node->attributes.set(size_t(attr::CONST));
+                node->attributes.set(size_t(attr::STRING));
+            break;
+            case TOK_INTCON:
+                
+            break;
+            case TOK_IDENT://look up in symbol table
+            break; 
         }
     }
 }
