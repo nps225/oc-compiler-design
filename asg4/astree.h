@@ -23,7 +23,10 @@ enum class attr {
     FIELD, TYPEID, PARAM, LOCAL, LVAL, CONST, VREG, VADDR, BITSET_SIZE,
 };
 
+
+
 using attr_bitset = bitset<size_t(attr::BITSET_SIZE)>;
+
 
 struct location {
    size_t filenr;
@@ -52,8 +55,10 @@ struct astree {
    void dump_tree (FILE*, int depth = 0);
    static void dump (FILE* outfile, astree* tree);
    static void print (FILE* outfile, astree* tree, int depth = 0);
-
+   
 };
+
+string print_attrib(astree* tree);
 
 void destroy (astree* tree1, astree* tree2 = nullptr);
 

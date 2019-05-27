@@ -138,3 +138,62 @@ void errllocprintf (const location& lloc, const char* format,
               lexer::filename (lloc.filenr), lloc.linenr, lloc.offset,
               buffer);
 }
+
+string print_attrib(astree* tree){
+   string strAttrs = "";
+   if(tree->attributes[size_t(attr::VOID)] == 1){
+      strAttrs += "void ";
+   }
+   if(tree->attributes[size_t(attr::INT)] == 1){
+      strAttrs += "int ";
+   }
+   if(tree->attributes[size_t(attr::NULLPTR_T)] == 1){
+      strAttrs += "nullptr ";
+   }
+   if(tree->attributes[size_t(attr::STRING)] == 1){
+      strAttrs += "string ";
+   }
+   if(tree->attributes[size_t(attr::STRUCT)] == 1){
+      strAttrs += "struct ";
+   }
+   if(tree->attributes[size_t(attr::ARRAY)] == 1){
+      strAttrs += "array ";
+   }
+   if(tree->attributes[size_t(attr::FUNCTION)] == 1){
+      strAttrs += "function ";
+   }
+   if(tree->attributes[size_t(attr::VARIABLE)] == 1){
+      strAttrs += "variable ";
+   }
+   if(tree->attributes[size_t(attr::FIELD)] == 1){
+      strAttrs += "field ";
+   }
+   if(tree->attributes[size_t(attr::TYPEID)] == 1){
+      strAttrs += "typeid ";
+   }
+   if(tree->attributes[size_t(attr::PARAM)] == 1){
+      strAttrs += "param ";
+   }
+   if(tree->attributes[size_t(attr::LOCAL)] == 1){
+      strAttrs += "local ";
+   }
+   if(tree->attributes[size_t(attr::LVAL)] == 1){
+      strAttrs += "lval ";
+   }
+   if(tree->attributes[size_t(attr::CONST)] == 1){
+      strAttrs += "const ";
+   }
+   if(tree->attributes[size_t(attr::VREG)] == 1){
+      strAttrs += "vreg ";
+   }
+   if(tree->attributes[size_t(attr::VADDR)] == 1){
+      strAttrs += "vaddr ";
+   }
+   if(tree->attributes[size_t(attr::BITSET_SIZE)] == 1){
+      strAttrs += "bitset_size ";
+   }
+   return strAttrs;
+}
+
+//  VOID, INT, NULLPTR_T, STRING, STRUCT, ARRAY, FUNCTION, VARIABLE,
+//     FIELD, TYPEID, PARAM, LOCAL, LVAL, CONST, VREG, VADDR, BITSET_SIZE
