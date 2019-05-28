@@ -124,6 +124,16 @@ void SymbolTable::dump (FILE* destination, SymbolTable* tbl){
     }
 }
 
+attr_bitset SymbolTable::getAttributes(const string* name){
+    if(table.find(name) != table.end()){
+        return table[name]->attributes;
+    }
+    else {
+        printf("Unknown symbol encountered\n");
+        return nullptr;
+    }
+}
+
 SymbolTable* SymbolTable::getParent(){
   return this->parent;
 }
@@ -215,22 +225,63 @@ vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
     return retVal;
 }
 
+void HandleTypeID(astree* node){
+    node->attributes.set(attr::VARIABLE);
+    node->attributes.set(attr::LOCAL);
+    node->attributes.set(attr::LVAL);
+    if(node->children.size() == 2){
+        astree* child0 = node->children.at(0);
+        astree* child1 = node->children.at(1);
+        switch(child0->symbol){
+            case TOK_INT:
+            node->attributes.set(attr::INT);
+            break;
+            case TOK_STRING:
+            node->attributes.set(attr::STRING);
+            case TOK_ARRAY:
+            node->attributes.set(attr::ARRAY);
+            if(child0->children.at(0) == TOK_INT)
+            node->attributes.set(attr::INT);
+            else
+            node->attributes.set(attr::STRING);
+            break;
+        }
+    }
+    else {
+        astree* child0 = node->children.at(0);
+        astree* child1 = node->children.at(1);
+        astree* child2 = node->children.at(2);
+        switch(child0->symbol){
+          case TOK_INT:
+          if(child2->symbol == TOK_INTCON)
+            if(child2->lexinfo.find_first_not_of( "0123456789" ) != string::npos)
+              printf("error: Invalid assignment to int variable at (%zu.%zu.%zu)\n", child2->lloc.filenr, child2->lloc.linenr, child2)
+          node->attributes.set(attr::INT);
+          break;
+          case TOK_STRING:
+          node->attributes.set(attr::STRING);
+          case TOK_ARRAY:
+          node->attributes.set(attr::ARRAY);
+          if(child0->children.at(0) == TOK_INT)
+          node->attributes.set(attr::INT);
+          else
+          node->attributes.set(attr::STRING);
+          break;
+
+        }
+
+    }
+
+}
+
 void ParseBlock(astree* node, SymbolTable* table) {
    symbol* sym;
     for(size_t i = 0; i < node->children.size(); i++){
         astree* test = node->children.at(i);
         switch(test->symbol){
             case TYPE_ID:
+
             sym = SymbolTable::getGlobalTable()->newSymbol(test->attributes, test->lloc, nullptr);
-            table->insertIntoTable(test->children.at(1)->lexinfo, sym);
-            // if(test->children.size == 3)
-            // perform semantic checks for type on this
-            break;
-            case BLOCK:
-            ParseBlock(test, table);
-            break;
-            case TYPE_ID:
-            sym = globalTable.newSymbol(test->attributes, test->lloc, nullptr);
             table->insertIntoTable(test->children.at(1)->lexinfo, sym);
             // if(test->children.size == 3)
             // perform semantic checks for type on this
@@ -261,7 +312,6 @@ void ParseBlock(astree* node, SymbolTable* table) {
             case: TOK_EQ:
             break;
             case: TOK_NE:
-            break;
             break;
             case '+':
             break;
@@ -310,10 +360,10 @@ void ParseBlock(astree* node, SymbolTable* table) {
                 node->attributes.set(size_t(attr::STRING));
             break;
             case TOK_INTCON:
-                
+
             break;
             case TOK_IDENT://look up in symbol table
-            break; 
+            break;
         }
     }
 }

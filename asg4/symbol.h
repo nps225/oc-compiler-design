@@ -14,10 +14,7 @@ struct symbol{
     attr_bitset attributes;
     size_t sequence = 0;
     unordered_map<const string*,symbol*>* fields = nullptr;
-<<<<<<< HEAD
     const string* type_id;
-=======
->>>>>>> attempts at fixing tabledumping
     location lloc;
     size_t block_nr = 0;
     vector<symbol*>* parameters = nullptr;
