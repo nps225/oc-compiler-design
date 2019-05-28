@@ -21,6 +21,7 @@ void scanToFile(string filename){
    string filenameTOK = filename + ".tok";
    string filenameSTR = filename + ".str";
    string filenameAST = filename + ".ast";
+   string filenameSYM = filename + ".sym";
    FILE* outSTR = fopen (filenameSTR.c_str(), "w");
    if (!outSTR)
       fprintf (stderr, "Error creating str file");
@@ -43,7 +44,10 @@ void scanToFile(string filename){
      fprintf (stderr, "issue parsing");
   }
   ConstructTable(parser::root);
-  SymbolTable::dump(stdout, SymbolTable::getGlobalTable());
+  FILE* outSYM = fopen(filenameSYM.c_str(), "w");
+  if(!outSYM)
+      fprintf(stderr, "Error creating sym file");
+  SymbolTable::getGlobalTable()->dump(outSYM, 1);
   //  delete parser::root;
    destroy(parser::root);
    fclose(outSTR);

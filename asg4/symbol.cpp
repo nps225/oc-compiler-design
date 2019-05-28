@@ -1,6 +1,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <iostream>
 #include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,24 +20,35 @@
 
 
 size_t SymbolTable::blk_nr = 0;
-SymbolTable SymbolTable::globalTable = new SymbolTable(nullptr);
+SymbolTable* SymbolTable::globalTable = new SymbolTable();
 /*
  *  Begin member function definition for SymbolTable
  */
 
+ void PrintSTMap(symbol_table t){
+    for(auto const &pair: t){
+        std::cout << "{" << pair.first << "}\n";
+    }
+ }
+
+ void PrintSubMap(unordered_map<string,SymbolTable*> t){
+    for(auto const &pair: t){
+        std::cout << "{" << pair.first << "}\n";
+    }
+ }
+
 /*
  *  Constructor for SymbolTable
  */
+SymbolTable::SymbolTable() {
+     //if(parent_ != nullptr)
+     current_blk = 0;
+}
+
 SymbolTable::SymbolTable(SymbolTable* parent_) {
     //if(parent_ != nullptr)
-      //parent = parent_;
-    if(parent == nullptr){
-        current_blk = 0;
-    }
-    else{
-        current_blk = ++SymbolTable::blk_nr;
-    }
-
+    parent = parent_;
+    current_blk = ++SymbolTable::blk_nr;
 }
 
 /*
@@ -44,10 +56,16 @@ SymbolTable::SymbolTable(SymbolTable* parent_) {
  *  symbol_table member.
  *
  */
+
+ unordered_map<string,SymbolTable*>* SymbolTable::getSubtables(){
+    return &subtables;
+ }
+
+
 symbol* SymbolTable::newSymbol(attr_bitset attributes, location lloc, vector<symbol*>* parameters){
     symbol* new_sym = new symbol;
     new_sym->attributes = attributes;
-
+    // cout << current_blk << "----\n";
     // keep track of the sequence
     if(attributes.test(size_t(attr::PARAM))){
         new_sym->sequence = param_sequence++;
@@ -61,7 +79,7 @@ symbol* SymbolTable::newSymbol(attr_bitset attributes, location lloc, vector<sym
 
     new_sym->fields = nullptr;
     new_sym->lloc = lloc;
-    new_sym->block_nr = this->current_blk;
+    new_sym->block_nr = current_blk;
     new_sym->parameters = parameters;
 
     // insert the newly created symbol object into the table.
@@ -69,9 +87,10 @@ symbol* SymbolTable::newSymbol(attr_bitset attributes, location lloc, vector<sym
     return new_sym;
 }
 
-void SymbolTable::insertIntoTable(const string* name, symbol* sym){
+void SymbolTable::insertIntoTable(string name, symbol* sym){
     // pair<string*,symbol*> toIns (name, sym);
-    table.insert(make_pair<const string*&,symbol*&>(name, sym));
+    table.insert(make_pair(name, sym));
+    // PrintSTMap(table);
 }
 
 /*
@@ -82,13 +101,13 @@ void SymbolTable::insertIntoTable(const string* name, symbol* sym){
  *
  */
 SymbolTable* SymbolTable::getGlobalTable(){
-    return &globalTable;
+    return globalTable;
 }
 void SymbolTable::addFields(symbol* dest, symbol_table* fields){
     dest->fields = fields;
 }
 
-void SymbolTable::addFunc(const string* name, SymbolTable* table_){
+void SymbolTable::addFunc(string name, SymbolTable* table_){
     if(table_ != nullptr){
         auto it = subtables.find(name);
         if(it != subtables.end()){
@@ -98,33 +117,26 @@ void SymbolTable::addFunc(const string* name, SymbolTable* table_){
 
     }
     // pair<string,SymbolTable*> toIns (name, table_);
-    subtables.insert(make_pair<const string*&,SymbolTable*&>(name, table_));
+    subtables.insert(make_pair(name, table_));
+    // PrintSubMap(subtables);
 }
 
-void SymbolTable::dump (FILE* destination, SymbolTable* tbl){
-    if(tbl->getParent() == nullptr){
-        printf("test\n");
-        for(auto it = tbl->table.begin(); it != tbl->table.end(); it++){
-            printf("test\n");
-            const string* str = it->first;
+void SymbolTable::dump (FILE* destination, int depth){
+        for(auto it = table.begin(); it != table.end(); it++){
+            string str = it->first;
             location loc = it->second->lloc;
             size_t blk = it->second->block_nr;
-            printf("<%s>  ===== (%zu.%zu.%zu){%zu}\n", str->c_str(),  loc.filenr, loc.linenr, loc.offset, blk);
-            if(tbl->subtables.count(str))
-               dump(destination, tbl->subtables[str]);
+            for(int i = 0; i < depth - 1; i++)
+                fprintf(destination, " ");
+            fprintf(destination, "%s (%zu.%zu.%zu){%zu}\n", str.c_str(),  loc.filenr, loc.linenr, loc.offset, blk);
+            if(subtables.size())
+                if(subtables.at(str))
+                    subtables.at(str)->dump(destination, depth + 4);
+
         }
-    }
-    else {
-        for(auto it = tbl->table.begin(); it != tbl->table.end(); it++){
-            const string* str = it->first;
-            location loc = it->second->lloc;
-            size_t blk = it->second->block_nr;
-            printf("<%s>  ===== (%zu.%zu.%zu){%zu}\n", str->c_str(),  loc.filenr, loc.linenr, loc.offset, blk);
-        }
-    }
 }
 
-attr_bitset SymbolTable::getAttributes(const string* name){
+attr_bitset SymbolTable::getAttributes(string name){
     if(table.find(name) != table.end()){
         return table[name]->attributes;
     }
@@ -134,8 +146,12 @@ attr_bitset SymbolTable::getAttributes(const string* name){
     }
 }
 
+void SymbolTable::setSubtable(string name, SymbolTable* tbl){
+    subtables[name] = tbl;
+}
+
 SymbolTable* SymbolTable::getParent(){
-  return this->parent;
+  return parent;
 }
 /*
  *
@@ -180,31 +196,39 @@ SymbolTable* SymbolTable::getParent(){
  */
 void ConstructTable(astree* root){
     //for(it = root->children.begin(); it != root.children.end(); it++){
+    SymbolTable* global = SymbolTable::getGlobalTable();
     for(auto it = root->children.begin(); it != root->children.end(); it++){
         if((*it)->symbol == TOK_STRUCT){
-            symbol* structSym = SymbolTable::getGlobalTable()->newSymbol((*it)->attributes, (*it)->lloc, nullptr);
-            SymbolTable::getGlobalTable()->insertIntoTable((*it)->children.at(0)->lexinfo, structSym);
+            symbol* structSym = global->newSymbol((*it)->attributes, (*it)->lloc, nullptr);
+            global->insertIntoTable((*it)->children.at(0)->lexinfo->c_str(), structSym);
             symbol_table* fields = new symbol_table;
             ParseBlock((*it)->children.at(1), fields);
-            SymbolTable::getGlobalTable()->addFields(structSym, fields);
+            global->addFields(structSym, fields);
         }
         else if((*it)->symbol == FUNCTION){
-            if(SymbolTable::getGlobalTable()->getParent())
-              printf("wtaf\n");
-            SymbolTable* tbl = new SymbolTable(SymbolTable::getGlobalTable());
+            SymbolTable* tbl = new SymbolTable(global);
             vector<symbol*>* params = ParseParameters(*it, tbl);
-            SymbolTable::getGlobalTable()->newSymbol((*it)->attributes, (*it)->lloc, params);
-            printf("%s\n", (*it)->children.at(0)->children.at(1)->lexinfo->c_str());
+            string name (*((*it)->children.at(0)->children.at(1)->lexinfo));
+            symbol* func = global->newSymbol((*it)->attributes, (*it)->lloc, params);
+            global->insertIntoTable(name, func);
+            // cout << (*it)->children.size() <<"\n";
             if((*it)->children.size() == 2)
-              SymbolTable::getGlobalTable()->addFunc((*it)->children.at(0)->children.at(1)->lexinfo, nullptr);
+              global->addFunc(name, tbl);
             else{
+<<<<<<< HEAD
               ParseBlock((*it)->children.at(2), tbl);
               SymbolTable::getGlobalTable()->addFunc((*it)->children.at(0)->children.at(1)->lexinfo, tbl);
+=======
+              if(global->getSubtables()->find(name) != global->getSubtables()->end())
+                  global->setSubtable(name, tbl);
+              else
+                  global->addFunc(name, tbl);
+>>>>>>> asg4: working sym dump to file
             }
         }
         else if ((*it)->symbol == TYPE_ID){
-            symbol* sym = SymbolTable::getGlobalTable()->newSymbol((*it)->attributes, (*it)->lloc, nullptr);
-            SymbolTable::getGlobalTable()->insertIntoTable((*it)->children.at(1)->lexinfo, sym);
+            symbol* sym = global->newSymbol((*it)->attributes, (*it)->lloc, nullptr);
+            global->insertIntoTable((*it)->children.at(1)->lexinfo->c_str(), sym);
 
         }
     }
@@ -216,10 +240,10 @@ vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
     vector<symbol*>* retVal = new vector<symbol*>;
     //for(it = param->children.begin(); it != param->children.end(); it++){
     //    symbol newSym = SymbolTable::newSymbol(*it->children.at(1)->lexinfo, *it->attributes, *it->it->children.at(1)->lloc, nullptr);
-    for(size_t i = 0; i < param->children.size(); i++){
-        symbol* newSym = SymbolTable::getGlobalTable()->newSymbol(param->children.at(i)->attributes, param->children.at(i)->lloc, nullptr);
-        tbl->insertIntoTable(param->children.at(i)->children.at(1)->lexinfo, newSym);
-        printf("%s\n", param->children.at(i)->children.at(1)->lexinfo->c_str());
+    for(auto it = param->children.begin(); it != param->children.end(); it++){
+        symbol* newSym = tbl->newSymbol((*it)->attributes, (*it)->lloc, nullptr);
+        string name (*((*it)->children.at(1)->lexinfo));
+        tbl->insertIntoTable(name, newSym);
         retVal->push_back(newSym);
     }
     return retVal;
@@ -388,7 +412,7 @@ void ParseBlock(astree* node, SymbolTable* table) {
             case TYPE_ID:
 
             sym = SymbolTable::getGlobalTable()->newSymbol(test->attributes, test->lloc, nullptr);
-            table->insertIntoTable(test->children.at(1)->lexinfo, sym);
+            table->insertIntoTable(string(test->children.at(1)->lexinfo->c_str()), sym);
             // if(test->children.size == 3)
             // perform semantic checks for type on this
             HandleTypeID(test);
@@ -472,7 +496,7 @@ void ParseBlock(astree* node, symbol_table* table) {
         switch(test->symbol){
             case TYPE_ID:
             sym = SymbolTable::getGlobalTable()->newSymbol(test->attributes, test->lloc, nullptr);
-            table->insert(make_pair<const string*&,symbol*&>(test->children.at(1)->lexinfo, sym));
+            table->insert(make_pair(string(test->children.at(1)->lexinfo->c_str()), sym));
             // if(test->children.size == 3)
             // perform semantic checks for type on this
             break;
