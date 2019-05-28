@@ -332,13 +332,13 @@ void HandleTypeID(astree* node,SymbolTable* table){
           node->attributes.set(size_t(attr::STRING));
           }
           traverse_expressions(child2,table);
-          
+
           break;
 
         }
         // printf("%s  %s\n",parser::get_tname(child1->symbol),print_attrib(child1).c_str());
     }
-    
+
 
 }
 
@@ -425,7 +425,7 @@ void traverse_expressions(astree* node, SymbolTable* table){
                     node->lloc.filenr, node->lloc.linenr, node);
                 }
                 node->attributes.set(size_t(attr::INT));
-                node->attributes.set(size_t(attr::VREG));  
+                node->attributes.set(size_t(attr::VREG));
             }
             break;
         }
@@ -437,20 +437,20 @@ void traverse_expressions(astree* node, SymbolTable* table){
                     node->lloc.filenr, node->lloc.linenr, node);
                 }
                 node->attributes.set(size_t(attr::INT));
-                node->attributes.set(size_t(attr::VREG)); 
+                node->attributes.set(size_t(attr::VREG));
             break;
         }
         case TOK_IDENT:{//look up in table
             if(node->children.size() == 0){
                 //attr_bitset getAttributes(const string* name);
                 // printf("%s",node->lexinfo->c_str());
-                attr_bitset at = table->getAttributes(node->lexinfo);
+                attr_bitset at = table->getAttributes(string(*(node->lexinfo)));
                 //unable to redefine bitset
                 node->attributes = at;
             }else{
                 //if it is a caller function
             }
-            
+
             break;
         }
         case TOK_ALLOC:{
@@ -460,7 +460,7 @@ void traverse_expressions(astree* node, SymbolTable* table){
         case TOK_ARRAY:{
             node->attributes.set(size_t(attr::ARRAY));
         }
-        
+
 
 
 
@@ -493,12 +493,11 @@ void ParseBlock(astree* node, SymbolTable* table) {
         astree* test = node->children.at(i);
         switch(test->symbol){
             case TYPE_ID:
-
-            sym = SymbolTable::getGlobalTable()->newSymbol(test->attributes, test->lloc, nullptr);
-            table->insertIntoTable(test->children.at(1)->lexinfo, sym);
+            HandleTypeID(test,table);
+            sym = table->newSymbol(test->attributes, test->lloc, nullptr);
+            table->insertIntoTable(string(*(test->children.at(1)->lexinfo)), sym);
             // if(test->children.size == 3)
             // perform semantic checks for type on this
-            HandleTypeID(test,table);
             break;
             case BLOCK:
             ParseBlock(test, table);
@@ -518,7 +517,7 @@ void ParseBlock(astree* node, symbol_table* table) {
         switch(test->symbol){
             case TYPE_ID:
             sym = SymbolTable::getGlobalTable()->newSymbol(test->attributes, test->lloc, nullptr);
-            table->insert(make_pair<const string*&,symbol*&>(test->children.at(1)->lexinfo, sym));
+            table->insert(make_pair(string(*(test->children.at(1)->lexinfo)), sym));
             // if(test->children.size == 3)
             // perform semantic checks for type on this
             break;
