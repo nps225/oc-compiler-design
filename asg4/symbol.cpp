@@ -215,15 +215,10 @@ void ConstructTable(astree* root){
             if((*it)->children.size() == 2)
               global->addFunc(name, tbl);
             else{
-<<<<<<< HEAD
-              ParseBlock((*it)->children.at(2), tbl);
-              SymbolTable::getGlobalTable()->addFunc((*it)->children.at(0)->children.at(1)->lexinfo, tbl);
-=======
               if(global->getSubtables()->find(name) != global->getSubtables()->end())
                   global->setSubtable(name, tbl);
               else
                   global->addFunc(name, tbl);
->>>>>>> asg4: working sym dump to file
             }
         }
         else if ((*it)->symbol == TYPE_ID){
@@ -384,7 +379,7 @@ void traverse_expressions(astree* node){
                     node->lloc.filenr, node->lloc.linenr, node);
                 }
                 node->attributes.set(size_t(attr::INT));
-                node->attributes.set(size_t(attr::VREG));  
+                node->attributes.set(size_t(attr::VREG));
             }
             break;
         }
@@ -396,7 +391,7 @@ void traverse_expressions(astree* node){
                     node->lloc.filenr, node->lloc.linenr, node);
                 }
                 node->attributes.set(size_t(attr::INT));
-                node->attributes.set(size_t(attr::VREG)); 
+                node->attributes.set(size_t(attr::VREG));
             break;
         }
 
