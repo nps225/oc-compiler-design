@@ -1,0 +1,27 @@
+main (6.25.1) {0} int function 
+    concat (6.35.4) {10} int variable local lval  2
+    argi (6.27.4) {10} int variable local lval  1
+    length (6.26.4) {10} int variable local lval  0
+    argc (6.25.11) {10} int variable param lval  0
+    argv (6.25.21) {10} variable param lval  1
+strlen (6.8.1) {0} int function 
+    len (6.9.4) {8} int variable local lval  0
+    str (6.8.13) {8} string variable param lval  0
+getln (5.30.1) {0} string function 
+strcat (6.14.1) {0} void function 
+    srcix (6.16.4) {9} int variable local lval  1
+    pos (6.15.4) {9} int variable local lval  0
+    dest (6.14.14) {9} string variable param lval  0
+    src (6.14.27) {9} string variable param lval  1
+putchr (5.24.1) {0} void function 
+    chr (5.24.14) {2} int variable param lval  0
+fail (5.22.1) {0} void function 
+    line (5.22.38) {1} int variable param lval  2
+    expr (5.22.12) {1} string variable param lval  0
+    file (5.22.25) {1} string variable param lval  1
+putint (5.25.1) {0} void function 
+    num (5.25.14) {3} int variable param lval  0
+getstr (5.29.1) {0} string function 
+putstr (5.26.1) {0} void function 
+    str (5.26.14) {4} string variable param lval  0
+getchr (5.28.1) {0} int function 

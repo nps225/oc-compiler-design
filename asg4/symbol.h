@@ -12,7 +12,7 @@
 // symbol node
 struct symbol{
     attr_bitset attributes;
-    size_t sequence = 0;
+    size_t sequence = -1;
     unordered_map<string,symbol*>* fields = nullptr;
     string type_id;
     location lloc;

@@ -1,0 +1,187 @@
+  0     0.000    258    ROOT            
+  5    22.001    262    FUNCTION        
+  5    22.001    261    TYPE_ID         
+  5    22.001    286    TOK_VOID        void
+  5    22.006    294    TOK_IDENT       fail
+  5    22.011    263    TOK_PARAM       (
+  5    22.012    261    TYPE_ID         
+  5    22.012    290    TOK_STRING      string
+  5    22.019    294    TOK_IDENT       expr
+  5    22.025    261    TYPE_ID         
+  5    22.025    290    TOK_STRING      string
+  5    22.032    294    TOK_IDENT       file
+  5    22.038    261    TYPE_ID         
+  5    22.038    288    TOK_INT         int
+  5    22.042    294    TOK_IDENT       line
+  5    24.001    262    FUNCTION        
+  5    24.001    261    TYPE_ID         
+  5    24.001    286    TOK_VOID        void
+  5    24.006    294    TOK_IDENT       putchr
+  5    24.013    263    TOK_PARAM       (
+  5    24.014    261    TYPE_ID         
+  5    24.014    288    TOK_INT         int
+  5    24.018    294    TOK_IDENT       chr
+  5    25.001    262    FUNCTION        
+  5    25.001    261    TYPE_ID         
+  5    25.001    286    TOK_VOID        void
+  5    25.006    294    TOK_IDENT       putint
+  5    25.013    263    TOK_PARAM       (
+  5    25.014    261    TYPE_ID         
+  5    25.014    288    TOK_INT         int
+  5    25.018    294    TOK_IDENT       num
+  5    26.001    262    FUNCTION        
+  5    26.001    261    TYPE_ID         
+  5    26.001    286    TOK_VOID        void
+  5    26.006    294    TOK_IDENT       putstr
+  5    26.013    263    TOK_PARAM       (
+  5    26.014    261    TYPE_ID         
+  5    26.014    290    TOK_STRING      string
+  5    26.021    294    TOK_IDENT       str
+  5    28.001    262    FUNCTION        
+  5    28.001    261    TYPE_ID         
+  5    28.001    288    TOK_INT         int
+  5    28.005    294    TOK_IDENT       getchr
+  5    28.011    263    TOK_PARAM       (
+  5    29.001    262    FUNCTION        
+  5    29.001    261    TYPE_ID         
+  5    29.001    290    TOK_STRING      string
+  5    29.008    294    TOK_IDENT       getstr
+  5    29.014    263    TOK_PARAM       (
+  5    30.001    262    FUNCTION        
+  5    30.001    261    TYPE_ID         
+  5    30.001    290    TOK_STRING      string
+  5    30.008    294    TOK_IDENT       getln
+  5    30.013    263    TOK_PARAM       (
+  6     7.001    279    TOK_STRUCT      struct
+  6     7.008    294    TOK_IDENT       stack
+  6     7.014    265    BLOCK           {
+  6     8.004    261    TYPE_ID         
+  6     8.004    280    TOK_ARRAY       array
+  6     8.010    290    TOK_STRING      string
+  6     8.018    294    TOK_IDENT       data
+  6     9.004    261    TYPE_ID         
+  6     9.004    288    TOK_INT         int
+  6     9.008    294    TOK_IDENT       size
+  6    10.004    261    TYPE_ID         
+  6    10.004    288    TOK_INT         int
+  6    10.008    294    TOK_IDENT       top
+  6    13.001    262    FUNCTION        
+  6    13.001    261    TYPE_ID         
+  6    13.001    283    TOK_PTR         ptr
+  6    13.012    294    TOK_IDENT       stack
+  6    13.019    294    TOK_IDENT       new_stack
+  6    13.029    263    TOK_PARAM       (
+  6    13.030    261    TYPE_ID         
+  6    13.030    288    TOK_INT         int
+  6    13.034    294    TOK_IDENT       size
+  6    13.040    265    BLOCK           {
+  6    14.004    261    TYPE_ID         
+  6    14.004    283    TOK_PTR         ptr
+  6    14.015    294    TOK_IDENT       stack
+  6    14.022    294    TOK_IDENT       stack
+  6    14.030    282    TOK_ALLOC       alloc
+  6    14.043    294    TOK_IDENT       stack
+  6    15.016     61    '='             =
+  6    15.009    284    TOK_ARROW       ->
+  6    15.004    294    TOK_IDENT       stack
+  6    15.011    294    TOK_IDENT       data
+  6    15.018    282    TOK_ALLOC       alloc
+  6    15.024    280    TOK_ARRAY       array
+  6    15.030    290    TOK_STRING      string
+  6    15.040    294    TOK_IDENT       size
+  6    16.016     61    '='             =
+  6    16.009    284    TOK_ARROW       ->
+  6    16.004    294    TOK_IDENT       stack
+  6    16.011    294    TOK_IDENT       size
+  6    16.018    294    TOK_IDENT       size
+  6    17.015     61    '='             =
+  6    17.009    284    TOK_ARROW       ->
+  6    17.004    294    TOK_IDENT       stack
+  6    17.011    294    TOK_IDENT       top
+  6    17.017    263    TOK_PARAM       (
+  6    17.018    296    NEG             -
+  6    17.019    293    TOK_INTCON      1
+  6    18.004    287    TOK_RETURN      return
+  6    18.011    294    TOK_IDENT       stack
+  6    21.001    262    FUNCTION        
+  6    21.001    261    TYPE_ID         
+  6    21.001    286    TOK_VOID        void
+  6    21.006    294    TOK_IDENT       push
+  6    21.011    263    TOK_PARAM       (
+  6    21.012    261    TYPE_ID         
+  6    21.012    283    TOK_PTR         ptr
+  6    21.023    294    TOK_IDENT       stack
+  6    21.030    294    TOK_IDENT       stack
+  6    21.037    261    TYPE_ID         
+  6    21.037    290    TOK_STRING      string
+  6    21.044    294    TOK_IDENT       str
+  6    21.049    265    BLOCK           {
+  6    22.004    265    BLOCK           {
+  6    22.005    277    TOK_IF          if
+  6    22.009    296    NEG             not
+  6    22.013    263    TOK_PARAM       (
+  6    22.025    276    TOK_LT          <
+  6    22.019    284    TOK_ARROW       ->
+  6    22.014    294    TOK_IDENT       stack
+  6    22.021    294    TOK_IDENT       top
+  6    22.039     45    '-'             -
+  6    22.032    284    TOK_ARROW       ->
+  6    22.027    294    TOK_IDENT       stack
+  6    22.034    294    TOK_IDENT       size
+  6    22.041    293    TOK_INTCON      1
+  6    22.050    268    CALL            (
+  6    22.045    294    TOK_IDENT       fail
+  6    22.051    292    TOK_STRINGCON   "stack->top < stack->size - 1"
+  6    22.083    292    TOK_STRINGCON   "40-arraystack.oc"
+  6    22.103    293    TOK_INTCON      22
+  6    22.108    265    BLOCK           {
+  6    23.015     61    '='             =
+  6    23.009    284    TOK_ARROW       ->
+  6    23.004    294    TOK_IDENT       stack
+  6    23.011    294    TOK_IDENT       top
+  6    23.028     43    '+'             +
+  6    23.022    284    TOK_ARROW       ->
+  6    23.017    294    TOK_IDENT       stack
+  6    23.024    294    TOK_IDENT       top
+  6    23.030    293    TOK_INTCON      1
+  6    24.028     61    '='             =
+  6    24.015    267    TOK_INDEX       [
+  6    24.009    284    TOK_ARROW       ->
+  6    24.004    294    TOK_IDENT       stack
+  6    24.011    294    TOK_IDENT       data
+  6    24.021    284    TOK_ARROW       ->
+  6    24.016    294    TOK_IDENT       stack
+  6    24.023    294    TOK_IDENT       top
+  6    24.030    294    TOK_IDENT       str
+  6    27.001    262    FUNCTION        
+  6    27.001    261    TYPE_ID         
+  6    27.001    290    TOK_STRING      string
+  6    27.008    294    TOK_IDENT       pop
+  6    27.012    263    TOK_PARAM       (
+  6    27.013    261    TYPE_ID         
+  6    27.013    283    TOK_PTR         ptr
+  6    27.024    294    TOK_IDENT       stack
+  6    27.031    294    TOK_IDENT       stack
+  6    27.038    265    BLOCK           {
+  6    28.004    261    TYPE_ID         
+  6    28.004    290    TOK_STRING      string
+  6    28.011    294    TOK_IDENT       tmp
+  6    28.028    267    TOK_INDEX       [
+  6    28.022    284    TOK_ARROW       ->
+  6    28.017    294    TOK_IDENT       stack
+  6    28.024    294    TOK_IDENT       data
+  6    28.034    284    TOK_ARROW       ->
+  6    28.029    294    TOK_IDENT       stack
+  6    28.036    294    TOK_IDENT       top
+  6    29.004    265    BLOCK           {
+  6    29.005    277    TOK_IF          if
+  6    29.009    296    NEG             not
+  6    29.013    263    TOK_PARAM       (
+  6    29.025    274    TOK_NE          !=
+  6    29.019    284    TOK_ARROW       ->
+  6    29.014    294    TOK_IDENT       stack
+  6    29.021    294    TOK_IDENT       top
+  6    29.028    263    TOK_PARAM       (
+  6    29.029    296    NEG             -
+  6    29.030    293    TOK_INTCON      1
+  6    29.040    268    CALL      

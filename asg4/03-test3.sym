@@ -1,17 +1,17 @@
 main (6.5.1) {0} function 
-    c (6.8.4) {8} int variable local lval 
-    a (6.6.4) {8} int variable local lval 
-    b (6.7.4) {8} int variable local lval 
+    c (6.8.4) {8} int variable local lval  2
+    a (6.6.4) {8} int variable local lval  0
+    b (6.7.4) {8} int variable local lval  1
 getln (5.30.1) {0} function 
 putchr (5.24.1) {0} function 
-    chr (5.24.14) {2} 
+    chr (5.24.14) {2} int variable param lval  0
 fail (5.22.1) {0} function 
-    line (5.22.38) {1} 
-    expr (5.22.12) {1} 
-    file (5.22.25) {1} 
+    line (5.22.38) {1} int variable param lval  2
+    expr (5.22.12) {1} string variable param lval  0
+    file (5.22.25) {1} string variable param lval  1
 putint (5.25.1) {0} function 
-    num (5.25.14) {3} 
+    num (5.25.14) {3} int variable param lval  0
 getstr (5.29.1) {0} function 
 putstr (5.26.1) {0} function 
-    str (5.26.14) {4} 
+    str (5.26.14) {4} string variable param lval  0
 getchr (5.28.1) {0} function 

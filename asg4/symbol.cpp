@@ -20,6 +20,7 @@
 
 
 size_t SymbolTable::blk_nr = 0;
+static size_t structSeq = 0;
 SymbolTable* SymbolTable::globalTable = new SymbolTable();
 /*
  *  Begin member function definition for SymbolTable
@@ -74,7 +75,7 @@ symbol* SymbolTable::newSymbol(attr_bitset attributes, location lloc, vector<sym
         new_sym->sequence = local_sequence++;
     }
     if(!(attributes.test(size_t(attr::PARAM))) && !attributes.test(size_t(attr::LOCAL))){
-        new_sym->sequence = 0;
+        new_sym->sequence = -1;
     }
 
     new_sym->fields = nullptr;
@@ -121,15 +122,37 @@ void SymbolTable::addFunc(string name, SymbolTable* table_){
     // PrintSubMap(subtables);
 }
 
+void dumpStructTable (symbol_table* t, FILE* destination, int depth){
+    for(auto it = t->begin(); it != t->end(); it++){
+        string str = it->first;
+        location loc = it->second->lloc;
+        string att = attrToString(it->second->attributes);
+        for(int i = 0; i < depth - 1; i++)
+            fprintf(destination, " ");
+        fprintf(destination, "%s (%zu.%zu.%zu) %s %zu\n", str.c_str(),  loc.filenr, loc.linenr, loc.offset, att.c_str(), it->second->sequence);
+    }
+}
+
 void SymbolTable::dump (FILE* destination, int depth){
         for(auto it = table.begin(); it != table.end(); it++){
             string str = it->first;
             location loc = it->second->lloc;
             size_t blk = it->second->block_nr;
             string att = attrToString(it->second->attributes);
+            if(it->second->attributes.test(size_t(attr::STRUCT))){
+                for(int i = 0; i < depth - 1; i++)
+                    fprintf(destination, " ");
+                att.append(it->second->type_id);
+                fprintf(destination, "%s (%zu.%zu.%zu) {%zu} %s\n", str.c_str(),  loc.filenr, loc.linenr, loc.offset, blk, att.c_str());
+                dumpStructTable(it->second->fields, destination, depth+4);
+                continue;
+            }
             for(int i = 0; i < depth - 1; i++)
                 fprintf(destination, " ");
-            fprintf(destination, "%s (%zu.%zu.%zu) {%zu} %s\n", str.c_str(),  loc.filenr, loc.linenr, loc.offset, blk, att.c_str());
+            if(it->second->sequence != -1)
+                fprintf(destination, "%s (%zu.%zu.%zu) {%zu} %s %zu\n", str.c_str(),  loc.filenr, loc.linenr, loc.offset, blk, att.c_str(), it->second->sequence);
+            else
+                fprintf(destination, "%s (%zu.%zu.%zu) {%zu} %s\n", str.c_str(),  loc.filenr, loc.linenr, loc.offset, blk, att.c_str());
             if(subtables.size())
                 if(subtables.at(str))
                     subtables.at(str)->dump(destination, depth + 4);
@@ -141,6 +164,8 @@ attr_bitset SymbolTable::getAttributes(string name){
     if(table.find(name) != table.end()){
         return table[name]->attributes;
     }
+    else if(getGlobalTable()->getAttributes(name) != NULL)
+        return getGlobalTable()->getAttributes(name);
     else {
         printf("Unknown symbol encountered\n");
         return NULL;
@@ -161,37 +186,6 @@ SymbolTable* SymbolTable::getParent(){
  */
 
 
-// Mackey function to convert attribute to its string equivalent
-/*const string AttrToString (attr attribute) {
-   static const unordered_map<attr,string> hash {
-      {attr::VOID       , "void"       },
-      {attr::INT        , "int"        },
-      {attr::NULLPTR_T  , "null"       },
-      {attr::STRING     , "string"     },
-      {attr::STRUCT     , "struct"     },
-      {attr::ARRAY      , "array"      },
-      {attr::FUNCTION   , "function"   },
-      {attr::VARIABLE   , "variable"   },
-      {attr::FIELD      , "field"      },
-      {attr::TYPEID     , "typeid"     },
-      {attr::PARAM      , "param"      },
-      {attr::LOCAL      , "local"      },
-      {attr::LVAL       , "lval"       },
-      {attr::CONST      , "const"      },
-      {attr::VREG       , "vreg"       },
-      {attr::VADDR      , "vaddr"      },
-      {attr::BITSET_SIZE, "bitset_size"},
-   };
-
-   auto str = hash.find (attribute);
-   if (str == hash.end()) {
-      throw invalid_argument (string (__PRETTY_FUNCTION__) + ": "
-                              + to_string (unsigned (attribute)));
-   }
-   return str->second;
-}
-*/
-
 /*
  *  Function to iterate through the AST and construct the necessary SymbolTables
  */
@@ -201,13 +195,23 @@ void ConstructTable(astree* root){
     for(auto it = root->children.begin(); it != root->children.end(); it++){
         if((*it)->symbol == TOK_STRUCT){
             symbol* structSym = global->newSymbol((*it)->attributes, (*it)->lloc, nullptr);
-            global->insertIntoTable((*it)->children.at(0)->lexinfo->c_str(), structSym);
+            structSym->type_id = string(*((*it)->children.at(0)->lexinfo));
+            global->insertIntoTable(string(*((*it)->children.at(0)->lexinfo)), structSym);
             symbol_table* fields = new symbol_table;
             ParseBlock((*it)->children.at(1), fields);
             global->addFields(structSym, fields);
         }
         else if((*it)->symbol == FUNCTION){
             SymbolTable* tbl = new SymbolTable(global);
+            (*it)->attributes.set(size_t(attr::FUNCTION));
+            switch((*it)->children.at(0)->children.at(0)->symbol){
+                case TOK_INT: (*it)->attributes.set(size_t(attr::INT));
+                break;
+                case TOK_STRING: (*it)->attributes.set(size_t(attr::STRING));
+                break;
+                case TOK_VOID: (*it)->attributes.set(size_t(attr::VOID));
+                break;
+            }
             vector<symbol*>* params = ParseParameters(*it, tbl);
             string name (*((*it)->children.at(0)->children.at(1)->lexinfo));
             symbol* func = global->newSymbol((*it)->attributes, (*it)->lloc, params);
@@ -239,6 +243,15 @@ vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
     //for(it = param->children.begin(); it != param->children.end(); it++){
     //    symbol newSym = SymbolTable::newSymbol(*it->children.at(1)->lexinfo, *it->attributes, *it->it->children.at(1)->lloc, nullptr);
     for(auto it = param->children.begin(); it != param->children.end(); it++){
+        (*it)->attributes.set(size_t(attr::VARIABLE));
+        (*it)->attributes.set(size_t(attr::LVAL));
+        (*it)->attributes.set(size_t(attr::PARAM));
+        switch((*it)->children.at(0)->symbol){
+            case TOK_STRING: (*it)->attributes.set(size_t(attr::STRING));
+            break;
+            case TOK_INT: (*it)->attributes.set(size_t(attr::INT));
+            break;
+        }
         symbol* newSym = tbl->newSymbol((*it)->attributes, (*it)->lloc, nullptr);
         string name (*((*it)->children.at(1)->lexinfo));
         tbl->insertIntoTable(name, newSym);
@@ -252,18 +265,20 @@ void HandleStructs(astree* node, SymbolTable* table){
      //printf("Hi\n");
 }
 
-void HandleTypeID(astree* node,SymbolTable* table){
-    node->attributes.set(size_t(attr::VARIABLE));
-    node->attributes.set(size_t(attr::LOCAL));
-    node->attributes.set(size_t(attr::LVAL));
+void HandleTypeID(astree* node, SymbolTable* table, int func){
+    if(func == 0)
+        node->attributes.set(size_t(attr::FIELD));
+    else{
+        node->attributes.set(size_t(attr::VARIABLE));
+        node->attributes.set(size_t(attr::LOCAL));
+        node->attributes.set(size_t(attr::LVAL));
+    }
     if(node->children.size() == 2){
         astree* child0 = node->children.at(0);
         astree* child1 = node->children.at(1);
         switch(child0->symbol){
             case TOK_INT:
             node->attributes.set(size_t(attr::INT));
-            node->attributes.set(size_t(attr::LVAL));
-            node->attributes.set(size_t(attr::VARIABLE));
             child0->attributes.set(size_t(attr::INT));
             child1->attributes.set(size_t(attr::INT));
             child1->attributes.set(size_t(attr::LVAL));
@@ -272,8 +287,6 @@ void HandleTypeID(astree* node,SymbolTable* table){
             case TOK_STRING:
             // node->attributes.set(size_t(attr::STRING));
             node->attributes.set(size_t(attr::STRING));
-            node->attributes.set(size_t(attr::LVAL));
-            node->attributes.set(size_t(attr::VARIABLE));
             child0->attributes.set(size_t(attr::STRING));
             child1->attributes.set(size_t(attr::STRING));
             child1->attributes.set(size_t(attr::LVAL));
@@ -309,8 +322,6 @@ void HandleTypeID(astree* node,SymbolTable* table){
         //     if(child2->lexinfo->find_first_not_of( "0123456789" ) != string::npos)
         //       printf("error: Invalid assignment to int variable at (%zu.%zu.%zu)\n", child2->lloc.filenr, child2->lloc.linenr, child2);
           node->attributes.set(size_t(attr::INT));
-          node->attributes.set(size_t(attr::LVAL));
-          node->attributes.set(size_t(attr::VARIABLE));
           child0->attributes.set(size_t(attr::INT));
           child1->attributes.set(size_t(attr::INT));
           child1->attributes.set(size_t(attr::LVAL));
@@ -319,8 +330,6 @@ void HandleTypeID(astree* node,SymbolTable* table){
           break;
           case TOK_STRING:
           node->attributes.set(size_t(attr::INT));
-          node->attributes.set(size_t(attr::LVAL));
-          node->attributes.set(size_t(attr::VARIABLE));
           child0->attributes.set(size_t(attr::INT));
           child1->attributes.set(size_t(attr::INT));
           child1->attributes.set(size_t(attr::LVAL));
@@ -389,7 +398,7 @@ void traverse_expressions(astree* node, SymbolTable* table){
                 (child0->attributes[size_t(attr::STRING)] == 0 &&
                 child1->attributes[size_t(attr::STRING)] == 0)){
                 errprintf("error: Invalid assignment to int variable at (%zu.%zu.%zu)\n",
-                node->lloc.filenr, node->lloc.linenr, node);
+                node->lloc.filenr, node->lloc.linenr, node->lloc.offset);
             }
             node->attributes.set(size_t(attr::INT));
             node->attributes.set(size_t(attr::VREG));
@@ -496,7 +505,7 @@ void ParseBlock(astree* node, SymbolTable* table) {
         astree* test = node->children.at(i);
         switch(test->symbol){
             case TYPE_ID:
-            HandleTypeID(test,table);
+            HandleTypeID(test,table,1);
             sym = table->newSymbol(test->attributes, test->lloc, nullptr);
             table->insertIntoTable(string(*(test->children.at(1)->lexinfo)), sym);
             // if(test->children.size == 3)
@@ -516,7 +525,9 @@ void ParseBlock(astree* node, symbol_table* table) {
         astree* test = *it;
         switch(test->symbol){
             case TYPE_ID:
+            HandleTypeID(test,nullptr,0);
             sym = SymbolTable::getGlobalTable()->newSymbol(test->attributes, test->lloc, nullptr);
+            sym->sequence = structSeq++;
             table->insert(make_pair(string(*(test->children.at(1)->lexinfo)), sym));
             // if(test->children.size == 3)
             // perform semantic checks for type on this
@@ -526,6 +537,7 @@ void ParseBlock(astree* node, symbol_table* table) {
             break;
         }
     }
+    structSeq = 0;
 }
 
 string attrToString(attr_bitset attr){
