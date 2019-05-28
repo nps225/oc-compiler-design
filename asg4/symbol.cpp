@@ -219,7 +219,9 @@ void ConstructTable(astree* root){
                   global->setSubtable(name, tbl);
               else
                   global->addFunc(name, tbl);
+              ParseBlock((*it)->children.at(2), tbl);
             }
+
         }
         else if ((*it)->symbol == TYPE_ID){
             symbol* sym = global->newSymbol((*it)->attributes, (*it)->lloc, nullptr);
@@ -501,9 +503,6 @@ void ParseBlock(astree* node, SymbolTable* table) {
             break;
             case BLOCK:
             ParseBlock(test, table);
-            break;
-            case TOK_STRUCT:
-            HandleStructs(test,table);
             break;
         }
     }
