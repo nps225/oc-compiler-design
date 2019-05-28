@@ -5,15 +5,8 @@
   3     1.005    294    TOK_IDENT       main
   3     1.009    263    TOK_PARAM       (
   3     1.011    265    BLOCK           {
-<<<<<<< HEAD
-  3     3.004    285    TOK_WHILE       while
-  3     3.012    273    TOK_EQ          ==
-  3     3.010    294    TOK_IDENT       a
-  3     3.015    294    TOK_IDENT       b
-  3     3.017    265    BLOCK           {
-  3     4.008    261    TYPE_ID         
-  3     4.008    288    TOK_INT         int
-  3     4.012    294    TOK_IDENT       c
-  3     4.016    293    TOK_INTCON      5
-=======
->>>>>>> asg4: dump symboltable
+  3     2.005    261    TYPE_ID         
+  3     2.005    288    TOK_INT         int
+  3     2.009    294    TOK_IDENT       a
+  3     2.013    295    POS             +
+  3     2.015    293    TOK_INTCON      9

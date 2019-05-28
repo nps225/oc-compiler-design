@@ -51,7 +51,7 @@ void ConstructTable(astree* root);
 vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl);
 void ParseBlock(astree* node, SymbolTable* table);
 void ParseBlock(astree* node, symbol_table* table);
-
+void traverse_expressions(astree* node);
 
 
 
