@@ -4,7 +4,7 @@
 /*
  *  *  oc-compiler scanner.l
  *   *  CMPS 104A Assignment 2: Scanner
- *    *  Author: 
+ *    *  Author:
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
  *      Date: 2019.04.29
@@ -33,7 +33,7 @@ OCTAL           [0-7]
 HEX             [0-9a-fA-F]
 DECIMAL         (^[^0]{DIGIT}*)
 OCTALNUM        (0{OCTAL}*)
-HEXNUM          ((0x|0X){HEX}*)        
+HEXNUM          ((0x|0X){HEX}*)
 MANTISSA        ({DIGIT}+\.?{DIGIT}*|\.{DIGIT}+)
 EXPONENT        ([Ee][+-]?{DIGIT}+)
 STRING          (\"([^\\"\n]|\\[\\'"0nt])*\")
@@ -102,4 +102,3 @@ BADIDENT        ({DIGIT}{IDENT})
 .               { lexer::badchar (*yytext); }
 
 %%
-

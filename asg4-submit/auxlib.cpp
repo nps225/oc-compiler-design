@@ -2,7 +2,7 @@
 /*
  *  *  oc-compiler auxlib.cpp
  *   *  CMPS 104A Assignment 2: Scanner
- *    *  Author: 
+ *    *  Author:
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
  *      Date: 2019.04.29
@@ -33,7 +33,7 @@ static void eprint_signal (const char* kind, int signal) {
 }
 
 void eprint_status (const char* command, int status) {
-   if (status == 0) return; 
+   if (status == 0) return;
    eprintf ("%s: status 0x%04X", command, status);
    if (WIFEXITED (status)) {
       eprintf (", exit %d", WEXITSTATUS (status));
@@ -94,7 +94,7 @@ void __stubprintf (const char* file, int line, const char* func,
    vprintf (format, args);
    va_end (args);
    fflush (nullptr);
-}     
+}
 
 
 void set_debugflags (const char* flags) {

@@ -56,7 +56,7 @@ struct astree {
    void dump_tree (FILE*, int depth = 0);
    static void dump (FILE* outfile, astree* tree);
    static void print (FILE* outfile, astree* tree, int depth = 0);
-   
+
 };
 
 string print_attrib(astree* tree);

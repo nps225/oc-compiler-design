@@ -2,7 +2,7 @@
 /*
  *  *  oc-compiler string_set.cpp
  *   *  CMPS 104A Assignment 2: Scanner
- *    *  Author: 
+ *    *  Author:
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
  *      Date: 2019.04.29
@@ -50,4 +50,3 @@ void string_set::dump (FILE* out) {
    fprintf (out, "bucket_count = %zu\n", set.bucket_count());
    fprintf (out, "max_bucket_size = %zu\n", max_bucket_size);
 }
-
