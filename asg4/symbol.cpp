@@ -213,7 +213,8 @@ void ConstructTable(astree* root){
         if((*it)->symbol == TOK_STRUCT){
             symbol* structSym = global->newSymbol((*it)->attributes,
                                               (*it)->lloc, nullptr);
-            structSym->type_id = string(*((*it)->children.at(0)->lexinfo));
+            structSym->type_id =
+                            string(*((*it)->children.at(0)->lexinfo));
             global->insertIntoTable(
                   string(*((*it)->children.at(0)->lexinfo)), structSym);
             symbol_table* fields = new symbol_table;
