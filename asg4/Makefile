@@ -11,7 +11,7 @@ MKDEPS    = g++ -std=gnu++17 -MM
 GRIND     = valgrind --leak-check=full --show-reachable=yes
 UTILBIN   = /afs/cats.ucsc.edu/courses/cmps104a-wm/bin/
 
-MODULES   = astree lyutils string_set auxlib asg3 symbol typeChecker 
+MODULES   = astree lyutils string_set auxlib asg3 symbol 
 HDRSRC    = ${MODULES:=.h}
 CPPSRC    = ${MODULES:=.cpp} main.cpp
 FLEXSRC   = scanner.l
@@ -24,7 +24,7 @@ PARSEOUT  = yyparse.output
 REPORTS   = ${PARSEOUT} #${LEXOUT}
 CGENS     = ${LEXCPP} ${PARSECPP}
 ALLGENS   = ${PARSEHDR} ${CGENS}
-EXECBIN   = oc 
+EXECBIN   = oc
 ALLCSRC   = ${CPPSRC} ${CGENS}
 OBJECTS   = ${ALLCSRC:.cpp=.o}
 MODSRC    = ${foreach MOD, ${MODULES}, ${MOD}.h ${MOD}.cpp}
@@ -81,7 +81,7 @@ tests : ${EXECBIN}
 
 again :
 	gmake --no-print-directory spotless deps ci all
-	
+
 ifeq "${NEEDINCL}" ""
 include ${DEPSFILE}
 endif

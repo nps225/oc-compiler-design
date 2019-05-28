@@ -12,7 +12,7 @@
 // symbol node
 struct symbol{
     attr_bitset attributes;
-    size_t sequence = -1;
+    int sequence = -1;
     unordered_map<string,symbol*>* fields = nullptr;
     string type_id;
     location lloc;
@@ -43,7 +43,8 @@ class SymbolTable {
     unordered_map<string,SymbolTable*>* getSubtables();
     void setSubtable(string name, SymbolTable* tbl);
     attr_bitset getAttributes(string name);
-    symbol* newSymbol(attr_bitset attributes, location lloc, vector<symbol*>* parameters);
+    symbol* newSymbol(attr_bitset attributes, location lloc,
+        vector<symbol*>* parameters);
     void insertIntoTable(string name, symbol* sym);
     void addFields(symbol* dest, symbol_table* fields);
     void addFunc(string name, SymbolTable* table_);
@@ -55,7 +56,7 @@ vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl);
 void ParseBlock(astree* node, SymbolTable* table);
 void ParseBlock(astree* node, symbol_table* table);
 void traverse_expressions(astree* node,SymbolTable* table);
-void alloc_helper(astree* node,SymbolTable* table);
+void alloc_helper(astree* node);
 void HandleStructs(astree* node, SymbolTable* table);
 string attrToString(attr_bitset attr);
 
