@@ -59,10 +59,13 @@ astree* astree::symChange (astree* tree, int symbol_) {
 
 
 void astree::dump_node (FILE* outfile) {
-   fprintf (outfile, "%s \"%s\" %zd.%zd.%zd",
+   // string att = attrToString(attributes);
+   fprintf (outfile, "%s \"%s\" (%zd.%zd.%zd) %s",
             parser::get_tname (symbol),
             lexinfo->c_str(),lloc.filenr,
-            lloc.linenr, lloc.offset);
+            lloc.linenr, lloc.offset,
+            print_attrib(this).c_str()
+            );
    // fprintf(outfile, "%s %zd.%zd.%zd",lexinfo->
    // c_str(),lloc.filenr, lloc.linenr, lloc.offset);
    for (size_t child = 0; child < children.size(); ++child) {
@@ -70,6 +73,7 @@ void astree::dump_node (FILE* outfile) {
       //          static_cast<const void*> (children.at(child)));
    }
 }
+
 
 void astree::dump_tree (FILE* outfile, int depth) {
    fprintf (outfile, "%*s", depth * 3, "");
