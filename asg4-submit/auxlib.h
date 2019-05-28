@@ -2,7 +2,7 @@
 /*
  *  *  oc-compiler auxlib.h
  *   *  CMPS 104A Assignment 2: Scanner
- *    *  Author: 
+ *    *  Author:
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
  *      Date: 2019.04.29
@@ -31,7 +31,7 @@ struct exec {
 };
 
 void veprintf (const char* format, va_list args);
-// Prints a message to stderr using the vector form of 
+// Prints a message to stderr using the vector form of
 // argument list.
 
 void eprintf (const char* format, ...);
