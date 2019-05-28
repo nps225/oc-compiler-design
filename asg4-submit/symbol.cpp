@@ -212,6 +212,8 @@ void ConstructTable(astree* root){
     for(auto it = root->children.begin();
           it != root->children.end(); it++){
         if((*it)->symbol == TOK_STRUCT){
+            (*it)->attributes.set(size_t(attr::STRUCT));
+            (*it)->attributes.set(size_t(attr::TYPEID));
             symbol* structSym = global->newSymbol((*it)->attributes,
                                               (*it)->lloc, nullptr);
             structSym->type_id =
