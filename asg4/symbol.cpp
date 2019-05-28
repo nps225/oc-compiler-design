@@ -130,7 +130,7 @@ attr_bitset SymbolTable::getAttributes(const string* name){
     }
     else {
         printf("Unknown symbol encountered\n");
-        return nullptr;
+        return NULL;
     }
 }
 
@@ -226,24 +226,24 @@ vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
 }
 
 void HandleTypeID(astree* node){
-    node->attributes.set(attr::VARIABLE);
-    node->attributes.set(attr::LOCAL);
-    node->attributes.set(attr::LVAL);
+    node->attributes.set(size_t(attr::VARIABLE));
+    node->attributes.set(size_t(attr::LOCAL));
+    node->attributes.set(size_t(attr::LVAL));
     if(node->children.size() == 2){
         astree* child0 = node->children.at(0);
         astree* child1 = node->children.at(1);
         switch(child0->symbol){
             case TOK_INT:
-            node->attributes.set(attr::INT);
+            node->attributes.set(size_t(attr::INT));
             break;
             case TOK_STRING:
-            node->attributes.set(attr::STRING);
+            node->attributes.set(size_t(attr::STRING));
             case TOK_ARRAY:
-            node->attributes.set(attr::ARRAY);
-            if(child0->children.at(0) == TOK_INT)
-            node->attributes.set(attr::INT);
+            node->attributes.set(size_t(attr::ARRAY));
+            if(child0->children.at(0)->symbol == TOK_INT)
+            node->attributes.set(size_t(attr::INT));
             else
-            node->attributes.set(attr::STRING);
+            node->attributes.set(size_t(attr::STRING));
             break;
         }
     }
@@ -254,18 +254,18 @@ void HandleTypeID(astree* node){
         switch(child0->symbol){
           case TOK_INT:
           if(child2->symbol == TOK_INTCON)
-            if(child2->lexinfo.find_first_not_of( "0123456789" ) != string::npos)
-              printf("error: Invalid assignment to int variable at (%zu.%zu.%zu)\n", child2->lloc.filenr, child2->lloc.linenr, child2)
-          node->attributes.set(attr::INT);
+            if(child2->lexinfo->find_first_not_of( "0123456789" ) != string::npos)
+              printf("error: Invalid assignment to int variable at (%zu.%zu.%zu)\n", child2->lloc.filenr, child2->lloc.linenr, child2);
+          node->attributes.set(size_t(attr::INT));
           break;
           case TOK_STRING:
-          node->attributes.set(attr::STRING);
+          node->attributes.set(size_t(attr::STRING));
           case TOK_ARRAY:
-          node->attributes.set(attr::ARRAY);
-          if(child0->children.at(0) == TOK_INT)
-          node->attributes.set(attr::INT);
+          node->attributes.set(size_t(attr::ARRAY));
+          if(child0->children.at(0)->symbol == TOK_INT)
+          node->attributes.set(size_t(attr::INT));
           else
-          node->attributes.set(attr::STRING);
+          node->attributes.set(size_t(attr::STRING));
           break;
 
         }
@@ -289,29 +289,23 @@ void ParseBlock(astree* node, SymbolTable* table) {
             case BLOCK:
             ParseBlock(test, table);
             break;
-            case: TYPE_ID://vars-funcs
+            case TOK_STRUCT:
             break;
-            case: FUNCTION:
+            case TOK_PARAM:
             break;
-            case: TOK_STRUCT:
+            case TOK_NULLPTR:
             break;
-            case: TOK_PARAM:
+            case TOK_INDEX:
             break;
-            case: BLOCK:
+            case CALL:
             break;
-            case: TOK_NULLPTR:
+            case TOK_GE:
             break;
-            case: TOK_INDEX:
+            case TOK_LE:
             break;
-            case: CALL:
+            case TOK_EQ:
             break;
-            case: TOK_GE:
-            break;
-            case: TOK_LE:
-            break;
-            case: TOK_EQ:
-            break;
-            case: TOK_NE:
+            case TOK_NE:
             break;
             case '+':
             break;
@@ -325,16 +319,14 @@ void ParseBlock(astree* node, SymbolTable* table) {
             break;
             case '%':
             break;
-            case: TOK_INDEX:
-            break;
-            case: TOK_IF:
+            case TOK_IF:
             break;
             case TOK_ELSE:
             break;
             case TOK_ARRAY:
             break;
-            case TOK_ALLOC:
             break;
+            case TOK_ALLOC:
             case TOK_PTR:
             break;
             case TOK_RETURN:
@@ -349,11 +341,8 @@ void ParseBlock(astree* node, SymbolTable* table) {
             break;
             case TOK_STRING:
             break;
-            case TOK_CHAR:
-            break;
             case TOK_CHARCON:
                 node->attributes.set(size_t(attr::CONST));
-                node->attributes.set(size_t(attr::CHAR));
             break;
             case TOK_STRINGCON:
                 node->attributes.set(size_t(attr::CONST));

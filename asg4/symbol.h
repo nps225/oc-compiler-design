@@ -39,6 +39,7 @@ class SymbolTable {
     SymbolTable(SymbolTable* parent_);
     static SymbolTable* getGlobalTable();
     SymbolTable* getParent();
+    attr_bitset getAttributes(const string* name);
     symbol* newSymbol(attr_bitset attributes, location lloc, vector<symbol*>* parameters);
     void insertIntoTable(const string* name, symbol* sym);
     void addFields(symbol* dest, symbol_table* fields);
