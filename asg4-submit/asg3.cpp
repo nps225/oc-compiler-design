@@ -35,7 +35,6 @@ void scanToFile(string filename){
   int val = yyparse();
   if(val == 0){
     //handle symbol table part of code
-    parser::root-> astree::dump_tree(outAST,0);
     string_set::dump (outSTR);
     astree::print(outTOK,parser::root,0);
   }else{
@@ -47,6 +46,8 @@ void scanToFile(string filename){
       fprintf(stderr, "Error creating sym file");
   SymbolTable::getGlobalTable()->dump(outSYM, 1);
   //  delete parser::root;
+
+   parser::root-> astree::dump_tree(outAST,0);
    destroy(parser::root);
    fclose(outSTR);
    fclose(outTOK);
