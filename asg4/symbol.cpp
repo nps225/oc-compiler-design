@@ -126,9 +126,10 @@ void SymbolTable::dump (FILE* destination, int depth){
             string str = it->first;
             location loc = it->second->lloc;
             size_t blk = it->second->block_nr;
+            string att = attrToString(it->second->attributes);
             for(int i = 0; i < depth - 1; i++)
                 fprintf(destination, " ");
-            fprintf(destination, "%s (%zu.%zu.%zu){%zu}\n", str.c_str(),  loc.filenr, loc.linenr, loc.offset, blk);
+            fprintf(destination, "%s (%zu.%zu.%zu) {%zu} %s\n", str.c_str(),  loc.filenr, loc.linenr, loc.offset, blk, att.c_str());
             if(subtables.size())
                 if(subtables.at(str))
                     subtables.at(str)->dump(destination, depth + 4);
@@ -525,4 +526,57 @@ void ParseBlock(astree* node, symbol_table* table) {
             break;
         }
     }
+}
+
+string attrToString(attr_bitset attr){
+   string strAttrs = "";
+   if(attr[size_t(attr::VOID)] == 1){
+      strAttrs += "void ";
+   }
+   if(attr[size_t(attr::INT)] == 1){
+      strAttrs += "int ";
+   }
+   if(attr[size_t(attr::NULLPTR_T)] == 1){
+      strAttrs += "nullptr ";
+   }
+   if(attr[size_t(attr::STRING)] == 1){
+      strAttrs += "string ";
+   }
+   if(attr[size_t(attr::STRUCT)] == 1){
+      strAttrs += "struct ";
+   }
+   if(attr[size_t(attr::ARRAY)] == 1){
+      strAttrs += "array ";
+   }
+   if(attr[size_t(attr::FUNCTION)] == 1){
+      strAttrs += "function ";
+   }
+   if(attr[size_t(attr::VARIABLE)] == 1){
+      strAttrs += "variable ";
+   }
+   if(attr[size_t(attr::FIELD)] == 1){
+      strAttrs += "field ";
+   }
+   if(attr[size_t(attr::PARAM)] == 1){
+      strAttrs += "param ";
+   }
+   if(attr[size_t(attr::LOCAL)] == 1){
+      strAttrs += "local ";
+   }
+   if(attr[size_t(attr::LVAL)] == 1){
+      strAttrs += "lval ";
+   }
+   if(attr[size_t(attr::CONST)] == 1){
+      strAttrs += "const ";
+   }
+   if(attr[size_t(attr::VREG)] == 1){
+      strAttrs += "vreg ";
+   }
+   if(attr[size_t(attr::VADDR)] == 1){
+      strAttrs += "vaddr ";
+   }
+   if(attr[size_t(attr::BITSET_SIZE)] == 1){
+      strAttrs += "bitset_size ";
+   }
+   return strAttrs;
 }

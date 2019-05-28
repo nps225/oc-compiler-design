@@ -57,6 +57,7 @@ void ParseBlock(astree* node, symbol_table* table);
 void traverse_expressions(astree* node,SymbolTable* table);
 void alloc_helper(astree* node,SymbolTable* table);
 void HandleStructs(astree* node, SymbolTable* table);
+string attrToString(attr_bitset attr);
 
 
 

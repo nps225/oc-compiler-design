@@ -1,17 +1,17 @@
-main (6.5.1){0}
-    c (6.8.4){8}
-    a (6.6.4){8}
-    b (6.7.4){8}
-getln (5.30.1){0}
-putchr (5.24.1){0}
-    chr (5.24.14){2}
-fail (5.22.1){0}
-    line (5.22.38){1}
-    expr (5.22.12){1}
-    file (5.22.25){1}
-putint (5.25.1){0}
-    num (5.25.14){3}
-getstr (5.29.1){0}
-putstr (5.26.1){0}
-    str (5.26.14){4}
-getchr (5.28.1){0}
+main (6.5.1) {0} function 
+    c (6.8.4) {8} int variable local lval 
+    a (6.6.4) {8} int variable local lval 
+    b (6.7.4) {8} int variable local lval 
+getln (5.30.1) {0} function 
+putchr (5.24.1) {0} function 
+    chr (5.24.14) {2} 
+fail (5.22.1) {0} function 
+    line (5.22.38) {1} 
+    expr (5.22.12) {1} 
+    file (5.22.25) {1} 
+putint (5.25.1) {0} function 
+    num (5.25.14) {3} 
+getstr (5.29.1) {0} function 
+putstr (5.26.1) {0} function 
+    str (5.26.14) {4} 
+getchr (5.28.1) {0} function 
