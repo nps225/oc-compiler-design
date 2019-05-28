@@ -274,7 +274,8 @@ alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' ')'
          destroy($2,$4);
          destroy($6,$7);
          destroy($8,$9);
-         $$ = $1->adopt($3,$5);
+         $3 = $3->adopt($5);
+         $$ = $1->adopt($3);
        }
        | TOK_ALLOC TOK_LT TOK_ARRAY TOK_LT
          type TOK_GT TOK_GT '(' express ')'
@@ -282,8 +283,9 @@ alloc: TOK_ALLOC TOK_LT TOK_STRING TOK_GT '(' ')'
          destroy($2,$4);
          destroy($6,$7);
          destroy($8,$10);
-         $1 = $1->adopt($3,$5);
-         $$ = $1->adopt($9);
+         $3 = $3->adopt($5);
+         $1 = $1->adopt($3,$9);
+         $$ = $1;
        }
        ;
 
