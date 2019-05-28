@@ -64,7 +64,7 @@ SymbolTable::SymbolTable(SymbolTable* parent_) {
 
 
 symbol* SymbolTable::newSymbol(attr_bitset attributes, location lloc,
-                                  vector<symbol*>* parameters){
+                                        vector<symbol*>* parameters){
     symbol* new_sym = new symbol;
     new_sym->attributes = attributes;
     // cout << current_blk << "----\n";
@@ -126,6 +126,7 @@ void SymbolTable::addFunc(string name, SymbolTable* table_){
 }
 
 void dumpStructTable (symbol_table* t, FILE* destination, int depth){
+
     for(auto it = t->begin(); it != t->end(); it++){
         string str = it->first;
         location loc = it->second->lloc;
@@ -144,6 +145,7 @@ void SymbolTable::dump (FILE* destination, int depth){
             location loc = it->second->lloc;
             size_t blk = it->second->block_nr;
             string att = attrToString(it->second->attributes);
+
             if(it->second->attributes.test(size_t(attr::STRUCT))){
                 for(int i = 0; i < depth - 1; i++)
                     fprintf(destination, " ");
@@ -155,6 +157,7 @@ void SymbolTable::dump (FILE* destination, int depth){
                                     destination, depth+4);
                 continue;
             }
+            //cout << "lol\n";
             for(int i = 0; i < depth - 1; i++)
                 fprintf(destination, " ");
             if(it->second->sequence != -1)
@@ -165,7 +168,7 @@ void SymbolTable::dump (FILE* destination, int depth){
                 fprintf(destination, "%s (%zu.%zu.%zu) {%zu} %s\n",
                           str.c_str(),  loc.filenr,
                               loc.linenr, loc.offset, blk, att.c_str());
-            if(subtables.size())
+            if(!(it->second->attributes.test(size_t(attr::VARIABLE))))
                 if(subtables.at(str))
                     subtables.at(str)->dump(destination, depth + 4);
 
@@ -173,18 +176,12 @@ void SymbolTable::dump (FILE* destination, int depth){
 }
 
 attr_bitset SymbolTable::getAttributes(string name){
-    attr_bitset ret(size_t(attr::BITSET_SIZE));
+  attr_bitset ret (string("00000000000000000000000000000000"));
+  ret.reset();
     if(table.find(name) != table.end()){
         return table[name]->attributes;
     }
-    else if(getGlobalTable()->
-              getAttributes(name).test(size_t(attr::BITSET_SIZE))){
-        errprintf("Unknown symbol encountered\n");
-        return ret;
-    }
-    else {
-        return getGlobalTable()->getAttributes(name);
-    }
+  return ret;
 }
 
 void SymbolTable::setSubtable(string name, SymbolTable* tbl){
@@ -212,6 +209,8 @@ void ConstructTable(astree* root){
     for(auto it = root->children.begin();
           it != root->children.end(); it++){
         if((*it)->symbol == TOK_STRUCT){
+            (*it)->attributes.set(size_t(attr::STRUCT));
+            (*it)->attributes.set(size_t(attr::TYPEID));
             symbol* structSym = global->newSymbol((*it)->attributes,
                                               (*it)->lloc, nullptr);
             structSym->type_id =
@@ -256,15 +255,89 @@ void ConstructTable(astree* root){
 
         }
         else if ((*it)->symbol == TYPE_ID){
+          astree* node = (*it);
+          node->attributes.set(size_t(attr::VARIABLE));
+          node->attributes.set(size_t(attr::LVAL));
+          if((node)->children.size() == 2){
+              astree* child0 = node->children.at(0);
+              astree* child1 = node->children.at(1);
+              switch(child0->symbol){
+                  case TOK_INT:
+                  node->attributes.set(size_t(attr::INT));
+                  child0->attributes.set(size_t(attr::INT));
+                  child1->attributes.set(size_t(attr::INT));
+                  child1->attributes.set(size_t(attr::LVAL));
+                  child1->attributes.set(size_t(attr::VARIABLE));
+                  break;
+                  case TOK_STRING:
+                  // node->attributes.set(size_t(attr::STRING));
+                  node->attributes.set(size_t(attr::STRING));
+                  child0->attributes.set(size_t(attr::STRING));
+                  child1->attributes.set(size_t(attr::STRING));
+                  child1->attributes.set(size_t(attr::LVAL));
+                  child1->attributes.set(size_t(attr::VARIABLE));
+                  break;
+                  case TOK_ARRAY:
+                  node->attributes.set(size_t(attr::ARRAY));
+                  child0->attributes.set(size_t(attr::ARRAY));
+                  if(child0->children.at(0)->symbol == TOK_INT){
+                  node->attributes.set(size_t(attr::INT));
+                  child0->attributes.set(size_t(attr::INT));
+                  child1->attributes.set(size_t(attr::INT));
+                  child1->attributes.set(size_t(attr::LVAL));
+                  child1->attributes.set(size_t(attr::VARIABLE));
+                  }else{
+                  node->attributes.set(size_t(attr::STRING));
+                  child0->attributes.set(size_t(attr::STRING));
+                  child1->attributes.set(size_t(attr::STRING));
+                  child1->attributes.set(size_t(attr::LVAL));
+                  child1->attributes.set(size_t(attr::VARIABLE));
+                  }
+                  break;
+              }
+          }
+          else {
+              astree* child0 = node->children.at(0);
+              astree* child1 = node->children.at(1);
+              astree* child2 = node->children.at(2);
+              switch(child0->symbol){
+                case TOK_INT:
+                node->attributes.set(size_t(attr::INT));
+                child0->attributes.set(size_t(attr::INT));
+                child1->attributes.set(size_t(attr::INT));
+                child1->attributes.set(size_t(attr::LVAL));
+                child1->attributes.set(size_t(attr::VARIABLE));
+                traverse_expressions(child2,global);
+                break;
+                case TOK_STRING:
+                node->attributes.set(size_t(attr::INT));
+                child0->attributes.set(size_t(attr::INT));
+                child1->attributes.set(size_t(attr::INT));
+                child1->attributes.set(size_t(attr::LVAL));
+                child1->attributes.set(size_t(attr::VARIABLE));
+                traverse_expressions(child2,global);
+                break;
+                case TOK_ARRAY:
+                node->attributes.set(size_t(attr::ARRAY));
+                if(child0->children.at(0)->symbol == TOK_INT){
+                node->attributes.set(size_t(attr::INT));
+                }else{
+                node->attributes.set(size_t(attr::STRING));
+                }
+                traverse_expressions(child2,global);
+
+                break;
+
+              }
+          }
             symbol* sym = global->newSymbol((*it)->attributes,
                                               (*it)->lloc, nullptr);
             global->insertIntoTable(
-                      (*it)->children.at(1)->lexinfo->c_str(), sym);
+                      string(*((*it)->children.at(1)->lexinfo)), sym);
 
         }
     }
 }
-
 vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
     // std::vector<astree*>::iterator it;
     astree* param = func->children.at(1);
@@ -412,27 +485,11 @@ void traverse_expressions(astree* node, SymbolTable* table){
         //these two are untested
         case TOK_EQ:
         case TOK_NE:{
-            astree* child0 = node->children.at(0);
-            astree* child1 = node->children.at(1);
-            if((child0->attributes[size_t(attr::INT)] == 0 &&
-                child1->attributes[size_t(attr::INT)] == 0)||
-                (child0->attributes[size_t(attr::STRING)] == 0 &&
-                child1->attributes[size_t(attr::STRING)] == 0)){
-                errprintf ("error: Invalid assignment to int \
-                variable at (%zu.%zu.%zu)\n",
-                node->lloc.filenr,node->lloc.linenr,node->lloc.offset);
-            }
             node->attributes.set(size_t(attr::INT));
             node->attributes.set(size_t(attr::VREG));
             break;
         }
         case TOK_NOT: {
-            astree* child = node->children.at(0);
-            if(child->attributes[size_t(attr::INT)] != 1){
-                errprintf("error: Invalid assignment to int variable \
-                 at (%zu.%zu.%zu)\n",
-                 child->lloc.filenr, child->lloc.linenr, child);
-            }
             node->attributes.set(size_t(attr::INT));
             node->attributes.set(size_t(attr::VREG));
             break;
@@ -444,23 +501,9 @@ void traverse_expressions(astree* node, SymbolTable* table){
         case '-':
         case '+': {
             if(node->children.size() == 2){
-                astree* child0 = node->children.at(0);
-                astree* child1 = node->children.at(1);
-                if(child0->attributes[size_t(attr::INT)] != 1 ||
-                   child1->attributes[size_t(attr::INT)] != 1){
-                    errprintf("error: Invalid assignment to int \
-                    variable at (%zu.%zu.%zu)\n",
-                    node->lloc.filenr, node->lloc.linenr, node);
-                }
                 node->attributes.set(size_t(attr::INT));
                 node->attributes.set(size_t(attr::VREG));
             }else{
-                astree* child0 = node->children.at(0);
-                if(child0->attributes[size_t(attr::INT)] != 1){
-                    errprintf("error: Invalid assignment to int \
-                    variable at (%zu.%zu.%zu)\n",
-                    node->lloc.filenr, node->lloc.linenr, node);
-                }
                 node->attributes.set(size_t(attr::INT));
                 node->attributes.set(size_t(attr::VREG));
             }
@@ -468,12 +511,6 @@ void traverse_expressions(astree* node, SymbolTable* table){
         }
         case POS:
         case NEG:{
-            astree* child0 = node->children.at(0);
-                if(child0->attributes[size_t(attr::INT)] != 1){
-                    errprintf("error: Invalid assignment to int \
-                     variable at (%zu.%zu.%zu)\n",
-                    node->lloc.filenr, node->lloc.linenr, node);
-                }
                 node->attributes.set(size_t(attr::INT));
                 node->attributes.set(size_t(attr::VREG));
             break;

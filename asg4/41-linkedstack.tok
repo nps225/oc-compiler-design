@@ -275,4 +275,6 @@
   6    49.020    294    TOK_IDENT       stack
   6    50.014    268    CALL            (
   6    50.007    294    TOK_IDENT       putchr
-  6    50.015    291    TOK_CHARCON
+  6    50.015    291    TOK_CHARCON     '\n'
+  6    52.004    287    TOK_RETURN      return
+  6    52.011    293    TOK_INTCON      0
