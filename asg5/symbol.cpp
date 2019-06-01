@@ -64,7 +64,7 @@ SymbolTable::SymbolTable(SymbolTable* parent_) {
 
 
 symbol* SymbolTable::newSymbol(attr_bitset attributes, location lloc,
-                                  vector<symbol*>* parameters){
+                                  vector<symbol*>* parameters, string tid){
     symbol* new_sym = new symbol;
     new_sym->attributes = attributes;
     // cout << current_blk << "----\n";
@@ -84,6 +84,7 @@ symbol* SymbolTable::newSymbol(attr_bitset attributes, location lloc,
     new_sym->lloc = lloc;
     new_sym->block_nr = current_blk;
     new_sym->parameters = parameters;
+    new_sym->type_id = tid;
 
     // insert the newly created symbol object into the table.
 
@@ -129,7 +130,7 @@ void dumpStructTable (symbol_table* t, FILE* destination, int depth){
     for(auto it = t->begin(); it != t->end(); it++){
         string str = it->first;
         location loc = it->second->lloc;
-        string att = attrToString(it->second->attributes);
+        string att = attrToString(it->second);
         for(int i = 0; i < depth - 1; i++)
             fprintf(destination, " ");
         fprintf(destination, "%s (%zu.%zu.%zu) %s %d\n", str.c_str(),
@@ -143,7 +144,7 @@ void SymbolTable::dump (FILE* destination, int depth){
             string str = it->first;
             location loc = it->second->lloc;
             size_t blk = it->second->block_nr;
-            string att = attrToString(it->second->attributes);
+            string att = attrToString(it->second);
             if(it->second->attributes.test(size_t(attr::STRUCT))){
                 for(int i = 0; i < depth - 1; i++)
                     fprintf(destination, " ");
@@ -213,7 +214,7 @@ void ConstructTable(astree* root){
           it != root->children.end(); it++){
         if((*it)->symbol == TOK_STRUCT){
             (*it)->attributes.set(size_t(attr::STRUCT));
-            (*it)->attributes.set(size_t(attr::TYPEID));
+            //(*it)->attributes.set(size_t(attr::TYPEID));
             symbol* structSym = global->newSymbol((*it)->attributes,
                                               (*it)->lloc, nullptr);
             structSym->type_id =
@@ -227,6 +228,7 @@ void ConstructTable(astree* root){
         else if((*it)->symbol == FUNCTION){
             SymbolTable* tbl = new SymbolTable(global);
             (*it)->attributes.set(size_t(attr::FUNCTION));
+            string t = "";
             switch((*it)->children.at(0)->children.at(0)->symbol){
                 case TOK_INT:
                 (*it)->attributes.set(size_t(attr::INT));
@@ -237,12 +239,17 @@ void ConstructTable(astree* root){
                 case TOK_VOID:
                 (*it)->attributes.set(size_t(attr::VOID));
                 break;
+                case TOK_PTR:
+                //(*it)->attributes.set(size_t(attr::PTR));
+                (*it)->attributes.set(size_t(attr::TYPEID));
+                t.append(string(*((*it)->children.at(0)->children.at(0)->children.at(0)->lexinfo)));
+                break;
             }
             vector<symbol*>* params = ParseParameters(*it, tbl);
             string name (*((*it)->children.at(0)->
                               children.at(1)->lexinfo));
             symbol* func = global->newSymbol((*it)->attributes,
-                                              (*it)->lloc, params);
+                                              (*it)->lloc, params, t);
             global->insertIntoTable(name, func);
             // cout << (*it)->children.size() <<"\n";
             if((*it)->children.size() == 2)
@@ -270,6 +277,7 @@ void ConstructTable(astree* root){
 vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
     // std::vector<astree*>::iterator it;
     astree* param = func->children.at(1);
+    string t = "";
     vector<symbol*>* retVal = new vector<symbol*>;
     for(auto it = param->children.begin();
             it != param->children.end(); it++){
@@ -283,9 +291,25 @@ vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
             case TOK_INT:
             (*it)->attributes.set(size_t(attr::INT));
             break;
+            case TOK_PTR:
+            //(*it)->attributes.set(size_t(attr::PTR));
+            (*it)->attributes.set(size_t(attr::TYPEID));
+            t.append(string(*((*it)->children.at(0)->children.at(0)->lexinfo)));
+            break;
+            case TOK_ARRAY:
+            (*it)->attributes.set(size_t(attr::ARRAY));
+            switch((*it)->children.at(0)->children.at(1)->symbol){
+               case TOK_STRING:
+               (*it)->attributes.set(size_t(attr::STRING));
+               break;
+               case TOK_INT:
+               (*it)->attributes.set(size_t(attr::INT));
+               break;
+            }
+            break;
         }
         symbol* newSym = tbl->newSymbol((*it)->attributes,
-                                        (*it)->lloc, nullptr);
+                                        (*it)->lloc, nullptr, t);
         string name (*((*it)->children.at(1)->lexinfo));
         tbl->insertIntoTable(name, newSym);
         retVal->push_back(newSym);
@@ -293,7 +317,8 @@ vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
     return retVal;
 }
 
-void HandleTypeID(astree* node, SymbolTable* table, int func){
+string HandleTypeID(astree* node, SymbolTable* table, int func){
+    string t = "";
     if(func == 0)
         node->attributes.set(size_t(attr::FIELD));
     else{
@@ -337,6 +362,11 @@ void HandleTypeID(astree* node, SymbolTable* table, int func){
             child1->attributes.set(size_t(attr::VARIABLE));
             }
             break;
+            case TOK_PTR:
+            //(*it)->attributes.set(size_t(attr::PTR));
+            node->attributes.set(size_t(attr::TYPEID));
+            t.append(string(*(child0->children.at(0)->lexinfo)));
+            break;
         }
     }
     else {
@@ -353,9 +383,9 @@ void HandleTypeID(astree* node, SymbolTable* table, int func){
           traverse_expressions(child2,table);
           break;
           case TOK_STRING:
-          node->attributes.set(size_t(attr::INT));
-          child0->attributes.set(size_t(attr::INT));
-          child1->attributes.set(size_t(attr::INT));
+          node->attributes.set(size_t(attr::STRING));
+          child0->attributes.set(size_t(attr::STRING));
+          child1->attributes.set(size_t(attr::STRING));
           child1->attributes.set(size_t(attr::LVAL));
           child1->attributes.set(size_t(attr::VARIABLE));
           traverse_expressions(child2,table);
@@ -370,9 +400,15 @@ void HandleTypeID(astree* node, SymbolTable* table, int func){
           traverse_expressions(child2,table);
 
           break;
+          case TOK_PTR:
+          //(*it)->attributes.set(size_t(attr::PTR));
+          node->attributes.set(size_t(attr::TYPEID));
+          t.append(string(*(child0->children.at(0)->lexinfo)));
+          break;
 
         }
     }
+    return t;
 
 
 }
@@ -529,13 +565,14 @@ void alloc_helper(astree* node){
 
 void ParseBlock(astree* node, SymbolTable* table) {
    symbol* sym;
+   string t = "";
     for(size_t i = 0; i < node->children.size(); i++){
         astree* test = node->children.at(i);
         switch(test->symbol){
             case TYPE_ID:
-            HandleTypeID(test,table,1);
+            t = HandleTypeID(test,table,1);
             sym = table->newSymbol(test->attributes,
-                                    test->lloc, nullptr);
+                                    test->lloc, nullptr, t);
             table->insertIntoTable(string(
               *(test->children.at(1)->lexinfo)), sym);
             // if(test->children.size == 3)
@@ -551,14 +588,15 @@ void ParseBlock(astree* node, SymbolTable* table) {
 
 void ParseBlock(astree* node, symbol_table* table) {
     symbol* sym;
+    string t = "";
     for(auto it = node->children.begin(); it != node->children.end();
                           it++){
         astree* test = *it;
         switch(test->symbol){
             case TYPE_ID:
-            HandleTypeID(test,nullptr,0);
+            t = HandleTypeID(test,nullptr,0);
             sym = SymbolTable::getGlobalTable()->newSymbol(
-                                test->attributes, test->lloc, nullptr);
+                                test->attributes, test->lloc, nullptr, t);
             sym->sequence = structSeq++;
             table->insert(make_pair(
                       string(*(test->children.at(1)->lexinfo)), sym));
@@ -573,8 +611,9 @@ void ParseBlock(astree* node, symbol_table* table) {
     structSeq = 0;
 }
 
-string attrToString(attr_bitset attr){
+string attrToString(symbol* sym){
    string strAttrs = "";
+   attr_bitset attr = sym->attributes;
    if(attr[size_t(attr::VOID)] == 1){
       strAttrs += "void ";
    }
@@ -592,6 +631,11 @@ string attrToString(attr_bitset attr){
    }
    if(attr[size_t(attr::ARRAY)] == 1){
       strAttrs += "array ";
+   }
+   if(attr[size_t(attr::TYPEID)] == 1){
+      strAttrs += "ptr <struct ";
+      strAttrs += sym->type_id;
+      strAttrs += "> ";
    }
    if(attr[size_t(attr::FUNCTION)] == 1){
       strAttrs += "function ";

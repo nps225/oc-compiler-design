@@ -1,0 +1,63 @@
+ROOT "" (0.0.0) 
+   TOK_STRUCT "struct" (3.1.1) struct 
+      TOK_IDENT "node" (3.1.8) 
+      BLOCK "{" (3.1.13) 
+         TYPE_ID "" (3.2.4) int field 
+            TOK_INT "int" (3.2.4) int 
+            TOK_IDENT "foo" (3.2.8) int variable lval 
+         TYPE_ID "" (3.3.4) field typeid 
+            TOK_PTR "ptr" (3.3.4) 
+               TOK_IDENT "node" (3.3.16) 
+            TOK_IDENT "link" (3.3.22) 
+   FUNCTION "" (3.6.1) function typeid 
+      TYPE_ID "" (3.6.1) 
+         TOK_PTR "ptr" (3.6.1) 
+            TOK_IDENT "node" (3.6.13) 
+         TOK_IDENT "func" (3.6.19) 
+      TOK_PARAM "(" (3.6.24) 
+         TYPE_ID "" (3.6.25) variable typeid param lval 
+            TOK_PTR "ptr" (3.6.25) 
+               TOK_IDENT "node" (3.6.37) 
+            TOK_IDENT "head" (3.6.43) 
+         TYPE_ID "" (3.6.49) int variable param lval 
+            TOK_INT "int" (3.6.49) 
+            TOK_IDENT "length" (3.6.53) 
+      BLOCK "{" (3.6.61) 
+         TYPE_ID "" (3.7.4) int variable local lval 
+            TOK_INT "int" (3.7.4) int 
+            TOK_IDENT "a" (3.7.8) int variable lval 
+            TOK_INTCON "0" (3.7.12) int const 
+         TYPE_ID "" (3.8.4) string variable local lval 
+            TOK_STRING "string" (3.8.4) string 
+            TOK_IDENT "b" (3.8.11) string variable lval 
+            TOK_STRINGCON """" (3.8.15) string const 
+         TYPE_ID "" (3.9.4) variable typeid local lval 
+            TOK_PTR "ptr" (3.9.4) 
+               TOK_IDENT "node" (3.9.16) 
+            TOK_IDENT "c" (3.9.22) 
+            TOK_ALLOC "alloc" (3.9.26) 
+               TOK_IDENT "node" (3.9.40) 
+         TOK_IF "if" (3.10.4) 
+            TOK_LT "<" (3.10.10) 
+               TOK_IDENT "a" (3.10.8) 
+               TOK_INTCON "3" (3.10.12) 
+            BLOCK "{" (3.10.15) 
+               '=' "=" (3.11.8) 
+                  TOK_IDENT "a" (3.11.7) 
+                  TOK_IDENT "length" (3.11.9) 
+               '=' "=" (3.12.8) 
+                  TOK_IDENT "c" (3.12.7) 
+                  TOK_ARROW "->" (3.12.10) 
+                     TOK_IDENT "c" (3.12.9) 
+                     TOK_IDENT "link" (3.12.12) 
+            BLOCK "{" (3.13.10) 
+               TOK_IF "if" (3.14.7) 
+                  TOK_EQ "==" (3.14.13) 
+                     TOK_INTCON "0" (3.14.11) 
+                     TOK_INTCON "0" (3.14.16) 
+                  '=' "=" (3.14.21) 
+                     TOK_IDENT "a" (3.14.19) 
+                     TOK_INTCON "8" (3.14.23) 
+                  '=' "=" (3.15.14) 
+                     TOK_IDENT "b" (3.15.12) 
+                     TOK_STRINGCON ""foo"" (3.15.16) 

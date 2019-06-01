@@ -1,0 +1,63 @@
+  0     0.000    258    ROOT            
+  3     1.001    279    TOK_STRUCT      struct
+  3     1.008    294    TOK_IDENT       node
+  3     1.013    265    BLOCK           {
+  3     2.004    261    TYPE_ID         
+  3     2.004    288    TOK_INT         int
+  3     2.008    294    TOK_IDENT       foo
+  3     3.004    261    TYPE_ID         
+  3     3.004    283    TOK_PTR         ptr
+  3     3.016    294    TOK_IDENT       node
+  3     3.022    294    TOK_IDENT       link
+  3     6.001    262    FUNCTION        
+  3     6.001    261    TYPE_ID         
+  3     6.001    283    TOK_PTR         ptr
+  3     6.013    294    TOK_IDENT       node
+  3     6.019    294    TOK_IDENT       func
+  3     6.024    263    TOK_PARAM       (
+  3     6.025    261    TYPE_ID         
+  3     6.025    283    TOK_PTR         ptr
+  3     6.037    294    TOK_IDENT       node
+  3     6.043    294    TOK_IDENT       head
+  3     6.049    261    TYPE_ID         
+  3     6.049    288    TOK_INT         int
+  3     6.053    294    TOK_IDENT       length
+  3     6.061    265    BLOCK           {
+  3     7.004    261    TYPE_ID         
+  3     7.004    288    TOK_INT         int
+  3     7.008    294    TOK_IDENT       a
+  3     7.012    293    TOK_INTCON      0
+  3     8.004    261    TYPE_ID         
+  3     8.004    290    TOK_STRING      string
+  3     8.011    294    TOK_IDENT       b
+  3     8.015    292    TOK_STRINGCON   ""
+  3     9.004    261    TYPE_ID         
+  3     9.004    283    TOK_PTR         ptr
+  3     9.016    294    TOK_IDENT       node
+  3     9.022    294    TOK_IDENT       c
+  3     9.026    282    TOK_ALLOC       alloc
+  3     9.040    294    TOK_IDENT       node
+  3    10.004    277    TOK_IF          if
+  3    10.010    276    TOK_LT          <
+  3    10.008    294    TOK_IDENT       a
+  3    10.012    293    TOK_INTCON      3
+  3    10.015    265    BLOCK           {
+  3    11.008     61    '='             =
+  3    11.007    294    TOK_IDENT       a
+  3    11.009    294    TOK_IDENT       length
+  3    12.008     61    '='             =
+  3    12.007    294    TOK_IDENT       c
+  3    12.010    284    TOK_ARROW       ->
+  3    12.009    294    TOK_IDENT       c
+  3    12.012    294    TOK_IDENT       link
+  3    13.010    265    BLOCK           {
+  3    14.007    277    TOK_IF          if
+  3    14.013    273    TOK_EQ          ==
+  3    14.011    293    TOK_INTCON      0
+  3    14.016    293    TOK_INTCON      0
+  3    14.021     61    '='             =
+  3    14.019    294    TOK_IDENT       a
+  3    14.023    293    TOK_INTCON      8
+  3    15.014     61    '='             =
+  3    15.012    294    TOK_IDENT       b
+  3    15.016    292    TOK_STRINGCON   "foo"
