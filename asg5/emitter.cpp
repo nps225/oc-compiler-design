@@ -59,36 +59,33 @@ void produce_struct_output(astree* child){
 
 void produce_struct_block_output(astree* node){
     for(astree* child: node->children){
+        output += ".field ";
         produce_type_size_output(child);
+        output +=*(child->children.at(1)->lexinfo);
+        output += '\n';
     }
 }
 
 void produce_type_size_output(astree* node){
-     output += ".field ";
      switch(node->children.at(0)->symbol){
          case TOK_PTR:{
             output +="ptr ";
-            output +=*(node->children.at(1)->lexinfo);
             break;
          }
          case TOK_INT:{
              output +="int ";
-             output += *(node->children.at(1)->lexinfo);
              break;
          }
          case TOK_CHAR:{
              output +="char ";
-             output += *(node->children.at(1)->lexinfo);
              break;
          }
          case TOK_STRING:{
              output +="string ";
-             output += *(node->children.at(1)->lexinfo);
              break;
          }
               
      }
-     output += '\n';
 }
 
 void produce_type_id_output(astree* node){
@@ -96,14 +93,24 @@ void produce_type_id_output(astree* node){
     //there are two types of global variables
     switch(node->children.at(0)->symbol){
         case TOK_STRING:{//will hande stringdef
-            //assume always 3 children
-            output = output + ".s" + std::to_string(string_globals) + ":";
-            
-            string_globals++;
+        //stringdef
+            produce_label(node);
+            output += ".string ";
+            string value = *(node->children.at(2)->lexinfo);
+            output += value;
             break;
         }
+        //globaldefs
         default:{//for the rest of the cases
             produce_label(node);
+            output += ".global ";
+            produce_type_size_output(node);
+            if(node->children.size() == 2){
+                //no expression
+
+            }else{
+                //must have expression
+            }
             break;
         }
     }
@@ -113,5 +120,5 @@ void produce_type_id_output(astree* node){
 void produce_label(astree* node){
      //always look at second child
      output += *(node->children.at(1)->lexinfo);
-
+     output += ":";
 }
