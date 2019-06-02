@@ -41,14 +41,14 @@ void scanToFile(string filename){
   }else{
      fprintf (stderr, "issue parsing");
   }
+  parser::root-> astree::dump_tree(outAST,0);
   ConstructTable(parser::root);
   FILE* outSYM = fopen(filenameSYM.c_str(), "w");
   if(!outSYM)
       fprintf(stderr, "Error creating sym file");
-  SymbolTable::getGlobalTable()->dump(stdout, 1);
+  SymbolTable::getGlobalTable()->dump(outSYM, 1);
   //  delete parser::root;
    emit_the_tree(parser::root);
-   parser::root-> astree::dump_tree(outAST,0);
 
    destroy(parser::root);
    fclose(outSTR);

@@ -3,10 +3,25 @@ struct a{
    string b;
    ptr<struct a> link;
 };
-int a;
-// string b = "hi";
+
+int quick = 10;
+int bob = 'a';
+string b = "hello";
+
+
 //ptr<struct a> temp;
 
 int test(string b, int x, ptr<struct a> boobs){
+	int a;
+	string lmao;
+	ptr <struct lol> kek;
+	a = b + c;
 	return x;
 }
+
+string c = "test";
+
+struct blah{
+	int poopy;
+	int bloopy;
+};

@@ -12,24 +12,61 @@
   3     4.004    283    TOK_PTR         ptr
   3     4.015    294    TOK_IDENT       a
   3     4.018    294    TOK_IDENT       link
-  3     6.001    261    TYPE_ID         
-  3     6.001    288    TOK_INT         int
-  3     6.005    294    TOK_IDENT       a
-  3    10.001    262    FUNCTION        
-  3    10.001    261    TYPE_ID         
-  3    10.001    288    TOK_INT         int
-  3    10.005    294    TOK_IDENT       test
-  3    10.009    263    TOK_PARAM       (
-  3    10.010    261    TYPE_ID         
-  3    10.010    290    TOK_STRING      string
-  3    10.017    294    TOK_IDENT       b
-  3    10.020    261    TYPE_ID         
-  3    10.020    288    TOK_INT         int
-  3    10.024    294    TOK_IDENT       x
-  3    10.027    261    TYPE_ID         
-  3    10.027    283    TOK_PTR         ptr
-  3    10.038    294    TOK_IDENT       a
-  3    10.041    294    TOK_IDENT       boobs
-  3    10.047    265    BLOCK           {
-  3    11.002    287    TOK_RETURN      return
-  3    11.009    294    TOK_IDENT       x
+  3     7.001    261    TYPE_ID         
+  3     7.001    288    TOK_INT         int
+  3     7.005    294    TOK_IDENT       quick
+  3     7.013    293    TOK_INTCON      10
+  3     8.001    261    TYPE_ID         
+  3     8.001    288    TOK_INT         int
+  3     8.005    294    TOK_IDENT       bob
+  3     8.011    291    TOK_CHARCON     'a'
+  3     9.001    261    TYPE_ID         
+  3     9.001    290    TOK_STRING      string
+  3     9.008    294    TOK_IDENT       b
+  3     9.012    292    TOK_STRINGCON   "hello"
+  3    14.001    262    FUNCTION        
+  3    14.001    261    TYPE_ID         
+  3    14.001    288    TOK_INT         int
+  3    14.005    294    TOK_IDENT       test
+  3    14.009    263    TOK_PARAM       (
+  3    14.010    261    TYPE_ID         
+  3    14.010    290    TOK_STRING      string
+  3    14.017    294    TOK_IDENT       b
+  3    14.020    261    TYPE_ID         
+  3    14.020    288    TOK_INT         int
+  3    14.024    294    TOK_IDENT       x
+  3    14.027    261    TYPE_ID         
+  3    14.027    283    TOK_PTR         ptr
+  3    14.038    294    TOK_IDENT       a
+  3    14.041    294    TOK_IDENT       boobs
+  3    14.047    265    BLOCK           {
+  3    15.002    261    TYPE_ID         
+  3    15.002    288    TOK_INT         int
+  3    15.006    294    TOK_IDENT       a
+  3    16.002    261    TYPE_ID         
+  3    16.002    290    TOK_STRING      string
+  3    16.009    294    TOK_IDENT       lmao
+  3    17.002    261    TYPE_ID         
+  3    17.002    283    TOK_PTR         ptr
+  3    17.014    294    TOK_IDENT       lol
+  3    17.019    294    TOK_IDENT       kek
+  3    18.004     61    '='             =
+  3    18.002    294    TOK_IDENT       a
+  3    18.008     43    '+'             +
+  3    18.006    294    TOK_IDENT       b
+  3    18.010    294    TOK_IDENT       c
+  3    19.002    287    TOK_RETURN      return
+  3    19.009    294    TOK_IDENT       x
+  3    22.001    261    TYPE_ID         
+  3    22.001    290    TOK_STRING      string
+  3    22.008    294    TOK_IDENT       c
+  3    22.012    292    TOK_STRINGCON   "test"
+  3    24.001    279    TOK_STRUCT      struct
+  3    24.008    294    TOK_IDENT       blah
+  3    24.012    265    BLOCK           {
+  3    25.002    261    TYPE_ID         
+  3    25.002    288    TOK_INT         int
+  3    25.006    294    TOK_IDENT       poopy
+  3    26.002    261    TYPE_ID         
+  3    26.002    288    TOK_INT         int
+  3    26.006    294    TOK_IDENT       bloopy

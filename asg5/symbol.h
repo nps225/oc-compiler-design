@@ -45,6 +45,8 @@ class SymbolTable {
     attr_bitset getAttributes(string name);
     symbol* newSymbol(attr_bitset attributes, location lloc, vector<symbol*>* parameters, string tid = "");
     void insertIntoTable(string name, symbol* sym);
+    string dumpLVHelper(string name);
+    string dumpLocalVariables();
     void addFields(symbol* dest, symbol_table* fields);
     void addFunc(string name, SymbolTable* table_);
     void dump (FILE* destination, int depth);

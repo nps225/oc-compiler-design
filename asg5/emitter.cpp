@@ -20,7 +20,8 @@
 string output = "";
 int string_globals = 0;
 void emit_the_tree(astree* node){
-
+    produce_struct_output(node);
+    handle_global_variables(node);
     for(astree* child: node->children){
     //    string condition = parser::get_tname (child->symbol);
        switch(child->symbol){
@@ -28,14 +29,9 @@ void emit_the_tree(astree* node){
                produce_function_output(child);
                break;
            }
-           case TOK_STRUCT:{
-               produce_struct_output(child);
-               break;
-           }
-           case TYPE_ID:{
-               produce_type_id_output(child);
-               break;
-           }
+           default:
+               continue;
+           break;
        }
 
     }
@@ -44,7 +40,8 @@ void emit_the_tree(astree* node){
 
 void produce_function_output(astree* child){
    // output = "";
-   output += string(*(child->children.at(0)->children.at(1)->lexinfo));
+   string name = string(*(child->children.at(0)->children.at(1)->lexinfo));
+   output += name;
    output += ": ";
    output += ".function ";
    if(child->attributes.test(size_t(attr::INT)))
@@ -56,6 +53,7 @@ void produce_function_output(astree* child){
    if(child->attributes.test(size_t(attr::ARRAY)))
       output += "array \n";
    handle_func_params(child->children.at(1));
+   output += SymbolTable::getGlobalTable()->dumpLVHelper(name);
 }
 
 void handle_func_params(astree* child){
@@ -87,15 +85,24 @@ void handle_func_params(astree* child){
 }
 
 
-void produce_struct_output(astree* child){
+void produce_struct_output(astree* node){
     //print he head
     // output += "";
-    output += ".struct ";
-    // printf("%s\n",*(child->children.at(0)->lexinfo));
-    output += *(child->children.at(0)->lexinfo) + '\n';
-    //the second child is a block
-    produce_struct_block_output(child->children.at(1));
-    output += ".end \n";
+    for(astree* child: node->children){
+       switch(child->symbol){
+          case TOK_STRUCT:
+          output += ".struct ";
+          // printf("%s\n",*(child->children.at(0)->lexinfo));
+          output += *(child->children.at(0)->lexinfo) + '\n';
+          //the second child is a block
+          produce_struct_block_output(child->children.at(1));
+          output += ".end \n";
+          break;
+          default:
+          continue;
+          break;
+       }
+    }
 }
 
 void produce_struct_block_output(astree* node){
@@ -129,14 +136,29 @@ void produce_type_size_output(astree* node){
      }
 }
 
+void handle_global_variables(astree* node){
+    for(astree* child: node->children){
+        switch(child->symbol){
+           case TYPE_ID:
+           produce_type_id_output(child);
+           break;
+           default:
+           continue;
+           break;
+        }
+    }
+}
+
 void produce_type_id_output(astree* node){
     // fprintf(stdout,"",);
     //there are two types of global variables
     switch(node->children.at(0)->symbol){
         case TOK_STRING:{//will hande stringdef
             //assume always 3 children
-            output = output + ".s" + std::to_string(string_globals) + ":";
-
+            output += ".s" + std::to_string(string_globals) + ": ";
+            if(node->children.size() != 2)
+               output += string(*(node->children.at(2)->lexinfo));
+            output += "\n";
             string_globals++;
             break;
         }
@@ -145,20 +167,29 @@ void produce_type_id_output(astree* node){
             produce_label(node);
             output += ".global ";
             produce_type_size_output(node);
-            if(node->children.size() == 2){
-                //no expression
+            if(node->children.size() != 2){
+               switch(node->children.at(2)->symbol){
+                  case TOK_INTCON:
+                  case TOK_CHARCON:
+                  output += string(*(node->children.at(2)->lexinfo));
+                  output += "\n";
+                  break;
+                  case TOK_NULLPTR:
+                  output += "nullptr\n";
 
-            }else{
-                //must have expression
+               }
+            }
+            else {
+               output += "\n";
             }
             break;
         }
     }
-    output += "\n";
+    //output += "\n";
 }
 
 void produce_label(astree* node){
      //always look at second child
      output += *(node->children.at(1)->lexinfo);
-     output += ":";
+     output += ": ";
 }
