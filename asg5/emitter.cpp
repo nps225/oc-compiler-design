@@ -221,6 +221,16 @@ void produce_expression_output(astree* node){
              s.push(regName);
              break;
          }
+         case TOK_NOT:
+         case POS:
+         case NEG:{
+             string val1 = s.top().c_str();
+             s.pop();
+             string regName = "$t" + to_string(f_reg_c);
+             printf("%s = %s %s \n",regName.c_str(),node->lexinfo->c_str(),val1.c_str());
+             s.push(regName);
+             break;
+         }
          case TOK_IDENT:
          case TOK_INTCON:{
              //push int onto stack
@@ -233,6 +243,15 @@ void produce_expression_output(astree* node){
              break;
          }
          case TOK_NULLPTR:{
+             break;
+         }
+         case TOK_ALLOC:{
+             break;
+         }
+         case TOK_INDEX:{
+             break;
+         }
+         case TOK_ARROW:{
              break;
          }
      }
