@@ -1,0 +1,9 @@
+//struct a{
+//   int a;
+//   string b;
+//   char c;
+//   ptr<struct a> link;
+//};
+int a;
+string b = "hi";
+ptr<struct a> temp;
