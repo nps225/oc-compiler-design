@@ -25,7 +25,7 @@ void emit_the_tree(astree* node){
     //    string condition = parser::get_tname (child->symbol);
        switch(child->symbol){
            case FUNCTION:{
-            //    produce_function_output(child);
+               produce_function_output(child);
                break;
            }
            case TOK_STRUCT:{
@@ -39,17 +39,57 @@ void emit_the_tree(astree* node){
        }
 
     }
-
     printf("%s\n",output.c_str());
 }
 
 void produce_function_output(astree* child){
-    // fprintf(stdout,"",);
+   // output = "";
+   output += string(*(child->children.at(0)->children.at(1)->lexinfo));
+   output += ": ";
+   output += ".function ";
+   if(child->attributes.test(size_t(attr::INT)))
+      output += "int \n";
+   if(child->attributes.test(size_t(attr::STRING)))
+      output += "string \n";
+   if(child->attributes.test(size_t(attr::TYPEID)))
+      output += "ptr \n";
+   if(child->attributes.test(size_t(attr::ARRAY)))
+      output += "array \n";
+   handle_func_params(child->children.at(1));
+}
+
+void handle_func_params(astree* child){
+   for(astree* it: child->children){
+      output += ".param ";
+      switch(it->children.at(0)->symbol){
+         case TOK_INT:
+         output += "int ";
+         output += string(*(it->children.at(1)->lexinfo));
+         output += "\n";
+         break;
+         case TOK_STRING:
+         output += "string ";
+         output += string(*(it->children.at(1)->lexinfo));
+         output += "\n";
+         break;
+         case TOK_PTR:
+         output += "ptr ";
+         output += string(*(it->children.at(1)->lexinfo));
+         output += "\n";
+         break;
+         case TOK_ARRAY:
+         output += "array ";
+         output += string(*(it->children.at(1)->lexinfo));
+         output += "\n";
+         break;
+      }
+   }
 }
 
 
 void produce_struct_output(astree* child){
     //print he head
+    // output += "";
     output += ".struct ";
     // printf("%s\n",*(child->children.at(0)->lexinfo));
     output += *(child->children.at(0)->lexinfo) + '\n';
@@ -85,7 +125,7 @@ void produce_type_size_output(astree* node){
              output +="string ";
              break;
          }
-              
+
      }
 }
 
@@ -94,11 +134,10 @@ void produce_type_id_output(astree* node){
     //there are two types of global variables
     switch(node->children.at(0)->symbol){
         case TOK_STRING:{//will hande stringdef
-        //stringdef
-            produce_label(node);
-            output += ".string ";
-            string value = *(node->children.at(2)->lexinfo);
-            output += value;
+            //assume always 3 children
+            output = output + ".s" + std::to_string(string_globals) + ":";
+
+            string_globals++;
             break;
         }
         //globaldefs

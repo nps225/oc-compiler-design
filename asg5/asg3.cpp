@@ -12,6 +12,7 @@
 #include "lyutils.h"
 #include "yyparse.h"
 #include "symbol.h"
+#include "emitter.h"
 
 FILE* outstream;
 
@@ -46,8 +47,9 @@ void scanToFile(string filename){
       fprintf(stderr, "Error creating sym file");
   SymbolTable::getGlobalTable()->dump(stdout, 1);
   //  delete parser::root;
-
+   emit_the_tree(parser::root);
    parser::root-> astree::dump_tree(outAST,0);
+
    destroy(parser::root);
    fclose(outSTR);
    fclose(outTOK);
