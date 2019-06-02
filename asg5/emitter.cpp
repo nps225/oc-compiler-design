@@ -47,6 +47,7 @@ void produce_function_output(astree* child){
     // fprintf(stdout,"",);
 }
 
+
 void produce_struct_output(astree* child){
     //print he head
     output += ".struct ";
