@@ -1,25 +1,387 @@
+#include <assert.h>
+#include <errno.h>
+#include <iostream>
+#include <libgen.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <wait.h>
+#include <utility>
+
+#include "astree.h"
+#include "string_set.h"
+#include "lyutils.h"
+#include "yyparse.h"
+#include "symbol.h"
+#include "emitter.h"
+#include <stack> 
+
+string output = "";
+int eval_var = 0;
+int string_globals = 0;
+int f_reg_c = 0;
+int if_reg_c = 0;
+int set_c = 0;
+int set_p = 0;
+int set_i = 0;
+stack<string> s;
+void emit_the_tree(astree* node){
+    produce_struct_output(node);
+    handle_global_variables(node);
+    for(astree* child: node->children){
+    //    string condition = parser::get_tname (child->symbol);
+       switch(child->symbol){
+           case FUNCTION:{
+               produce_function_output(child);
+               break;
+           }
+           default:
+               continue;
+           break;
+       }
+
+    }
+    printf("%s\n",output.c_str());
+}
+
+void produce_function_output(astree* child){
+   // output = "";
+   string name = string(*(child->children.at(0)->children.at(1)->lexinfo));
+   output += name;
+   output += ": ";
+   output += ".function ";
+   if(child->attributes.test(size_t(attr::INT)))
+      output += "int \n";
+   if(child->attributes.test(size_t(attr::STRING)))
+      output += "string \n";
+   if(child->attributes.test(size_t(attr::TYPEID)))
+      output += "ptr \n";
+   if(child->attributes.test(size_t(attr::ARRAY)))
+      output += "array \n";
+   handle_func_params(child->children.at(1));
+   output += SymbolTable::getGlobalTable()->dumpLVHelper(name);
+   //probably where we traverse the block
+   if(child->children.size() == 3){
+      handle_func_blocks(child->children.at(2));
+   }
+   output += ".end\n";
+}
+
+void handle_func_params(astree* child){
+   for(astree* it: child->children){
+      output += ".param ";
+      switch(it->children.at(0)->symbol){
+         case TOK_INT:
+         output += "int ";
+         output += string(*(it->children.at(1)->lexinfo));
+         output += "\n";
+         break;
+         case TOK_STRING:
+         output += "string ";
+         output += string(*(it->children.at(1)->lexinfo));
+         output += "\n";
+         break;
+         case TOK_PTR:
+         output += "ptr ";
+         output += string(*(it->children.at(1)->lexinfo));
+         output += "\n";
+         break;
+         case TOK_ARRAY:
+         output += "array ";
+         output += string(*(it->children.at(1)->lexinfo));
+         output += "\n";
+         break;
+      }
+   }
+}
+
+void handle_func_blocks(astree* node){
+    
+    //iterate over the entire block
+    for(astree* child: node->children){
+      string value = *(child->lexinfo); 
+      switch(child->symbol){
+          //need to handle getting a string/globals
+          case TYPE_ID:{
+              handle_vars(child);
+              break;
+          }case TOK_IF:{
+              //first child is the expression
+
+              produce_if_output(child,if_reg_c);
+          }
+      }
+    }
+    //reset values like regiseter number
+}
+
+void produce_if_output(astree* node,int reg_val){
+    if_reg_c++;
+    set_i = 1;
+    produce_label_if(reg_val);
+    produce_expression_output(node->children.at(0));
+   
+    //second child will be block
+    if(node->children.size() == 3){//there is an else statement
+      output += "goto .el" + to_string(reg_val) + " if ";
+      string value2 = s.top().c_str();
+      s.pop();
+      string value1 = s.top().c_str();
+      s.pop();
+      output += value1 + " " + 
+      *(node->children.at(0)->lexinfo) + " " + value2;
+      //now run the block again -- two blocks here
+    }else{//no else
+      output += "goto .fi" + to_string(reg_val) + " if ";
+      string value2 = s.top().c_str();
+      s.pop();
+      string value1 = s.top().c_str();
+      s.pop();
+      output += value1 + " " + 
+      *(node->children.at(0)->lexinfo) + " " + value2;
+      output += "\n";
+      //one block is all we need
+      output += ".th" + to_string(reg_val) + ": ";
+      handle_func_blocks(node->children.at(1));
+      output += "goto .fi" + to_string(reg_val) + "\n";
+      output += ".fi" + to_string(reg_val) + ":";
+    }
+    //third child -- if one will be a else
+    output += "\n";
+}
+
+void handle_vars(astree* node){
+    // printf("%s\n",parser::get_tname(node->symbol));
+    //here I should set my signals for p,i,or c
+    set_signals(node->children.at(0));
+    eval_var = 1;
+    if(node->children.size() == 3){
+        produce_expression_output(node->children.at(2));
+        //the final value is left on the stack here so pop it off the stack
+        if(s.size() == 2){
+            output += *(node->children.at(1)->lexinfo);
+            output += " = ";
+            string top = s.top().c_str();
+            s.pop();
+            output += top + " ";
+            string operand = *(node->children.at(2)->lexinfo);
+            output += operand + " ";
+            top = s.top().c_str();
+            s.pop();
+            output += top + "\n";
+        }else{
+            output += *(node->children.at(1)->lexinfo);
+            output += " = ";
+            string top = s.top().c_str();
+            s.pop();
+            output += top + "\n";
+        }
+        
+    }
+    reset_signals();
+}
+
+void set_signals(astree* node){
+    switch(node->symbol){
+        case TOK_INT:{
+            set_i = 1;
+            break;
+        }
+        case TOK_CHAR:{
+            set_c = 1;
+            break;
+        }
+        case TOK_PTR:{
+            set_p = 1;
+            break;
+        }
+    }
+}
+
+
+string add_signals(){
+    string september = "";
+    if(set_c == 1){
+       september = "c";
+    }else if(set_i == 1){
+        september =  "i";
+    }else if(set_p == 1){
+        september = "p";
+    }
+    return september;
+}
+
+void reset_signals(){
+   set_c = 0;
+   set_i = 0;
+   set_p = 0;
+}
+
+void produce_struct_output(astree* node){
+    //print he head
+    // output += "";
+    for(astree* child: node->children){
+       switch(child->symbol){
+          case TOK_STRUCT:
+          output += ".struct ";
+          // printf("%s\n",*(child->children.at(0)->lexinfo));
+          output += *(child->children.at(0)->lexinfo) + '\n';
+          //the second child is a block
+          produce_struct_block_output(child->children.at(1));
+          output += ".end\n";
+          break;
+          default:
+          continue;
+          break;
+       }
+    }
+}
+
+void produce_struct_block_output(astree* node){
+    for(astree* child: node->children){
+        output += ".field ";
+        produce_type_size_output(child);
+        output +=*(child->children.at(1)->lexinfo);
+        output += '\n';
+    }
+}
+
+void produce_type_size_output(astree* node){
+     switch(node->children.at(0)->symbol){
+         case TOK_PTR:{
+            output +="ptr ";
+            break;
+         }
+         case TOK_INT:{
+             output +="int ";
+             break;
+         }
+         case TOK_CHAR:{
+             output +="char ";
+             break;
+         }
+         case TOK_STRING:{
+             output +="string ";
+             break;
+         }
+
+     }
+}
+
+void handle_global_variables(astree* node){
+    for(astree* child: node->children){
+        switch(child->symbol){
+           case TYPE_ID:
+           produce_type_id_output(child);
+           break;
+           default:
+           continue;
+           break;
+        }
+    }
+}
+
+void produce_type_id_output(astree* node){
+    // fprintf(stdout,"",);
+    //there are two types of global variables
+    switch(node->children.at(0)->symbol){
+        case TOK_STRING:{//will hande stringdef
+            //assume always 3 children
+            output += ".s" + std::to_string(string_globals) + ": ";
+            if(node->children.size() != 2)
+               output += string(*(node->children.at(2)->lexinfo));
+            output += "\n";
+            string_globals++;
+            break;
+        }
+        //globaldefs
+        default:{//for the rest of the cases
+            produce_label(node);
+            output += ".global ";
+            produce_type_size_output(node);
+            if(node->children.size() != 2){
+               switch(node->children.at(2)->symbol){
+                  case TOK_INTCON:
+                  case TOK_CHARCON:
+                  output += string(*(node->children.at(2)->lexinfo));
+                  output += "\n";
+                  break;
+                  case TOK_NULLPTR:
+                  output += "nullptr\n";
+
+               }
+            }
+            else {
+               output += "\n";
+            }
+            break;
+        }
+    }
+    //output += "\n";
+}
+
+void produce_label_if(int local){
+     //always look at second child
+     output += "if";
+     output += to_string(local);
+     output += ": ";
+}
+
+void produce_label(astree* node){
+     //always look at second child
+     output += *(node->children.at(1)->lexinfo);
+     output += ": ";
+}
+
+
 void produce_expression_output(astree* node){
      //do a post order tree op to get to the bottom
      for(astree* child: node->children){
          produce_expression_output(child);
      }
-    //  string value = *(node->lexinfo);
-    //  printf("%s\n",value.c_str());
      switch(node->symbol){
+         case TOK_LE:
+         case TOK_GE:
+         case TOK_EQ:
+         case TOK_NE:
+         case TOK_GT:
+         case TOK_LT:{
+             if(s.size() == 2){
+                 break;
+             }
+            //  //there will be two children
+            //  //pop last two elements off stack and push back onto the stack
+            //  string val1 = s.top().c_str();
+            //  s.pop();
+            //  string val2 = s.top().c_str();
+            //  s.pop();
+            //  //two values here
+            //  string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+            // //  printf("%s = %s %s %s\n",regName.c_str(),val1.c_str(),node->lexinfo->c_str(),val2.c_str());
+            //  output = output + regName + " = " + val1.c_str() + " "  + node->lexinfo->c_str() + " " + val2.c_str() + "\n";
+            //  f_reg_c++;
+            // //  printf("%s\n",regName.c_str());
+            //  s.push(regName);
+             break;
+         }
          case '/':
+         case '%':
          case '-':
          case '*':
          case '+':{
+             //  printf("Here\n");
              //there will be two children
              //pop last two elements off stack and push back onto the stack
-             string val1 = s.top().c_str();
-             s.pop();
+             //technically just assign a attribute we check for if top of tree
              string val2 = s.top().c_str();
              s.pop();
+             string val1 = s.top().c_str();
+             s.pop();
              //two values here
-             string regName = "$t" + to_string(f_reg_c);
-             printf("%s = %s %s %s\n",regName.c_str(),val1.c_str(),node->lexinfo->c_str(),val2.c_str());
-             
+             string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+            //  printf("%s = %s %s %s\n",regName.c_str(),val1.c_str(),node->lexinfo->c_str(),val2.c_str());
+             output = output + regName + " = " + val1.c_str() + " "  + node->lexinfo->c_str() + " " + val2.c_str() + "\n";
              f_reg_c++;
             //  printf("%s\n",regName.c_str());
              s.push(regName);
@@ -31,7 +393,7 @@ void produce_expression_output(astree* node){
              string val1 = s.top().c_str();
              s.pop();
              string regName = "$t" + to_string(f_reg_c);
-             printf("%s = %s %s \n",regName.c_str(),node->lexinfo->c_str(),val1.c_str());
+         //  printf("%s = %s %s \n",regName.c_str(),node->lexinfo->c_str(),val1.c_str());
              s.push(regName);
              f_reg_c++;
 
@@ -41,11 +403,14 @@ void produce_expression_output(astree* node){
          case TOK_INTCON:{
              //push int onto stack
              string value = *(node->lexinfo);
+            //  printf("%s\n",value.c_str());
              s.push(value);
              break;
          }
          case TOK_CHARCON:{
              //push onto stack
+             string value = *(node->lexinfo);
+             s.push(value);
              break;
          }
          case TOK_NULLPTR:{
