@@ -17,3 +17,6 @@ string add_signals();
 void reset_signals();
 void produce_label_if(int local);
 void produce_if_output(astree* node,int reg_val);
+void handle_instruction(astree* node);
+void produce_label_else(int reg_val);
+void produce_equals_output(astree* node);
