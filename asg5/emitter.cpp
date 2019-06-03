@@ -118,8 +118,25 @@ void handle_instruction(astree* node){
               produce_if_output(node,if_reg_c);
               break;
           }case '=':{
+              //append to accomidate for arrows etc
               produce_equals_output(node);
               break;
+          }case CALL:{//call by itself
+              //handling manually
+              string call = "call "+ *(node->children.at(0)->lexinfo) + " ";
+            //   printf("%s\n",call.c_str());
+              for(uint i = 1; i < node->children.size();i++){
+                  produce_expression_output(node->children.at(i));
+              }
+              vector <string> things;
+              for(int i = node->children.size()-2; i >= 0;i--){
+                things.push_back(s.top());
+                s.pop();
+              }
+              for(int i = things.size() - 1;i >= 0;i--){
+                call += things[i] + " ";
+              }
+              output += call + "\n";
           }
       }
 }
@@ -128,33 +145,14 @@ void produce_equals_output(astree* node){
      //first child would be TOK_IDENT -- name of var
      //we need to look up its type -- then set the bit accordingly 
      produce_expression_output(node->children.at(1));
+    //  string temp = *(node->children.at(1)->lexinfo);
+    // printf("%s\n",temp.c_str());
      //now pop the thing off the stack
      string temp = *(node->children.at(0)->lexinfo);
      output += temp + " = " + s.top() + '\n';
      s.pop();
 }
 
-string invert(string temp){//this should invert the given comparisons
-     if(temp.compare("==") == 0){
-         return "!=";
-     }
-     if(temp.compare("!=") == 0){
-         return "==";
-     }
-     if(temp.compare("<=") == 0){
-         return ">=";
-     }
-     if(temp.compare(">=") == 0){
-         return "<=";
-     }
-     if(temp.compare("<") == 0){
-         return ">";
-     }
-     if(temp.compare(">") == 0){
-         return "<";
-     }
-    return "";
-}
 
 void produce_if_output(astree* node,int reg_val){
     if_reg_c++;
@@ -334,7 +332,7 @@ void set_signals(astree* node){
             break;
         }
         case TOK_CHAR:{
-            set_c = 1;
+            set_i = 1;
             break;
         }
         case TOK_PTR:{
@@ -502,19 +500,6 @@ void produce_expression_output(astree* node){
              if(s.size() == 2){
                  break;
              }
-            //  //there will be two children
-            //  //pop last two elements off stack and push back onto the stack
-            //  string val1 = s.top().c_str();
-            //  s.pop();
-            //  string val2 = s.top().c_str();
-            //  s.pop();
-            //  //two values here
-            //  string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-            // //  printf("%s = %s %s %s\n",regName.c_str(),val1.c_str(),node->lexinfo->c_str(),val2.c_str());
-            //  output = output + regName + " = " + val1.c_str() + " "  + node->lexinfo->c_str() + " " + val2.c_str() + "\n";
-            //  f_reg_c++;
-            // //  printf("%s\n",regName.c_str());
-            //  s.push(regName);
              break;
          }
          case '/':
@@ -580,6 +565,38 @@ void produce_expression_output(astree* node){
              break;
          }
          case TOK_PARAM:{
+             break;
+         }
+         case CALL:{
+            // printf("%d\n",node->children.size());
+            // s.pop();
+            // s.pop();
+            // s.pop();
+            //first pop all the preexisting children on the tree
+            // for(int i = 0; i < node->children.size();i++){
+            //     s.pop();
+            // }
+            vector <string> things;
+            for(int i = node->children.size()-2; i >= 0;i--){
+                things.push_back(s.top());
+                s.pop();
+            }
+            //now create the string for call
+            //first child should be the
+            string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+            f_reg_c++;
+            string call = "call ";
+            call += *(node->children.at(0)->lexinfo);
+            // string paramsOnStack = "";
+            output += regName + " = " + call + " "; 
+            for(int i = things.size() - 1;i >= 0;i--){
+                output += things[i] + " ";
+            }
+            output += '\n';
+            //printf("%s\n",s.top().c_str());
+            s.pop();
+            s.push(regName);
+            //  printf("hi");
              break;
          }
      }
