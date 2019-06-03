@@ -116,8 +116,22 @@ void handle_instruction(astree* node){
               //first child is the expression
 
               produce_if_output(node,if_reg_c);
+              break;
+          }case '=':{
+              produce_equals_output(node);
+              break;
           }
       }
+}
+
+void produce_equals_output(astree* node){
+     //first child would be TOK_IDENT -- name of var
+     //we need to look up its type -- then set the bit accordingly 
+     produce_expression_output(node->children.at(1));
+     //now pop the thing off the stack
+     string temp = *(node->children.at(0)->lexinfo);
+     output += temp + " = " + s.top() + '\n';
+     s.pop();
 }
 
 string invert(string temp){//this should invert the given comparisons
@@ -168,6 +182,9 @@ void produce_if_output(astree* node,int reg_val){
                     expression += regName;
                     break;
                 }
+                case TOK_INTCON:
+                case TOK_CHARCON:
+                case TOK_NULLPTR:
                 case TOK_IDENT:{
                     string temp = *(node->children.at(0)->children.at(0)->lexinfo);
                     expression =  temp;
