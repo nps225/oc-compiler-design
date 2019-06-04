@@ -133,7 +133,7 @@ void handle_instruction(astree* node){
             //   printf("%s\n",call.c_str());
               for(uint i = 1; i < node->children.size();i++){
                   produce_expression_output(node->children.at(i));
-                  printf("%d\n",compare_expression);
+                //   printf("%d\n",compare_expression);
                   if(compare_expression == 1){
                     string expression = "";
                     
@@ -181,15 +181,10 @@ void produce_equals_output(astree* node){
      s.pop();
 }
 
-void produce_while_output(astree* node,int while_reg_c){
+void produce_while_output(astree* node,int reg_val){
     //we know the top token is a TOK_WHILE
-}
-
-
-void produce_if_output(astree* node,int reg_val){
-    if_reg_c++;
     set_i = 1;//we need to fix the setter
-    produce_label_if(reg_val);
+    produce_label_while(reg_val);
     //we must automatically look at what child 0 is
     //if is a not then we evaluate the next expression
     string expression = "";
@@ -230,6 +225,126 @@ void produce_if_output(astree* node,int reg_val){
             // produce_expression_output(node->children.at(0));
             string temp = *(node->children.at(0)->lexinfo);
             expression = "not " + temp;
+            break;
+        }
+        default:{
+            produce_expression_output(node->children.at(0));
+            string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+                    f_reg_c++;
+                    string value2 = s.top().c_str();
+                    s.pop();
+                    string value1 = s.top().c_str();
+                    s.pop();
+                    string temp = *(node->children.at(0)->lexinfo);
+                    output += regName + " = " + value1 + " " + 
+                    temp + " " + value2 + "\n";
+                    expression += "not " + regName;
+            break;
+        }   
+
+
+    }
+    // string temporary = to_string(reg_val);
+    // printf("%s\n",temporary.c_str());
+    // output += expression;
+    //now insert the conditional line
+    output += "goto .od" + to_string(reg_val) + " if " + expression + "\n";
+    output += ".do" + to_string(reg_val) + ": ";
+    while_reg_c++;
+    switch(node->children.at(1)->symbol){
+          //need to handle getting a string/globals
+          case BLOCK:{
+              handle_func_blocks(node->children.at(1));
+              break;
+          }
+          default:{
+              string look = *(node->children.at(1)->lexinfo);
+            //   printf("%s\n",look.c_str());
+              handle_instruction(node->children.at(1));
+              break;
+          }
+      }
+
+    output += "goto .wh" + to_string(reg_val) + "\n";
+    output += ".od" + to_string(reg_val) + ":\n";
+
+    // // output += "goto .fi" + to_string(reg_val) + " if ";
+    // //   output += expression;
+    //   //one block is all we need
+    //   output += ".do" + to_string(reg_val) + ": ";
+    //   //check if block or not
+    //   switch(node->children.at(1)->symbol){
+    //       //need to handle getting a string/globals
+    //       case BLOCK:{
+    //           handle_func_blocks(node->children.at(1));
+    //           break;
+    //       }
+    //       default:{
+    //           string look = *(node->children.at(1)->lexinfo);
+    //           printf("%s\n",look.c_str());
+    //         //   handle_instruction(node->children.at(1));
+    //           break;
+    //       }
+    //   }
+    // //   output += "goto .fi" + to_string(reg_val) + "\n";
+    // //   output += ".fi" + to_string(reg_val) + ":";
+    // }
+    // output += "\n";
+    
+}
+
+
+void produce_if_output(astree* node,int reg_val){
+    if_reg_c++;
+    set_i = 1;//we need to fix the setter
+    produce_label_if(reg_val);
+    //we must automatically look at what child 0 is
+    //if is a not then we evaluate the next expression
+    string expression = "";
+    switch(node->children.at(0)->symbol){
+        //checking if it has a not
+        case NEG:{
+            switch(node->children.at(0)->children.at(0)->symbol){
+                case TOK_PARAM:{
+                    //3rd into is the sign
+                    produce_expression_output(node->children.at(0)->children.at(0)->children.at(0));
+                    string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+                    f_reg_c++;
+                    string value2 = s.top().c_str();
+                    s.pop();
+                    string value1 = s.top().c_str();
+                    s.pop();
+                    string temp = *(node->children.at(0)->children.at(0)->children.at(0)->lexinfo);
+                    output += regName + " = " + value1 + " " + 
+                    temp + " " + value2 + "\n";
+                    expression += regName;
+                    break;
+                }
+                case TOK_INTCON:
+                case TOK_CHARCON:
+                case TOK_NULLPTR:
+                case TOK_IDENT:{
+                    string temp = *(node->children.at(0)->children.at(0)->lexinfo);
+                    expression =  temp;
+                    break;
+                }
+                case CALL:{
+                break;
+                }
+            }
+            
+            break;
+        }
+        case TOK_INTCON:
+        case TOK_CHARCON:
+        case TOK_NULLPTR:
+        case TOK_IDENT:{
+            // produce_expression_output(node->children.at(0));
+            string temp = *(node->children.at(0)->lexinfo);
+            expression = "not " + temp;
+            break;
+        }
+        case CALL:{
             break;
         }
         default:{
@@ -484,6 +599,13 @@ void produce_type_id_output(astree* node){
         }
     }
     //output += "\n";
+}
+
+void produce_label_while(int local){
+     //always look at second child
+     output += ".wh";
+     output += to_string(local);
+     output += ": ";
 }
 
 void produce_label_if(int local){
