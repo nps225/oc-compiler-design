@@ -126,6 +126,17 @@ void handle_instruction(astree* node){
               produce_equals_output(node);
               break;
           }
+          case TOK_RETURN:{
+              if(node->children.size() == 0){
+                  output += "return";
+              }else{
+                  //run eval on the child
+                  produce_expression_output(node->children.at(0)); 
+                  output += "return " + s.top() + "\n";
+                  s.pop();
+              }
+              break;
+          }
           case CALL:{//call by itself
               //handling manually
               compare_expression = 0;
@@ -215,8 +226,22 @@ void produce_while_output(astree* node,int reg_val){
                     expression =  temp;
                     break;
                 }
+                case CALL:{
+                    //handle calls inside an if statement
+                    produce_expression_output(node->children.at(0)->children.at(0));
+                    string temp = s.top();
+                    expression = "not " +  temp;
+                break;
+        }
             }
             break;
+        }
+        case CALL:{
+                    //handle calls inside an if statement
+                    produce_expression_output(node->children.at(0));
+                    string temp = s.top();
+                    expression = temp;
+                break;
         }
         case TOK_INTCON:
         case TOK_CHARCON:
@@ -329,6 +354,10 @@ void produce_if_output(astree* node,int reg_val){
                     break;
                 }
                 case CALL:{
+                    //handle calls inside an if statement
+                    produce_expression_output(node->children.at(0)->children.at(0));
+                    string temp = s.top();
+                    expression = temp;
                 break;
                 }
             }
@@ -345,7 +374,11 @@ void produce_if_output(astree* node,int reg_val){
             break;
         }
         case CALL:{
-            break;
+                    //handle calls inside an if statement
+                    produce_expression_output(node->children.at(0));
+                    string temp = s.top();
+                    expression = temp;
+                break;
         }
         default:{
             produce_expression_output(node->children.at(0));
@@ -683,6 +716,7 @@ void produce_expression_output(astree* node){
              break;
          }
          case TOK_IDENT:
+         case TOK_STRINGCON:
          case TOK_INTCON:{
              //push int onto stack
              string value = *(node->lexinfo);
