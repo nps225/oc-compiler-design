@@ -22,9 +22,11 @@ int eval_var = 0;
 int string_globals = 0;
 int f_reg_c = 0;
 int if_reg_c = 0;
+int while_reg_c = 0;
 int set_c = 0;
 int set_p = 0;
 int set_i = 0;
+int compare_expression = 0;
 stack<string> s;
 void emit_the_tree(astree* node){
     produce_struct_output(node);
@@ -114,28 +116,54 @@ void handle_instruction(astree* node){
               break;
           }case TOK_IF:{
               //first child is the expression
-
               produce_if_output(node,if_reg_c);
+              break;
+          }case TOK_WHILE:{
+              produce_while_output(node,while_reg_c);
               break;
           }case '=':{
               //append to accomidate for arrows etc
               produce_equals_output(node);
               break;
-          }case CALL:{//call by itself
+          }
+          case CALL:{//call by itself
               //handling manually
+              compare_expression = 0;
               string call = "call "+ *(node->children.at(0)->lexinfo) + " ";
             //   printf("%s\n",call.c_str());
               for(uint i = 1; i < node->children.size();i++){
                   produce_expression_output(node->children.at(i));
+                  printf("%d\n",compare_expression);
+                  if(compare_expression == 1){
+                    string expression = "";
+                    
+                    string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+                    f_reg_c++;
+                    // expression += regName + " ";
+                    
+                    string value2 = s.top().c_str();
+                    s.pop();
+                    string value1 = s.top().c_str();
+                    s.pop();
+                    expression += regName + " = " + value1 + " " + *(node->children.at(i)->lexinfo) 
+                    + " " + value2 + "\n";
+                    output += expression;
+                    // output += regName + "\n";
+                    s.push(regName);
+                    compare_expression = 0;
+                  }
+                  
               }
               vector <string> things;
               for(int i = node->children.size()-2; i >= 0;i--){
                 things.push_back(s.top());
                 s.pop();
+                // printf("hi\n");
               }
               for(int i = things.size() - 1;i >= 0;i--){
                 call += things[i] + " ";
               }
+            //   printf("%d\n",s.size());
               output += call + "\n";
           }
       }
@@ -151,6 +179,10 @@ void produce_equals_output(astree* node){
      string temp = *(node->children.at(0)->lexinfo);
      output += temp + " = " + s.top() + '\n';
      s.pop();
+}
+
+void produce_while_output(astree* node,int while_reg_c){
+    //we know the top token is a TOK_WHILE
 }
 
 
@@ -189,18 +221,6 @@ void produce_if_output(astree* node,int reg_val){
                     break;
                 }
             }
-            // produce_expression_output(node->children.at(0)->children.at(0));
-            // string val2 = s.top().c_str();
-            //  s.pop();
-            //  string val1 = s.top().c_str();
-            //  s.pop();
-            //  //two values here
-            //  string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-            // //  printf("%s = %s %s %s\n",regName.c_str(),val1.c_str(),node->lexinfo->c_str(),val2.c_str());
-            // //  output = output + regName + " = " + val1.c_str() + " "  + node->lexinfo->c_str() + " " + val2.c_str() + "\n";
-            //  f_reg_c++;
-            // //  printf("%s\n",regName.c_str());
-            //  s.push(regName);
             break;
         }
         case TOK_INTCON:
@@ -284,6 +304,8 @@ void produce_if_output(astree* node,int reg_val){
               break;
           }
           default:{
+              string look = *(node->children.at(1)->lexinfo);
+            //   printf("%s\n",look.c_str());
               handle_instruction(node->children.at(1));
               break;
           }
@@ -498,7 +520,8 @@ void produce_expression_output(astree* node){
          case TOK_GT:
          case TOK_LT:{
              if(s.size() == 2){
-                 break;
+                compare_expression = 1;
+                break;
              }
              break;
          }
