@@ -1,0 +1,31 @@
+main (6.14.1) {0} int function 
+    sa (6.16.4) {13} string array variable local lval  1
+    s (6.15.4) {13} string variable local lval  0
+f4 (6.12.1) {0} int function 
+    b (6.12.28) {12} ptr <struct foobar> variable param lval  1
+    a (6.12.9) {12} ptr <struct foo> variable param lval  0
+f3 (6.11.1) {0} int function 
+    c (6.11.29) {11} string variable param lval  2
+    a (6.11.9) {11} string variable param lval  0
+    b (6.11.19) {11} string variable param lval  1
+f2 (6.10.1) {0} int function 
+    b (6.10.16) {10} int variable param lval  1
+    a (6.10.9) {10} int variable param lval  0
+f1 (6.9.1) {0} int function 
+    a (6.9.9) {9} int variable param lval  0
+foo (6.5.1) {0} struct foo
+getln (5.30.1) {0} string function 
+putchr (5.24.1) {0} void function 
+    chr (5.24.14) {2} int variable param lval  0
+fail (5.22.1) {0} void function 
+    line (5.22.38) {1} int variable param lval  2
+    expr (5.22.12) {1} string variable param lval  0
+    file (5.22.25) {1} string variable param lval  1
+f0 (6.8.1) {0} int function 
+putint (5.25.1) {0} void function 
+    num (5.25.14) {3} int variable param lval  0
+getstr (5.29.1) {0} string function 
+bar (6.6.1) {0} struct bar
+putstr (5.26.1) {0} void function 
+    str (5.26.14) {4} string variable param lval  0
+getchr (5.28.1) {0} int function 

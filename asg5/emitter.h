@@ -22,3 +22,4 @@ void produce_label_else(int reg_val);
 void produce_label_while(int reg_val);
 void produce_equals_output(astree* node);
 void produce_while_output(astree* node,int while_reg_c);
+string print_leading_spaces(int count);

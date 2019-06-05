@@ -14,6 +14,7 @@ string b = "hello";
 int test(string b, int x, ptr<struct a> boobs){
 	int a;
 	string lmao;
+	lmao = b;
 	ptr <struct lol> kek;
 	a = b + c;
 	return x;

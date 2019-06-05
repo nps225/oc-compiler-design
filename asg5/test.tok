@@ -46,27 +46,30 @@
   3    16.002    261    TYPE_ID         
   3    16.002    290    TOK_STRING      string
   3    16.009    294    TOK_IDENT       lmao
-  3    17.002    261    TYPE_ID         
-  3    17.002    283    TOK_PTR         ptr
-  3    17.014    294    TOK_IDENT       lol
-  3    17.019    294    TOK_IDENT       kek
-  3    18.004     61    '='             =
-  3    18.002    294    TOK_IDENT       a
-  3    18.008     43    '+'             +
-  3    18.006    294    TOK_IDENT       b
-  3    18.010    294    TOK_IDENT       c
-  3    19.002    287    TOK_RETURN      return
-  3    19.009    294    TOK_IDENT       x
-  3    22.001    261    TYPE_ID         
-  3    22.001    290    TOK_STRING      string
-  3    22.008    294    TOK_IDENT       c
-  3    22.012    292    TOK_STRINGCON   "test"
-  3    24.001    279    TOK_STRUCT      struct
-  3    24.008    294    TOK_IDENT       blah
-  3    24.012    265    BLOCK           {
-  3    25.002    261    TYPE_ID         
-  3    25.002    288    TOK_INT         int
-  3    25.006    294    TOK_IDENT       poopy
+  3    17.007     61    '='             =
+  3    17.002    294    TOK_IDENT       lmao
+  3    17.009    294    TOK_IDENT       b
+  3    18.002    261    TYPE_ID         
+  3    18.002    283    TOK_PTR         ptr
+  3    18.014    294    TOK_IDENT       lol
+  3    18.019    294    TOK_IDENT       kek
+  3    19.004     61    '='             =
+  3    19.002    294    TOK_IDENT       a
+  3    19.008     43    '+'             +
+  3    19.006    294    TOK_IDENT       b
+  3    19.010    294    TOK_IDENT       c
+  3    20.002    287    TOK_RETURN      return
+  3    20.009    294    TOK_IDENT       x
+  3    23.001    261    TYPE_ID         
+  3    23.001    290    TOK_STRING      string
+  3    23.008    294    TOK_IDENT       c
+  3    23.012    292    TOK_STRINGCON   "test"
+  3    25.001    279    TOK_STRUCT      struct
+  3    25.008    294    TOK_IDENT       blah
+  3    25.012    265    BLOCK           {
   3    26.002    261    TYPE_ID         
   3    26.002    288    TOK_INT         int
-  3    26.006    294    TOK_IDENT       bloopy
+  3    26.006    294    TOK_IDENT       poopy
+  3    27.002    261    TYPE_ID         
+  3    27.002    288    TOK_INT         int
+  3    27.006    294    TOK_IDENT       bloopy

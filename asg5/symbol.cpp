@@ -134,7 +134,7 @@ string SymbolTable::dumpLocalVariables(){
     string ret = "";
     for(auto it = table.begin(); it != table.end(); it++){
       if(it->second->attributes.test(size_t(attr::LOCAL))){
-         ret += ".local ";
+         ret += "          .local ";
          if(it->second->attributes.test(size_t(attr::INT)))
             ret += "int ";
          if(it->second->attributes.test(size_t(attr::STRING)))
