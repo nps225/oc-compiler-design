@@ -391,7 +391,7 @@ vector<symbol*>* ParseParameters(astree* func, SymbolTable* tbl){
             break;
             case TOK_ARRAY:
             (*it)->attributes.set(size_t(attr::ARRAY));
-            switch((*it)->children.at(0)->children.at(1)->symbol){
+            switch((*it)->children.at(0)->children.at(0)->symbol){
                case TOK_STRING:
                (*it)->attributes.set(size_t(attr::STRING));
                break;
