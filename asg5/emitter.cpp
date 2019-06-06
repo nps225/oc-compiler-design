@@ -834,19 +834,15 @@ void produce_expression_output(astree* node){
             }else{
                 value = *(node->lexinfo);
                 if(SymbolTable::getGlobalTable()->
-                getAttributes(value).test(size_t(attr::TYPEID)))
+                getAttributes(value).test(size_t(attr::INT))){
+                   if(!SymbolTable::getGlobalTable()->
+                   getAttributes(value).test(size_t(attr::ARRAY)))
+                      if(!SymbolTable::getGlobalTable()->
+                      getAttributes(value).test(size_t(attr::TYPEID)))
+                           set_i = 1;
+                }
+               else
                   set_p = 1;
-                else if(SymbolTable::getGlobalTable()->
-                getAttributes(value).test(size_t(attr::STRING)))
-                    set_p = 1;
-                else if(SymbolTable::getGlobalTable()->
-                getAttributes(value).test(size_t(attr::ARRAY)))
-                    set_p = 1;
-                else if(SymbolTable::getGlobalTable()->
-                getAttributes(value).test(size_t(attr::STRUCT)))
-                    set_p = 1;
-                else
-                    set_i = 1;
             }
             //  printf("%s\n",value.c_str());
              s.push(value);
