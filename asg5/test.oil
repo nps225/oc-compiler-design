@@ -1,0 +1,11 @@
+          .struct stack
+          .field data
+          .field int size
+          .field int top
+          .end
+main:     .function int 
+          $t0:i = stack->stack.top
+          stack->stack.data[$t0:i * :i] = str
+          return
+          .end
+

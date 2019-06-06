@@ -264,7 +264,29 @@ void produce_equals_output(astree* node){
      switch(node->children.at(0)->symbol){
          case TOK_INDEX:{
              //first child will be index
-             string temp = *(node->children.at(0)->children.at(0)->lexinfo);
+             switch(node->children.at(0)->children.at(0)->symbol){
+                 case TOK_ARROW:{
+                     string temp = *(node->children.at(0)->children.at(0)->lexinfo);
+                     string temp1 = *(node->children.at(0)->children.at(0)->
+                     children.at(0)->lexinfo);
+                     string temp2 = *(node->children.at(0)->children.at(0)->
+                     children.at(1)->lexinfo);
+                     string sname = SymbolTable::getGlobalTable()->getStructName(temp1);
+             produce_expression_output(node->children.at(0)->children.at(1));
+             //pop first child off the stack to get returned val
+             if((output.at(output.length()-3) != ' ') ||
+             (output.at(output.length()-1) == '\n'))
+                  output += print_leading_spaces(10);
+             output += temp1 + temp + sname + "." 
+             + temp2 + "[" + s.top() + " * :" + add_signals() + "] = ";
+             s.pop();
+                    output += s.top() + "\n";
+                     s.pop();
+
+                     break;
+                 }
+                 default:{
+                      string temp = *(node->children.at(0)->children.at(0)->lexinfo);
              produce_expression_output(node->children.at(0)->children.at(1));
              //pop first child off the stack to get returned val
              if((output.at(output.length()-3) != ' ') ||
@@ -272,8 +294,12 @@ void produce_equals_output(astree* node){
                   output += print_leading_spaces(10);
              output += temp + "[" + s.top() + " * :" + add_signals() + "] = ";
              s.pop();
-             output += s.top() + "\n";
-             s.pop();
+                    output += s.top() + "\n";
+                     s.pop();
+                     break;
+                 }
+             }
+            
              break;
          }
          case TOK_ARROW:{
