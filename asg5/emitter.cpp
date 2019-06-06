@@ -170,7 +170,10 @@ void handle_instruction(astree* node){
                  if((output.at(output.length()-3) != ' ') ||
                   (output.at(output.length()-1) == '\n'))
                     output += print_leading_spaces(10);
-                  output += "return " + *(node->children.at(0)->lexinfo) +"\n";
+                  produce_expression_output(node->children.at(0));
+                  output += print_leading_spaces(10);
+                  output += "return " + s.top() +"\n";
+                  s.pop();
               }else{
                   //run eval on the child
                   produce_expression_output(node->children.at(0));
