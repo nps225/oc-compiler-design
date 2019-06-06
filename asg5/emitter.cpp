@@ -17,7 +17,7 @@
 #include "emitter.h"
 #include <stack>
 
-
+int NOT = 0;
 string output = "";
 string line = "";
 int eval_var = 0;
@@ -92,6 +92,7 @@ void produce_function_output(astree* child){
      compare_expression = 0;
    output += print_leading_spaces(10);
    output += ".end\n";
+
 }
 
 void handle_func_params(astree* child){
@@ -127,6 +128,8 @@ void handle_func_blocks(astree* node){
 }
 
 void handle_instruction(astree* node){
+    // printf("%d\n",s.size());
+
      switch(node->symbol){
           //need to handle getting a string/globals
           case TYPE_ID:{
@@ -148,12 +151,26 @@ void handle_instruction(astree* node){
               if(node->children.size() == 0){
                   output += print_leading_spaces(10);
                   output += "return";
+              }else if(node->children.size() == 1){
+                  output += print_leading_spaces(10);
+                  output += "return " + *(node->children.at(0)->lexinfo) +"\n";
               }else{
                   //run eval on the child
                   produce_expression_output(node->children.at(0));
                   output += print_leading_spaces(10);
-                  output += "return " + s.top() + "\n";
-                  s.pop();
+                  if(s.size() == 1){
+                    output += "return " + s.top() + "\n";
+                    s.pop();
+                  }else{
+                    string val2 = s.top();
+                    s.pop();
+                    string val1 = s.top();
+                    s.pop();
+                    output += "return " + val1 + " ";
+                    output += *(node->children.at(0)->lexinfo) + " "; 
+                    output += val2 + "\n";   
+                  }
+                  
               }
               break;
           }
@@ -198,6 +215,11 @@ void handle_instruction(astree* node){
             //   printf("%d\n",s.size());
               output += print_leading_spaces(10);
               output += call + "\n";
+              break;
+          }
+          case BLOCK:{
+              handle_func_blocks(node);
+              break;
           }
       }
       reset_signals();
@@ -223,6 +245,18 @@ void produce_equals_output(astree* node){
              s.pop();
              break;
          }
+         case TOK_ARROW:{
+             string str = *(node->children.at(0)->children.at(0)->lexinfo);
+             string val = *(node->children.at(0)->children.at(1)->lexinfo);
+             //handle another look up for the struct name here
+             output+= print_leading_spaces(10);
+             output += str + "->stack."+ val;
+             
+             output += " = " + s.top();
+             s.pop();
+             output += '\n';
+             break;
+         }
          default:{
              output += print_leading_spaces(10);
              string temp = *(node->children.at(0)->lexinfo);
@@ -241,80 +275,12 @@ void produce_while_output(astree* node,int reg_val){
     //we must automatically look at what child 0 is
     //if is a not then we evaluate the next expression
     string expression = "";
-    switch(node->children.at(0)->symbol){
-        //checking if it has a not
-        case NEG:{
-            switch(node->children.at(0)->children.at(0)->symbol){
-                case TOK_PARAM:{
-                    //3rd into is the sign
-                    produce_expression_output(node->children.at(0)->children.at(0)->children.at(0));
-                    string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-                    f_reg_c++;
-                    string value2 = s.top().c_str();
-                    s.pop();
-                    string value1 = s.top().c_str();
-                    s.pop();
-                    string temp = *(node->children.at(0)->children.at(0)->children.at(0)->lexinfo);
-                    output += regName + " = " + value1 + " " +
-                    temp + " " + value2 + "\n";
-                    expression += regName;
-                    break;
-                }
-                case TOK_INTCON:
-                case TOK_CHARCON:
-                case TOK_NULLPTR:
-                case TOK_IDENT:{
-                    string temp = *(node->children.at(0)->children.at(0)->lexinfo);
-                    expression =  temp;
-                    break;
-                }
-                case CALL:{
-                    //handle calls inside an if statement
-                    produce_expression_output(node->children.at(0)->children.at(0));
-                    string temp = s.top();
-                    expression = "not " +  temp;
-                break;
-        }
-            }
-            break;
-        }
-        case CALL:{
-                    //handle calls inside an if statement
-                    produce_expression_output(node->children.at(0));
-                    string temp = s.top();
-                    expression = temp;
-                break;
-        }
-        case TOK_INTCON:
-        case TOK_CHARCON:
-        case TOK_NULLPTR:
-        case TOK_IDENT:{
-            // produce_expression_output(node->children.at(0));
-            string temp = *(node->children.at(0)->lexinfo);
-            expression = "not " + temp;
-            break;
-        }
-        default:{
-            produce_expression_output(node->children.at(0));
-            string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-                    f_reg_c++;
-                    string value2 = s.top().c_str();
-                    s.pop();
-                    string value1 = s.top().c_str();
-                    s.pop();
-                    string temp = *(node->children.at(0)->lexinfo);
-
-                    output += regName + " = " + value1 + " " +
-                    temp + " " + value2 + "\n";
-                    expression += "not " + regName;
-            break;
-        }
-
-
-    }
-    // string temporary = to_string(reg_val);
-    // printf("%s\n",temporary.c_str());
-    // output += expression;
+    //first child will be our expressionS
+    produce_expression_output(node->children.at(0));
+    // printf("%s\n",s.top().c_str());
+    expression = "not " + s.top();
+    s.pop();
+   
     //now insert the conditional line
     output += print_leading_spaces(10);
     output += "goto .od" + to_string(reg_val) + " if " + expression + "\n";
@@ -365,85 +331,18 @@ void produce_while_output(astree* node,int reg_val){
 
 void produce_if_output(astree* node,int reg_val){
     if_reg_c++;
-    set_i = 1;//we need to fix the setter
+    // set_i = 1;//we need to fix the setter
     produce_label_if(reg_val);
     //we must automatically look at what child 0 is
     //if is a not then we evaluate the next expression
     string expression = "";
-    switch(node->children.at(0)->symbol){
-        //checking if it has a not
-        case NEG:{
-            switch(node->children.at(0)->children.at(0)->symbol){
-                case TOK_PARAM:{
-                    //3rd into is the sign
-                    produce_expression_output(node->children.at(0)->children.at(0)->children.at(0));
-                    string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-                    f_reg_c++;
-                    string value2 = s.top().c_str();
-                    s.pop();
-                    string value1 = s.top().c_str();
-                    s.pop();
-                    string temp = *(node->children.at(0)->children.at(0)->children.at(0)->lexinfo);
-                    output += regName + " = " + value1 + " " +
-                    temp + " " + value2 + "\n";
-                    expression += regName;
-                    break;
-                }
-                case TOK_INTCON:
-                case TOK_CHARCON:
-                case TOK_NULLPTR:
-                case TOK_IDENT:{
-                    string temp = *(node->children.at(0)->children.at(0)->lexinfo);
-                    expression =  temp;
-                    break;
-                }
-                case CALL:{
-                    //handle calls inside an if statement
-                    produce_expression_output(node->children.at(0)->children.at(0));
-                    string temp = s.top();
-                    expression = temp;
-                break;
-                }
-            }
+    //first child will be our expressionS
+    produce_expression_output(node->children.at(0));
+    // printf("%s\n",s.top().c_str());
+    expression = "not " + s.top();
+    s.pop();
 
-            break;
-        }
-        case TOK_INTCON:
-        case TOK_CHARCON:
-        case TOK_NULLPTR:
-        case TOK_IDENT:{
-            // produce_expression_output(node->children.at(0));
-            string temp = *(node->children.at(0)->lexinfo);
-            expression = "not " + temp;
-            break;
-        }
-        case CALL:{
-                    //handle calls inside an if statement
-                    produce_expression_output(node->children.at(0));
-                    string temp = s.top();
-                    expression = temp;
-                break;
-        }
-        default:{
-            produce_expression_output(node->children.at(0));
-            string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-                    f_reg_c++;
-                    string value2 = s.top().c_str();
-                    s.pop();
-                    string value1 = s.top().c_str();
-                    s.pop();
-                    string temp = *(node->children.at(0)->lexinfo);
-                    output += regName + " = " + value1 + " " +
-                    temp + " " + value2 + "\n";
-                    expression += "not " + regName;
-            break;
-        }
-
-
-    }
-
-
-    //second child will be block
+    // second child will be block
     if(node->children.size() == 3){//there is an else statement
       output += print_leading_spaces(10);
       output += "goto .el" + to_string(reg_val) + " if ";
@@ -749,10 +648,15 @@ void produce_expression_output(astree* node){
          case TOK_NE:
          case TOK_GT:
          case TOK_LT:{
-             if(s.size() == 2){
-                compare_expression = 1;
-                break;
-             }
+             //this should be only occuring when there are two elements on the stack
+             string val2 = s.top();
+             s.pop();
+             string val1 = s.top();
+             s.pop();
+             string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+             f_reg_c++;
+             output += regName + " = " + val1 + " " + *(node->lexinfo) + " " + val2 + "\n";
+             s.push(regName);
              break;
          }
          case '/':
@@ -793,11 +697,14 @@ void produce_expression_output(astree* node){
              break;
          }
          case TOK_IDENT:{
+            //still need to look up 
             string value;
-            if(globalStrings.count(string(*(node->lexinfo))) != 0)
-                value = globalStrings[string(*(node->lexinfo))];
-             else
+            if(globalStrings.count(string(*(node->lexinfo))) != 0){
+                value = "." + globalStrings[string(*(node->lexinfo))];
+                set_p = 1;
+            }else{
                 value = *(node->lexinfo);
+            }
             //  printf("%s\n",value.c_str());
              s.push(value);
              break;
