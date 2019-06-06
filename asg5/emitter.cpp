@@ -61,7 +61,8 @@ void emit_the_tree(astree* node, FILE* destination){
 // fprintf ("%-10s%-10s%");
 void produce_function_output(astree* child){
    // output = "";
-   string name = string(*(child->children.at(0)->children.at(1)->lexinfo));
+   string name = string(*(child->children.at(0)->children.at(1)->
+   lexinfo));
    //create label
    produce_label(child->children.at(0));
    //output += name;
@@ -170,7 +171,8 @@ void handle_instruction(astree* node){
                  if((output.at(output.length()-3) != ' ') ||
                   (output.at(output.length()-1) == '\n'))
                     output += print_leading_spaces(10);
-                  output += "return " + *(node->children.at(0)->lexinfo) +"\n";
+                  output += "return " + *(node->children.at(0)->lexinfo)
+                   +"\n";
               }else{
                   //run eval on the child
                   produce_expression_output(node->children.at(0));
@@ -201,7 +203,8 @@ void handle_instruction(astree* node){
           case CALL:{//call by itself
               //handling manually
               compare_expression = 0;
-              string call = "call "+ *(node->children.at(0)->lexinfo) + " ";
+              string call = "call "+ *(node->children.at(0)->lexinfo)
+              + " ";
             //   printf("%s\n",call.c_str());
               for(uint i = 1; i < node->children.size();i++){
                   produce_expression_output(node->children.at(i));
@@ -267,18 +270,23 @@ void produce_equals_output(astree* node){
              //first child will be index
              switch(node->children.at(0)->children.at(0)->symbol){
                  case TOK_ARROW:{
-                     string temp = *(node->children.at(0)->children.at(0)->lexinfo);
-                     string temp1 = *(node->children.at(0)->children.at(0)->
+                     string temp = *(node->children.at(0)->
                      children.at(0)->lexinfo);
-                     string temp2 = *(node->children.at(0)->children.at(0)->
+                     string temp1 = *(node->children.at(0)->
+                     children.at(0)->
+                     children.at(0)->lexinfo);
+                     string temp2 = *(node->children.at(0)->
+                     children.at(0)->
                      children.at(1)->lexinfo);
-                     string sname = SymbolTable::getGlobalTable()->getStructName(temp1);
-             produce_expression_output(node->children.at(0)->children.at(1));
+                     string sname = SymbolTable::getGlobalTable()->
+                     getStructName(temp1);
+             produce_expression_output(node->children.at(0)->
+             children.at(1));
              //pop first child off the stack to get returned val
              if((output.at(output.length()-3) != ' ') ||
              (output.at(output.length()-1) == '\n'))
                   output += print_leading_spaces(10);
-             output += temp1 + temp + sname + "." 
+             output += temp1 + temp + sname + "."
              + temp2 + "[" + s.top() + " * :" + add_signals() + "] = ";
              s.pop();
                     output += s.top() + "\n";
@@ -287,34 +295,41 @@ void produce_equals_output(astree* node){
                      break;
                  }
                  default:{
-                      string temp = *(node->children.at(0)->children.at(0)->lexinfo);
-             produce_expression_output(node->children.at(0)->children.at(1));
+                      string temp = *(node->children.at(0)->
+                      children.at(0)->lexinfo);
+             produce_expression_output(node->children.at(0)->
+             children.at(1));
              //pop first child off the stack to get returned val
              if((output.at(output.length()-3) != ' ') ||
              (output.at(output.length()-1) == '\n'))
                   output += print_leading_spaces(10);
-             output += temp + "[" + s.top() + " * :" + add_signals() + "] = ";
+             output += temp + "[" + s.top() + " * :" +
+             add_signals() + "] = ";
              s.pop();
                     output += s.top() + "\n";
                      s.pop();
                      break;
                  }
              }
-            
+
              break;
          }
          case TOK_ARROW:{
-             string str = *(node->children.at(0)->children.at(0)->lexinfo);
-             string val = *(node->children.at(0)->children.at(1)->lexinfo);
+             string str = *(node->children.at(0)->
+             children.at(0)->lexinfo);
+             string val = *(node->children.at(0)->
+             children.at(1)->lexinfo);
              if(node->children.size()>1)
                   ptrfix = *(node->children.at(1)->lexinfo);
              //handle another look up for the struct name here
              if((output.at(output.length()-3) != ' ') ||
              (output.at(output.length()-1) == '\n'))
                   output+= print_leading_spaces(10);
-             string sname = SymbolTable::getGlobalTable()->getStructName(str);
+             string sname = SymbolTable::getGlobalTable()->
+             getStructName(str);
              if(sname.compare("") == 0)
-                  sname = SymbolTable::getGlobalTable()->getStructName(ptrfix);
+                  sname = SymbolTable::getGlobalTable()->
+                  getStructName(ptrfix);
              output += sname + " = " + s.top();
              s.pop();
              output += '\n';
@@ -350,7 +365,8 @@ void produce_while_output(astree* node,int reg_val){
     if((output.at(output.length()-3) != ' ') ||
     (output.at(output.length()-1) == '\n'))
          output += print_leading_spaces(10);
-    output += "goto .od" + to_string(reg_val) + " if " + expression + "\n";
+    output += "goto .od" + to_string(reg_val) + " if " +
+    expression + "\n";
     output += ".do" + to_string(reg_val) + ": ";
     output += print_leading_spaces(5 - (to_string(reg_val).length()));
     while_reg_c++;
@@ -498,7 +514,8 @@ void handle_vars(astree* node){
     eval_var = 1;
     if(node->children.size() == 3){
         produce_expression_output(node->children.at(2));
-        //the final value is left on the stack here so pop it off the stack
+        //the final value is left on the stack here so pop it off the
+        //  stack
         if(s.size() == 2){
            if((output.at(output.length()-3) != ' ') ||
            (output.at(output.length()-1) == '\n'))
@@ -741,13 +758,15 @@ void produce_expression_output(astree* node){
          case TOK_NE:
          case TOK_GT:
          case TOK_LT:{
-             //this should be only occuring when there are two elements on
+             //this should be only occuring when there are two elements
+             // on
              // the stack
              string val2 = s.top();
              s.pop();
              string val1 = s.top();
              s.pop();
-             string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+             string regName = "$t" + to_string(f_reg_c) + ":" +
+             add_signals();
              f_reg_c++;
              if((output.at(output.length()-3) != ' ') ||
              (output.at(output.length()-1) == '\n'))
@@ -764,15 +783,18 @@ void produce_expression_output(astree* node){
          case '+':{
              //  printf("Here\n");
              //there will be two children
-             //pop last two elements off stack and push back onto the stack
-             //technically just assign a attribute we check for if top of tree
+             //pop last two elements off stack and push back onto the
+             //stack
+             //technically just assign a attribute we check for if top
+             //of tree
              string val2 = s.top().c_str();
              s.pop();
              string val1 = s.top().c_str();
              s.pop();
              //two values here
-             string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-            //  printf("%s = %s %s %s\n",regName.c_str(),val1.c_str(),node->
+             string regName = "$t" + to_string(f_reg_c) + ":" +
+             add_signals();
+            //  printf("%s = %s %s %s\n",regName.c_str(),val1.c_str(),
             // lexinfo->c_str(),val2.c_str());
             if((output.at(output.length()-3) != ' ') ||
             (output.at(output.length()-1) == '\n'))
@@ -789,8 +811,9 @@ void produce_expression_output(astree* node){
          case NEG:{
              string val1 = s.top().c_str();
              s.pop();
-             string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-         //  printf("%s = %s %s \n",regName.c_str(),node->lexinfo->c_str(),
+             string regName = "$t" + to_string(f_reg_c) + ":" +
+             add_signals();
+         //  printf("%s = %s %s \n",regName.c_str(),node->lexinfo->
          //val1.c_str());
              if((output.at(output.length()-3) != ' ') ||
              (output.at(output.length()-1) == '\n'))
@@ -864,12 +887,15 @@ void produce_expression_output(astree* node){
              things.push_back(s.top());
              s.pop();
             //  printf("%s\n",things[1].c_str());
-             string regName = "$t" + to_string(f_reg_c) + ":" +add_signals();
+             string regName = "$t" + to_string(f_reg_c) + ":" +
+             add_signals();
              f_reg_c++;
              string express = regName + " = " + things[1] + "->";
-             string k = SymbolTable::getGlobalTable()->getStructName(things[1]);
+             string k = SymbolTable::getGlobalTable()->
+             getStructName(things[1]);
              if(k.compare("") == 0)
-                  k = SymbolTable::getGlobalTable()->getStructName(ptrfix);
+                  k = SymbolTable::getGlobalTable()->
+                  getStructName(ptrfix);
              //insert the name of the look up here
              express += k + "." + things[0] + "\n";
              if((output.at(output.length()-3) != ' ') ||
@@ -898,7 +924,8 @@ void produce_expression_output(astree* node){
                     string top = s.top();
                     s.pop();
                     express += top + " * sizeof ";
-                    switch(node->children.at(0)->children.at(0)->symbol){
+                    switch(node->children.at(0)->children.at(0)->symbol)
+                    {
                         case TOK_INT:{
                             express += "int";
                             break;
@@ -931,12 +958,14 @@ void produce_expression_output(astree* node){
          case TOK_INDEX:{
              vector <string> things;
              //now lets create out string
-             string regName = "$t" + to_string(f_reg_c)  + ":" + add_signals();
+             string regName = "$t" + to_string(f_reg_c)  + ":" +
+             add_signals();
              f_reg_c++;
              string expression = regName + " = ";
              string value = *(node->children.at(0)->lexinfo);
 
-             expression += value + "[" + s.top() + " * :" + add_signals() +"]";
+             expression += value + "[" + s.top() + " * :" +
+             add_signals() +"]";
               for(int i = node->children.size() - 1; i >= 0;i--){
                 // things.push_back(s.top());
                 // printf("%s\n",s.top().c_str());
@@ -968,7 +997,8 @@ void produce_expression_output(astree* node){
             }
             //now create the string for call
             //first child should be the
-            string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+            string regName = "$t" + to_string(f_reg_c) + ":" +
+            add_signals();
             f_reg_c++;
             string call = "call ";
             call += *(node->children.at(0)->lexinfo);
@@ -992,6 +1022,7 @@ void produce_expression_output(astree* node){
 
     //if two children -> binop
     //if 1 child -> must be unop
-    //if 0 child -> either operand or selection -> must start with specific
+    //if 0 child -> either operand or selection -> must start with
+    // specific
     // [ or ->
 }
