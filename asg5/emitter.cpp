@@ -168,11 +168,12 @@ void handle_instruction(astree* node){
                     output += print_leading_spaces(10);
                   output += "return";
               }else if(node->children.size() == 1){
+                 produce_expression_output(node->children.at(0));
                  if((output.at(output.length()-3) != ' ') ||
                   (output.at(output.length()-1) == '\n'))
                     output += print_leading_spaces(10);
-                  produce_expression_output(node->children.at(0));
-                  output += print_leading_spaces(10);
+                  //produce_expression_output(node->children.at(0));
+                  //output += print_leading_spaces(10);
                   output += "return " + s.top() +"\n";
                   s.pop();
               }else{
