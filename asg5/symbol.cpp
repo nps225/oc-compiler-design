@@ -607,27 +607,11 @@ void traverse_expressions(astree* node, SymbolTable* table){
         //these two are untested
         case TOK_EQ:
         case TOK_NE:{
-            astree* child0 = node->children.at(0);
-            astree* child1 = node->children.at(1);
-            if((child0->attributes[size_t(attr::INT)] == 0 &&
-                child1->attributes[size_t(attr::INT)] == 0)||
-                (child0->attributes[size_t(attr::STRING)] == 0 &&
-                child1->attributes[size_t(attr::STRING)] == 0)){
-                errprintf ("error: Invalid assignment to int \
-                variable at (%zu.%zu.%zu)\n",
-                node->lloc.filenr,node->lloc.linenr,node->lloc.offset);
-            }
             node->attributes.set(size_t(attr::INT));
             node->attributes.set(size_t(attr::VREG));
             break;
         }
         case TOK_NOT: {
-            astree* child = node->children.at(0);
-            if(child->attributes[size_t(attr::INT)] != 1){
-                errprintf("error: Invalid assignment to int variable \
-                 at (%zu.%zu.%zu)\n",
-                 child->lloc.filenr, child->lloc.linenr, child);
-            }
             node->attributes.set(size_t(attr::INT));
             node->attributes.set(size_t(attr::VREG));
             break;
@@ -639,23 +623,9 @@ void traverse_expressions(astree* node, SymbolTable* table){
         case '-':
         case '+': {
             if(node->children.size() == 2){
-                astree* child0 = node->children.at(0);
-                astree* child1 = node->children.at(1);
-                if(child0->attributes[size_t(attr::INT)] != 1 ||
-                   child1->attributes[size_t(attr::INT)] != 1){
-                    errprintf("error: Invalid assignment to int \
-                    variable at (%zu.%zu.%zu)\n",
-                    node->lloc.filenr, node->lloc.linenr, node);
-                }
                 node->attributes.set(size_t(attr::INT));
                 node->attributes.set(size_t(attr::VREG));
             }else{
-                astree* child0 = node->children.at(0);
-                if(child0->attributes[size_t(attr::INT)] != 1){
-                    errprintf("error: Invalid assignment to int \
-                    variable at (%zu.%zu.%zu)\n",
-                    node->lloc.filenr, node->lloc.linenr, node);
-                }
                 node->attributes.set(size_t(attr::INT));
                 node->attributes.set(size_t(attr::VREG));
             }
@@ -663,12 +633,6 @@ void traverse_expressions(astree* node, SymbolTable* table){
         }
         case POS:
         case NEG:{
-            astree* child0 = node->children.at(0);
-                if(child0->attributes[size_t(attr::INT)] != 1){
-                    errprintf("error: Invalid assignment to int \
-                     variable at (%zu.%zu.%zu)\n",
-                    node->lloc.filenr, node->lloc.linenr, node);
-                }
                 node->attributes.set(size_t(attr::INT));
                 node->attributes.set(size_t(attr::VREG));
             break;
