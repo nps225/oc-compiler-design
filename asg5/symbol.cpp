@@ -27,8 +27,15 @@ SymbolTable* SymbolTable::globalTable = new SymbolTable();
  */
 
 string SymbolTable::getStructName (string name){
-      if(table.count(name) != 0)
+      if(table.find(name) != table.end())
          return table[name]->type_id;
+      else if(subtables.size() > 0){
+         for(auto it = subtables.begin(); it != subtables.end(); it++){
+             string recv = it->second->getStructName(name);
+             if(recv.compare(string("")) != 0)
+               return recv;
+         }
+      }
       return "";
 }
 
@@ -231,6 +238,7 @@ void ConstructTable(astree* root){
                                               (*it)->lloc, nullptr);
             structSym->type_id =
                             string(*((*it)->children.at(0)->lexinfo));
+            cout <<"lmao---"<<structSym->type_id<<"\n";
             global->insertIntoTable(
                   string(*((*it)->children.at(0)->lexinfo)), structSym);
             symbol_table* fields = new symbol_table;

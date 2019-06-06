@@ -267,8 +267,10 @@ void produce_equals_output(astree* node){
              string str = *(node->children.at(0)->children.at(0)->lexinfo);
              string val = *(node->children.at(0)->children.at(1)->lexinfo);
              //handle another look up for the struct name here
-             output+= print_leading_spaces(10);
-             output += str + "->stack."+ val;
+             if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+                  output+= print_leading_spaces(10);
+             string stackName = SymbolTable::getGlobalTable()->getStructName(str);
+             output += str + "->" + stackName + "." + val;
 
              output += " = " + s.top();
              s.pop();
@@ -786,8 +788,9 @@ void produce_expression_output(astree* node){
              string regName = "$t" + to_string(f_reg_c) + ":" +add_signals();
              f_reg_c++;
              string express = regName + " = " + things[1] + "->";
+             string stackName = SymbolTable::getGlobalTable()->getStructName(things[1]);
              //insert the name of the look up here
-             express += "stack." + things[0] + "\n";
+             express += stackName + "." + things[0] + "\n";
              if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
                   output += print_leading_spaces(10);
              output += express;
