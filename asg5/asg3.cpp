@@ -22,6 +22,7 @@ void scanToFile(string filename){
    string filenameSTR = filename + ".str";
    string filenameAST = filename + ".ast";
    string filenameSYM = filename + ".sym";
+   string filenameOIL = filename + ".oil";
    FILE* outSTR = fopen (filenameSTR.c_str(), "w");
    if (!outSTR)
       fprintf (stderr, "Error creating str file");
@@ -31,7 +32,10 @@ void scanToFile(string filename){
    outstream = outTOK;
    FILE* outAST = fopen (filenameAST.c_str(), "w");
    if (!outAST)
-      fprintf (stderr, "Error creating tok file");
+      fprintf (stderr, "Error creating ast file");
+   FILE* outOIL = fopen (filenameOIL.c_str(), "w");
+      if (!outOIL)
+         fprintf (stderr, "Error creating oil file");
   //call yyparse to construct our tree
   int val = yyparse();
   if(val == 0){
@@ -48,7 +52,7 @@ void scanToFile(string filename){
       fprintf(stderr, "Error creating sym file");
   SymbolTable::getGlobalTable()->dump(outSYM, 1);
   //  delete parser::root;
-   emit_the_tree(parser::root);
+   emit_the_tree(parser::root, outOIL);
 
    destroy(parser::root);
    fclose(outSTR);

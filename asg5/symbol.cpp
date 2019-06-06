@@ -22,6 +22,61 @@
 size_t SymbolTable::blk_nr = 0;
 static size_t structSeq = 0;
 SymbolTable* SymbolTable::globalTable = new SymbolTable();
+
+bool checkAttributes(attr_bitset attr){
+   if(attr[size_t(attr::VOID)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::INT)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::NULLPTR_T)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::STRING)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::STRUCT)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::ARRAY)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::TYPEID)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::FUNCTION)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::VARIABLE)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::FIELD)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::PARAM)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::LOCAL)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::LVAL)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::CONST)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::VREG)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::VADDR)] == 1){
+      return true;
+   }
+   if(attr[size_t(attr::BITSET_SIZE)] == 1){
+      return true;
+   }
+   return false;
+}
 /*
  *  Begin member function definition for SymbolTable
  */
@@ -204,6 +259,13 @@ attr_bitset SymbolTable::getAttributes(string name){
     if(table.find(name) != table.end()){
         return table[name]->attributes;
     }
+    else if(subtables.size() != 0){
+      for(auto it = subtables.begin(); it != subtables.end(); it++){
+          attr_bitset recv = it->second->getAttributes(name);
+          if(checkAttributes(recv) == true)
+             return recv;
+      }
+   }
   return ret;
 }
 
@@ -238,7 +300,6 @@ void ConstructTable(astree* root){
                                               (*it)->lloc, nullptr);
             structSym->type_id =
                             string(*((*it)->children.at(0)->lexinfo));
-            cout <<"lmao---"<<structSym->type_id<<"\n";
             global->insertIntoTable(
                   string(*((*it)->children.at(0)->lexinfo)), structSym);
             symbol_table* fields = new symbol_table;
@@ -262,7 +323,8 @@ void ConstructTable(astree* root){
                 case TOK_PTR:
                 //(*it)->attributes.set(size_t(attr::PTR));
                 (*it)->attributes.set(size_t(attr::TYPEID));
-                t.append(string(*((*it)->children.at(0)->children.at(0)->children.at(0)->lexinfo)));
+                t.append(string(*((*it)->children.at(0)->children.at(0)->
+               children.at(0)->lexinfo)));
                 break;
             }
             vector<symbol*>* params = ParseParameters(*it, tbl);

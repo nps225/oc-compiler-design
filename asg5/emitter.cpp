@@ -34,7 +34,7 @@ stack<string> s;
 
 static unordered_map <string, string> globalStrings;
 
-void emit_the_tree(astree* node){
+void emit_the_tree(astree* node, FILE* destination){
     produce_struct_output(node);
     handle_global_variables(node);
     for(astree* child: node->children){
@@ -51,7 +51,7 @@ void emit_the_tree(astree* node){
 
     }
 
-    printf("%s\n",output.c_str());
+    fprintf(destination, "%s\n",output.c_str());
     // for(int i = 0; i < output.length();i++){
     //     printf("hi\n");
     // }
@@ -84,10 +84,12 @@ void produce_function_output(astree* child){
       func_def = 1;
       handle_func_blocks(child->children.at(2));
    }
-   if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+   if((output.at(output.length()-3) != ' ') ||
+    (output.at(output.length()-1) == '\n'))
       output += print_leading_spaces(10);
    if(func_def == 1){
-      if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+      if((output.at(output.length()-3) != ' ') ||
+       (output.at(output.length()-1) == '\n'))
          output += print_leading_spaces(10);
       output += "return\n";
       func_def = 0;
@@ -98,7 +100,8 @@ void produce_function_output(astree* child){
      set_p = 0;
      set_i = 0;
      compare_expression = 0;
-   if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+   if((output.at(output.length()-3) != ' ') ||
+    (output.at(output.length()-1) == '\n'))
       output += print_leading_spaces(10);
    output += ".end\n";
 
@@ -158,20 +161,24 @@ void handle_instruction(astree* node){
           }
           case TOK_RETURN:{
               if(node->children.size() == 0){
-                 if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+                 if((output.at(output.length()-3) != ' ') ||
+                  (output.at(output.length()-1) == '\n'))
                     output += print_leading_spaces(10);
                   output += "return";
               }else if(node->children.size() == 1){
-                 if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+                 if((output.at(output.length()-3) != ' ') ||
+                  (output.at(output.length()-1) == '\n'))
                     output += print_leading_spaces(10);
                   output += "return " + *(node->children.at(0)->lexinfo) +"\n";
               }else{
                   //run eval on the child
                   produce_expression_output(node->children.at(0));
-                  if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+                  if((output.at(output.length()-3) != ' ') ||
+                  (output.at(output.length()-1) == '\n'))
                      output += print_leading_spaces(10);
                   if(s.size() == 1){
-                     if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+                     if((output.at(output.length()-3) != ' ') ||
+                      (output.at(output.length()-1) == '\n'))
                         output += print_leading_spaces(10);
                     output += "return " + s.top() + "\n";
                     s.pop();
@@ -180,7 +187,8 @@ void handle_instruction(astree* node){
                     s.pop();
                     string val1 = s.top();
                     s.pop();
-                    if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+                    if((output.at(output.length()-3) != ' ') ||
+                    (output.at(output.length()-1) == '\n'))
                         output += "return " + val1 + " ";
                     output += *(node->children.at(0)->lexinfo) + " ";
                     output += val2 + "\n";
@@ -200,7 +208,8 @@ void handle_instruction(astree* node){
                   if(compare_expression == 1){
                     string expression = "";
 
-                    string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
+                    string regName = "$t" +
+                    to_string(f_reg_c) + ":" + add_signals();
                     f_reg_c++;
                     // expression += regName + " ";
 
@@ -208,9 +217,11 @@ void handle_instruction(astree* node){
                     s.pop();
                     string value1 = s.top().c_str();
                     s.pop();
-                    expression += regName + " = " + value1 + " " + *(node->children.at(i)->lexinfo)
+                    expression += regName + " = " + value1 + " " +
+                    *(node->children.at(i)->lexinfo)
                     + " " + value2 + "\n";
-                    if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+                    if((output.at(output.length()-3) != ' ') ||
+                     (output.at(output.length()-1) == '\n'))
                         output += print_leading_spaces(10);
                     output += expression;
                     // output += regName + "\n";
@@ -229,7 +240,8 @@ void handle_instruction(astree* node){
                 call += things[i] + " ";
               }
             //   printf("%d\n",s.size());
-              if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+              if((output.at(output.length()-3) != ' ') ||
+              (output.at(output.length()-1) == '\n'))
                   output += print_leading_spaces(10);
               output += call + "\n";
               break;
@@ -255,7 +267,8 @@ void produce_equals_output(astree* node){
              string temp = *(node->children.at(0)->children.at(0)->lexinfo);
              produce_expression_output(node->children.at(0)->children.at(1));
              //pop first child off the stack to get returned val
-             if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+             if((output.at(output.length()-3) != ' ') ||
+             (output.at(output.length()-1) == '\n'))
                   output += print_leading_spaces(10);
              output += temp + "[" + s.top() + " * :" + add_signals() + "] = ";
              s.pop();
@@ -267,10 +280,11 @@ void produce_equals_output(astree* node){
              string str = *(node->children.at(0)->children.at(0)->lexinfo);
              string val = *(node->children.at(0)->children.at(1)->lexinfo);
              //handle another look up for the struct name here
-             if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+             if((output.at(output.length()-3) != ' ') ||
+             (output.at(output.length()-1) == '\n'))
                   output+= print_leading_spaces(10);
-             string stackName = SymbolTable::getGlobalTable()->getStructName(str);
-             output += str + "->" + stackName + "." + val;
+             string sname = SymbolTable::getGlobalTable()->getStructName(str);
+             output += str + "->" + sname + "." + val;
 
              output += " = " + s.top();
              s.pop();
@@ -278,7 +292,8 @@ void produce_equals_output(astree* node){
              break;
          }
          default:{
-             if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+             if((output.at(output.length()-3) != ' ') ||
+             (output.at(output.length()-1) == '\n'))
                   output += print_leading_spaces(10);
              string temp = *(node->children.at(0)->lexinfo);
              output += temp + " = " + s.top() + '\n';
@@ -303,7 +318,8 @@ void produce_while_output(astree* node,int reg_val){
     s.pop();
 
     //now insert the conditional line
-    if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+    if((output.at(output.length()-3) != ' ') ||
+    (output.at(output.length()-1) == '\n'))
          output += print_leading_spaces(10);
     output += "goto .od" + to_string(reg_val) + " if " + expression + "\n";
     output += ".do" + to_string(reg_val) + ": ";
@@ -368,7 +384,8 @@ void produce_if_output(astree* node,int reg_val){
 
     // second child will be block
     if(node->children.size() == 3){//there is an else statement
-      if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+      if((output.at(output.length()-3) != ' ') ||
+      (output.at(output.length()-1) == '\n'))
          output += print_leading_spaces(10);
       output += "goto .el" + to_string(reg_val) + " if ";
       output += expression;
@@ -389,7 +406,8 @@ void produce_if_output(astree* node,int reg_val){
               break;
           }
       }
-      if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+      if((output.at(output.length()-3) != ' ') ||
+      (output.at(output.length()-1) == '\n'))
          output += print_leading_spaces(10);
       output += "goto .fi" + to_string(reg_val) + "\n";
       //now for the else statement
@@ -412,7 +430,8 @@ void produce_if_output(astree* node,int reg_val){
       output += ".fi" + to_string(reg_val) + ":";
 
     }else{//no else
-      if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+      if((output.at(output.length()-3) != ' ') ||
+      (output.at(output.length()-1) == '\n'))
             output += print_leading_spaces(10);
       output += "goto .fi" + to_string(reg_val) + " if ";
       output += expression;
@@ -434,7 +453,8 @@ void produce_if_output(astree* node,int reg_val){
               break;
           }
       }
-      if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+      if((output.at(output.length()-3) != ' ') ||
+      (output.at(output.length()-1) == '\n'))
             output += print_leading_spaces(10);
       output += "goto .fi" + to_string(reg_val) + "\n";
       output += ".fi" + to_string(reg_val) + ":";
@@ -451,10 +471,13 @@ void handle_vars(astree* node){
         produce_expression_output(node->children.at(2));
         //the final value is left on the stack here so pop it off the stack
         if(s.size() == 2){
-           if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+           if((output.at(output.length()-3) != ' ') ||
+           (output.at(output.length()-1) == '\n'))
                output += print_leading_spaces(10);
-           if(globalStrings.count(string(*(node->children.at(1)->lexinfo))) != 0)
-               output += globalStrings[string(*(node->children.at(1)->lexinfo))];
+           if(globalStrings.count(string
+             (*(node->children.at(1)->lexinfo))) != 0)
+               output += globalStrings[string
+               (*(node->children.at(1)->lexinfo))];
             else
                output += *(node->children.at(1)->lexinfo);
             output += " = ";
@@ -467,10 +490,13 @@ void handle_vars(astree* node){
             s.pop();
             output += top + "\n";
         }else{
-           if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+           if((output.at(output.length()-3) != ' ') ||
+            (output.at(output.length()-1) == '\n'))
                output += print_leading_spaces(10);
-           if(globalStrings.count(string(*(node->children.at(1)->lexinfo))) != 0)
-               output += globalStrings[string(*(node->children.at(1)->lexinfo))];
+           if(globalStrings.count(string(
+             *(node->children.at(1)->lexinfo))) != 0)
+               output += globalStrings[string(
+                  *(node->children.at(1)->lexinfo))];
            else
                output += *(node->children.at(1)->lexinfo);
             output += " = ";
@@ -686,16 +712,19 @@ void produce_expression_output(astree* node){
          case TOK_NE:
          case TOK_GT:
          case TOK_LT:{
-             //this should be only occuring when there are two elements on the stack
+             //this should be only occuring when there are two elements on
+             // the stack
              string val2 = s.top();
              s.pop();
              string val1 = s.top();
              s.pop();
              string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
              f_reg_c++;
-             if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+             if((output.at(output.length()-3) != ' ') ||
+             (output.at(output.length()-1) == '\n'))
                 output += print_leading_spaces(10);
-             output += regName + " = " + val1 + " " + *(node->lexinfo) + " " + val2 + "\n";
+             output += regName + " = " + val1 + " " +
+             *(node->lexinfo) + " " + val2 + "\n";
              s.push(regName);
              break;
          }
@@ -714,10 +743,13 @@ void produce_expression_output(astree* node){
              s.pop();
              //two values here
              string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-            //  printf("%s = %s %s %s\n",regName.c_str(),val1.c_str(),node->lexinfo->c_str(),val2.c_str());
-            if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+            //  printf("%s = %s %s %s\n",regName.c_str(),val1.c_str(),node->
+            // lexinfo->c_str(),val2.c_str());
+            if((output.at(output.length()-3) != ' ') ||
+            (output.at(output.length()-1) == '\n'))
                 output += print_leading_spaces(10);
-             output += regName + " = " + val1.c_str() + " "  + node->lexinfo->c_str() + " " + val2.c_str() + "\n";
+             output += regName + " = " + val1.c_str() + " "  +
+             node->lexinfo->c_str() + " " + val2.c_str() + "\n";
              f_reg_c++;
             //  printf("%s\n",regName.c_str());
              s.push(regName);
@@ -729,10 +761,13 @@ void produce_expression_output(astree* node){
              string val1 = s.top().c_str();
              s.pop();
              string regName = "$t" + to_string(f_reg_c) + ":" + add_signals();
-         //  printf("%s = %s %s \n",regName.c_str(),node->lexinfo->c_str(),val1.c_str());
-             if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+         //  printf("%s = %s %s \n",regName.c_str(),node->lexinfo->c_str(),
+         //val1.c_str());
+             if((output.at(output.length()-3) != ' ') ||
+             (output.at(output.length()-1) == '\n'))
                output += print_leading_spaces(10);
-             output = output + regName.c_str() + " = " + node->lexinfo->c_str() + " " + val1.c_str() + "\n";
+             output = output + regName.c_str() + " = " +
+             node->lexinfo->c_str() + " " + val1.c_str() + "\n";
              s.push(regName);
              f_reg_c++;
 
@@ -746,6 +781,20 @@ void produce_expression_output(astree* node){
                 set_p = 1;
             }else{
                 value = *(node->lexinfo);
+                if(SymbolTable::getGlobalTable()->
+                getAttributes(value).test(size_t(attr::TYPEID)))
+                  set_p = 1;
+                else if(SymbolTable::getGlobalTable()->
+                getAttributes(value).test(size_t(attr::STRING)))
+                    set_p = 1;
+                else if(SymbolTable::getGlobalTable()->
+                getAttributes(value).test(size_t(attr::ARRAY)))
+                    set_p = 1;
+                else if(SymbolTable::getGlobalTable()->
+                getAttributes(value).test(size_t(attr::STRUCT)))
+                    set_p = 1;
+                else
+                    set_i = 1;
             }
             //  printf("%s\n",value.c_str());
              s.push(value);
@@ -776,7 +825,8 @@ void produce_expression_output(astree* node){
              break;
          }
          case TOK_ARROW:{
-            //  attrib_bitset a = SymbolTable::getGlobalTable()->getAttributes("a");
+            //  attrib_bitset a = SymbolTable::getGlobalTable()->
+            // getAttributes("a");
             //  printf("%s\n",a.c_str());
              vector <string> things;
              //always two children I would assume
@@ -788,10 +838,11 @@ void produce_expression_output(astree* node){
              string regName = "$t" + to_string(f_reg_c) + ":" +add_signals();
              f_reg_c++;
              string express = regName + " = " + things[1] + "->";
-             string stackName = SymbolTable::getGlobalTable()->getStructName(things[1]);
+             string k = SymbolTable::getGlobalTable()->getStructName(things[1]);
              //insert the name of the look up here
-             express += stackName + "." + things[0] + "\n";
-             if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+             express += k + "." + things[0] + "\n";
+             if((output.at(output.length()-3) != ' ') ||
+             (output.at(output.length()-1) == '\n'))
                   output += print_leading_spaces(10);
              output += express;
 
@@ -815,7 +866,6 @@ void produce_expression_output(astree* node){
                     // }
                     string top = s.top();
                     s.pop();
-                    // string val =  *(node->children.at(0)->children.at(0)->lexinfo);
                     express += top + " * sizeof ";
                     switch(node->children.at(0)->children.at(0)->symbol){
                         case TOK_INT:{
@@ -861,7 +911,8 @@ void produce_expression_output(astree* node){
                 // printf("%s\n",s.top().c_str());
                 s.pop();
              }
-             if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+             if((output.at(output.length()-3) != ' ') ||
+             (output.at(output.length()-1) == '\n'))
                   output += print_leading_spaces(10);
              output += expression + "\n";
              s.push(regName);
@@ -891,7 +942,8 @@ void produce_expression_output(astree* node){
             string call = "call ";
             call += *(node->children.at(0)->lexinfo);
             // string paramsOnStack = "";
-            if((output.at(output.length()-3) != ' ') || (output.at(output.length()-1) == '\n'))
+            if((output.at(output.length()-3) != ' ') ||
+            (output.at(output.length()-1) == '\n'))
                 output += print_leading_spaces(10);
             output += regName + " = " + call + " ";
             for(int i = things.size() - 1;i >= 0;i--){
@@ -909,5 +961,6 @@ void produce_expression_output(astree* node){
 
     //if two children -> binop
     //if 1 child -> must be unop
-    //if 0 child -> either operand or selection -> must start with specific [ or ->
+    //if 0 child -> either operand or selection -> must start with specific
+    // [ or ->
 }

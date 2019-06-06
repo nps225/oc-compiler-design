@@ -2,7 +2,7 @@
 void produce_function_output(astree* node);
 void produce_struct_output(astree* child);
 void produce_type_id_output(astree* node);
-void emit_the_tree(astree* node);
+void emit_the_tree(astree* node, FILE* destination);
 void produce_struct_block_output(astree* node);
 void produce_type_size_output(astree* node);
 void produce_label(astree* node);

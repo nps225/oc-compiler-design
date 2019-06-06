@@ -43,7 +43,8 @@ class SymbolTable {
     unordered_map<string,SymbolTable*>* getSubtables();
     void setSubtable(string name, SymbolTable* tbl);
     attr_bitset getAttributes(string name);
-    symbol* newSymbol(attr_bitset attributes, location lloc, vector<symbol*>* parameters, string tid = "");
+    symbol* newSymbol(attr_bitset attributes, location lloc,
+      vector<symbol*>* parameters, string tid = "");
     void insertIntoTable(string name, symbol* sym);
     string dumpLVHelper(string name);
     string dumpLocalVariables();
@@ -61,6 +62,7 @@ void traverse_expressions(astree* node,SymbolTable* table);
 void alloc_helper(astree* node);
 void HandleStructs(astree* node, SymbolTable* table);
 string attrToString(symbol* sym);
+bool checkAttributes(attr_bitset attr);
 
 
 
