@@ -2,7 +2,7 @@
 /*
  *  *  oc-compiler oclib.cpp
  *   *  CMPS 104A Assignment 2: Scanner
- *    *  Author:
+ *    *  Author: 
  *     *  Nikhil Punathil <npunathi@ucsc.edu> [SID:1584204]
  *      *  Nikhil Sheth <npsheth@ucsc.edu> [SID:1584204]
  *      Date: 2019.04.29
@@ -46,4 +46,5 @@ string getln (void) {
    char buffer[0x1000];
    string result = fgets (buffer, sizeof buffer, stdin);
    return result == nullptr ? nullptr : strdup (result);
-}
+} 
+

@@ -50,6 +50,7 @@ class SymbolTable {
     void addFields(symbol* dest, symbol_table* fields);
     void addFunc(string name, SymbolTable* table_);
     void dump (FILE* destination, int depth);
+    string getStructName (string name);
 };
 
 void ConstructTable(astree* root);

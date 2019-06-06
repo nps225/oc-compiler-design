@@ -11,7 +11,7 @@ string b = "hello";
 
 //ptr<struct a> temp;
 
-int test(string b, array<int> x, ptr<struct a> boobs){
+int test(string b, array<ptr<struct a>> x, ptr<struct a> boobs){
 	int a;
 	string lmao;
 	lmao = b;

@@ -26,17 +26,11 @@ SymbolTable* SymbolTable::globalTable = new SymbolTable();
  *  Begin member function definition for SymbolTable
  */
 
- void PrintSTMap(symbol_table t){
-    for(auto const &pair: t){
-        std::cout << "{" << pair.first << "}\n";
-    }
- }
-
- void PrintSubMap(unordered_map<string,SymbolTable*> t){
-    for(auto const &pair: t){
-        std::cout << "{" << pair.first << "}\n";
-    }
- }
+string SymbolTable::getStructName (string name){
+      if(table.count(name) != 0)
+         return table[name]->type_id;
+      return "";
+}
 
 /*
  *  Constructor for SymbolTable
@@ -138,7 +132,7 @@ string SymbolTable::dumpLocalVariables(){
          if(it->second->attributes.test(size_t(attr::INT)))
             ret += "int ";
          if(it->second->attributes.test(size_t(attr::STRING)))
-            ret += "string ";
+            ret += "ptr ";
          if(it->second->attributes.test(size_t(attr::TYPEID)))
             ret += "ptr ";
          ret += it->first;

@@ -7,10 +7,10 @@ blah (3.25.1) {0} struct blah
 test (3.14.1) {0} int function 
     lmao (3.16.2) {1} string variable local lval  1
     kek (3.18.2) {1} ptr <struct lol> variable local lval  2
-    boobs (3.14.34) {1} ptr <struct a> variable param lval  2
+    boobs (3.14.44) {1} ptr <struct a> variable param lval  2
     b (3.14.10) {1} string variable param lval  0
     a (3.15.2) {1} int variable local lval  0
-    x (3.14.20) {1} int array variable param lval  1
+    x (3.14.20) {1} array variable param lval  1
 a (3.1.1) {0} struct a
     link (3.4.4) ptr <struct a> field  2
     a (3.2.4) int field  0

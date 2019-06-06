@@ -34,13 +34,14 @@
   3    14.017    294    TOK_IDENT       b
   3    14.020    261    TYPE_ID         
   3    14.020    280    TOK_ARRAY       array
-  3    14.026    288    TOK_INT         int
-  3    14.031    294    TOK_IDENT       x
-  3    14.034    261    TYPE_ID         
-  3    14.034    283    TOK_PTR         ptr
-  3    14.045    294    TOK_IDENT       a
-  3    14.048    294    TOK_IDENT       boobs
-  3    14.054    265    BLOCK           {
+  3    14.026    283    TOK_PTR         ptr
+  3    14.037    294    TOK_IDENT       a
+  3    14.041    294    TOK_IDENT       x
+  3    14.044    261    TYPE_ID         
+  3    14.044    283    TOK_PTR         ptr
+  3    14.055    294    TOK_IDENT       a
+  3    14.058    294    TOK_IDENT       boobs
+  3    14.064    265    BLOCK           {
   3    15.002    261    TYPE_ID         
   3    15.002    288    TOK_INT         int
   3    15.006    294    TOK_IDENT       a
