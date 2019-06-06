@@ -30,6 +30,7 @@ int set_p = 0;
 int set_i = 0;
 int func_def = 0;
 int compare_expression = 0;
+string ptrfix = "";
 stack<string> s;
 
 static unordered_map <string, string> globalStrings;
@@ -305,14 +306,16 @@ void produce_equals_output(astree* node){
          case TOK_ARROW:{
              string str = *(node->children.at(0)->children.at(0)->lexinfo);
              string val = *(node->children.at(0)->children.at(1)->lexinfo);
+             if(node->children.size()>1)
+                  ptrfix = *(node->children.at(1)->lexinfo);
              //handle another look up for the struct name here
              if((output.at(output.length()-3) != ' ') ||
              (output.at(output.length()-1) == '\n'))
                   output+= print_leading_spaces(10);
              string sname = SymbolTable::getGlobalTable()->getStructName(str);
-             output += str + "->" + sname + "." + val;
-
-             output += " = " + s.top();
+             if(sname.compare("") == 0)
+                  sname = SymbolTable::getGlobalTable()->getStructName(ptrfix);
+             output += sname + " = " + s.top();
              s.pop();
              output += '\n';
              break;
@@ -865,6 +868,8 @@ void produce_expression_output(astree* node){
              f_reg_c++;
              string express = regName + " = " + things[1] + "->";
              string k = SymbolTable::getGlobalTable()->getStructName(things[1]);
+             if(k.compare("") == 0)
+                  k = SymbolTable::getGlobalTable()->getStructName(ptrfix);
              //insert the name of the look up here
              express += k + "." + things[0] + "\n";
              if((output.at(output.length()-3) != ' ') ||

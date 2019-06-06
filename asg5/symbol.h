@@ -44,7 +44,7 @@ class SymbolTable {
     void setSubtable(string name, SymbolTable* tbl);
     attr_bitset getAttributes(string name);
     symbol* newSymbol(attr_bitset attributes, location lloc,
-      vector<symbol*>* parameters, string tid = "");
+    vector<symbol*>* parameters, string tid = "");
     void insertIntoTable(string name, symbol* sym);
     string dumpLVHelper(string name);
     string dumpLocalVariables();
