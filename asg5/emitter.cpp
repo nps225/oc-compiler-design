@@ -32,7 +32,8 @@ int func_def = 0;
 int compare_expression = 0;
 string ptrfix = "";
 stack<string> s;
-
+string sConst = "";
+int s_counter = 0;
 static unordered_map <string, string> globalStrings;
 
 void emit_the_tree(astree* node, FILE* destination){
@@ -51,7 +52,7 @@ void emit_the_tree(astree* node, FILE* destination){
        }
 
     }
-
+    fprintf(destination,"%s\n",sConst.c_str());
     fprintf(destination, "%s\n",output.c_str());
     // for(int i = 0; i < output.length();i++){
     //     printf("hi\n");
@@ -863,7 +864,14 @@ void produce_expression_output(astree* node){
          {
              //push int onto stack
              set_p = 1;
-             string value = *(node->lexinfo);
+             //first need to create a string that will save the data
+             //
+             string sRegName = ".s" + to_string(s_counter);
+             s_counter++;
+             string express = sRegName + ":" + print_leading_spaces(10);
+             express += *(node->lexinfo) + "\n";
+             sConst += express;
+             string value = sRegName;
             //  printf("%s\n",value.c_str());
              s.push(value);
              break;
@@ -963,16 +971,21 @@ void produce_expression_output(astree* node){
             break;
          }
          case TOK_INDEX:{
+             
              vector <string> things;
+             string value = *(node->children.at(0)->lexinfo);
+             string fix = value + "[" + s.top() + " * :" +
+             add_signals() +"]";
+             reset_signals();
+             set_p = 1;
              //now lets create out string
              string regName = "$t" + to_string(f_reg_c)  + ":" +
              add_signals();
              f_reg_c++;
              string expression = regName + " = ";
-             string value = *(node->children.at(0)->lexinfo);
+             
 
-             expression += value + "[" + s.top() + " * :" +
-             add_signals() +"]";
+             expression += fix;
               for(int i = node->children.size() - 1; i >= 0;i--){
                 // things.push_back(s.top());
                 // printf("%s\n",s.top().c_str());
