@@ -173,32 +173,32 @@ void handle_instruction(astree* node){
                   (output.at(output.length()-1) == '\n'))
                     output += print_leading_spaces(10);
                   produce_expression_output(node->children.at(0));
-                  output += print_leading_spaces(10);
+                  
                   output += "return " + s.top() +"\n";
                   s.pop();
               }else{
-                  //run eval on the child
-                  produce_expression_output(node->children.at(0));
-                  if((output.at(output.length()-3) != ' ') ||
-                  (output.at(output.length()-1) == '\n'))
-                     output += print_leading_spaces(10);
-                  if(s.size() == 1){
-                     if((output.at(output.length()-3) != ' ') ||
-                      (output.at(output.length()-1) == '\n'))
-                        output += print_leading_spaces(10);
-                    output += "return " + s.top() + "\n";
-                    s.pop();
-                  }else{
-                    string val2 = s.top();
-                    s.pop();
-                    string val1 = s.top();
-                    s.pop();
-                    if((output.at(output.length()-3) != ' ') ||
-                    (output.at(output.length()-1) == '\n'))
-                        output += "return " + val1 + " ";
-                    output += *(node->children.at(0)->lexinfo) + " ";
-                    output += val2 + "\n";
-                  }
+                //   //run eval on the child
+                //   produce_expression_output(node->children.at(0));
+                //   if((output.at(output.length()-3) != ' ') ||
+                //   (output.at(output.length()-1) == '\n'))
+                //      output += print_leading_spaces(10);
+                //   if(s.size() == 1){
+                //      if((output.at(output.length()-3) != ' ') ||
+                //       (output.at(output.length()-1) == '\n'))
+                //         output += print_leading_spaces(10);
+                //     output += "return " + s.top() + "\n";
+                //     s.pop();
+                //   }else{
+                //     string val2 = s.top();
+                //     s.pop();
+                //     string val1 = s.top();
+                //     s.pop();
+                //     if((output.at(output.length()-3) != ' ') ||
+                //     (output.at(output.length()-1) == '\n'))
+                //         output += "return " + val1 + " ";
+                //     output += *(node->children.at(0)->lexinfo) + " ";
+                //     output += val2 + "\n";
+                //   }
 
               }
               break;
