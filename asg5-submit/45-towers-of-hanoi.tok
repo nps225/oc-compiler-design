@@ -1,0 +1,208 @@
+  0     0.000    258    ROOT            
+  5    22.001    262    FUNCTION        
+  5    22.001    261    TYPE_ID         
+  5    22.001    286    TOK_VOID        void
+  5    22.006    294    TOK_IDENT       fail
+  5    22.011    263    TOK_PARAM       (
+  5    22.012    261    TYPE_ID         
+  5    22.012    290    TOK_STRING      string
+  5    22.019    294    TOK_IDENT       expr
+  5    22.025    261    TYPE_ID         
+  5    22.025    290    TOK_STRING      string
+  5    22.032    294    TOK_IDENT       file
+  5    22.038    261    TYPE_ID         
+  5    22.038    288    TOK_INT         int
+  5    22.042    294    TOK_IDENT       line
+  5    24.001    262    FUNCTION        
+  5    24.001    261    TYPE_ID         
+  5    24.001    286    TOK_VOID        void
+  5    24.006    294    TOK_IDENT       putchr
+  5    24.013    263    TOK_PARAM       (
+  5    24.014    261    TYPE_ID         
+  5    24.014    288    TOK_INT         int
+  5    24.018    294    TOK_IDENT       chr
+  5    25.001    262    FUNCTION        
+  5    25.001    261    TYPE_ID         
+  5    25.001    286    TOK_VOID        void
+  5    25.006    294    TOK_IDENT       putint
+  5    25.013    263    TOK_PARAM       (
+  5    25.014    261    TYPE_ID         
+  5    25.014    288    TOK_INT         int
+  5    25.018    294    TOK_IDENT       num
+  5    26.001    262    FUNCTION        
+  5    26.001    261    TYPE_ID         
+  5    26.001    286    TOK_VOID        void
+  5    26.006    294    TOK_IDENT       putstr
+  5    26.013    263    TOK_PARAM       (
+  5    26.014    261    TYPE_ID         
+  5    26.014    290    TOK_STRING      string
+  5    26.021    294    TOK_IDENT       str
+  5    28.001    262    FUNCTION        
+  5    28.001    261    TYPE_ID         
+  5    28.001    288    TOK_INT         int
+  5    28.005    294    TOK_IDENT       getchr
+  5    28.011    263    TOK_PARAM       (
+  5    29.001    262    FUNCTION        
+  5    29.001    261    TYPE_ID         
+  5    29.001    290    TOK_STRING      string
+  5    29.008    294    TOK_IDENT       getstr
+  5    29.014    263    TOK_PARAM       (
+  5    30.001    262    FUNCTION        
+  5    30.001    261    TYPE_ID         
+  5    30.001    290    TOK_STRING      string
+  5    30.008    294    TOK_IDENT       getln
+  5    30.013    263    TOK_PARAM       (
+  6     5.001    262    FUNCTION        
+  6     5.001    261    TYPE_ID         
+  6     5.001    286    TOK_VOID        void
+  6     5.006    294    TOK_IDENT       move
+  6     5.011    263    TOK_PARAM       (
+  6     5.012    261    TYPE_ID         
+  6     5.012    290    TOK_STRING      string
+  6     5.019    294    TOK_IDENT       src
+  6     5.024    261    TYPE_ID         
+  6     5.024    290    TOK_STRING      string
+  6     5.031    294    TOK_IDENT       dst
+  6     5.036    265    BLOCK           {
+  6     6.011    268    CALL            (
+  6     6.004    294    TOK_IDENT       putstr
+  6     6.012    292    TOK_STRINGCON   "Move a disk from the "
+  6     7.011    268    CALL            (
+  6     7.004    294    TOK_IDENT       putstr
+  6     7.012    294    TOK_IDENT       src
+  6     8.011    268    CALL            (
+  6     8.004    294    TOK_IDENT       putstr
+  6     8.012    292    TOK_STRINGCON   " to the "
+  6     9.011    268    CALL            (
+  6     9.004    294    TOK_IDENT       putstr
+  6     9.012    294    TOK_IDENT       dst
+  6    10.011    268    CALL            (
+  6    10.004    294    TOK_IDENT       putstr
+  6    10.012    292    TOK_STRINGCON   ".\n"
+  6    13.001    262    FUNCTION        
+  6    13.001    261    TYPE_ID         
+  6    13.001    286    TOK_VOID        void
+  6    13.006    294    TOK_IDENT       towers
+  6    13.013    263    TOK_PARAM       (
+  6    13.014    261    TYPE_ID         
+  6    13.014    288    TOK_INT         int
+  6    13.018    294    TOK_IDENT       ndisks
+  6    13.026    261    TYPE_ID         
+  6    13.026    290    TOK_STRING      string
+  6    13.033    294    TOK_IDENT       src
+  6    13.038    261    TYPE_ID         
+  6    13.038    290    TOK_STRING      string
+  6    13.045    294    TOK_IDENT       tmp
+  6    13.050    261    TYPE_ID         
+  6    13.050    290    TOK_STRING      string
+  6    13.057    294    TOK_IDENT       dst
+  6    13.062    265    BLOCK           {
+  6    14.004    277    TOK_IF          if
+  6    14.015    276    TOK_LT          <
+  6    14.008    294    TOK_IDENT       ndisks
+  6    14.017    293    TOK_INTCON      1
+  6    14.020    287    TOK_RETURN      return
+  6    15.011    268    CALL            (
+  6    15.004    294    TOK_IDENT       towers
+  6    15.019     45    '-'             -
+  6    15.012    294    TOK_IDENT       ndisks
+  6    15.021    293    TOK_INTCON      1
+  6    15.024    294    TOK_IDENT       src
+  6    15.029    294    TOK_IDENT       dst
+  6    15.034    294    TOK_IDENT       tmp
+  6    16.009    268    CALL            (
+  6    16.004    294    TOK_IDENT       move
+  6    16.010    294    TOK_IDENT       src
+  6    16.015    294    TOK_IDENT       dst
+  6    17.011    268    CALL            (
+  6    17.004    294    TOK_IDENT       towers
+  6    17.019     45    '-'             -
+  6    17.012    294    TOK_IDENT       ndisks
+  6    17.021    293    TOK_INTCON      1
+  6    17.024    294    TOK_IDENT       tmp
+  6    17.029    294    TOK_IDENT       src
+  6    17.034    294    TOK_IDENT       dst
+  6    20.001    262    FUNCTION        
+  6    20.001    261    TYPE_ID         
+  6    20.001    288    TOK_INT         int
+  6    20.005    294    TOK_IDENT       main
+  6    20.010    263    TOK_PARAM       (
+  6    20.011    261    TYPE_ID         
+  6    20.011    288    TOK_INT         int
+  6    20.015    294    TOK_IDENT       argc
+  6    20.021    261    TYPE_ID         
+  6    20.021    280    TOK_ARRAY       array
+  6    20.027    290    TOK_STRING      string
+  6    20.035    294    TOK_IDENT       argv
+  6    20.041    265    BLOCK           {
+  6    21.004    265    BLOCK           {
+  6    21.005    277    TOK_IF          if
+  6    21.009    296    NEG             not
+  6    21.013    263    TOK_PARAM       (
+  6    21.019    273    TOK_EQ          ==
+  6    21.014    294    TOK_IDENT       argc
+  6    21.022    293    TOK_INTCON      2
+  6    21.031    268    CALL            (
+  6    21.026    294    TOK_IDENT       fail
+  6    21.032    292    TOK_STRINGCON   "argc == 2"
+  6    21.045    292    TOK_STRINGCON   "45-towers-of-hanoi.oc"
+  6    21.070    293    TOK_INTCON      21
+  6    21.075    265    BLOCK           {
+  6    22.004    261    TYPE_ID         
+  6    22.004    288    TOK_INT         int
+  6    22.008    294    TOK_IDENT       count
+  6    22.027     45    '-'             -
+  6    22.023    267    TOK_INDEX       [
+  6    22.020    267    TOK_INDEX       [
+  6    22.016    294    TOK_IDENT       argv
+  6    22.021    293    TOK_INTCON      1
+  6    22.024    293    TOK_INTCON      0
+  6    22.029    291    TOK_CHARCON     '0'
+  6    23.004    265    BLOCK           {
+  6    23.005    277    TOK_IF          if
+  6    23.009    296    NEG             not
+  6    23.013    263    TOK_PARAM       (
+  6    23.020    275    TOK_GT          >
+  6    23.014    294    TOK_IDENT       count
+  6    23.022    293    TOK_INTCON      0
+  6    23.031    268    CALL            (
+  6    23.026    294    TOK_IDENT       fail
+  6    23.032    292    TOK_STRINGCON   "count > 0"
+  6    23.045    292    TOK_STRINGCON   "45-towers-of-hanoi.oc"
+  6    23.070    293    TOK_INTCON      23
+  6    23.075    265    BLOCK           {
+  6    24.004    265    BLOCK           {
+  6    24.005    277    TOK_IF          if
+  6    24.009    296    NEG             not
+  6    24.013    263    TOK_PARAM       (
+  6    24.020    276    TOK_LT          <
+  6    24.014    294    TOK_IDENT       count
+  6    24.022    293    TOK_INTCON      9
+  6    24.031    268    CALL            (
+  6    24.026    294    TOK_IDENT       fail
+  6    24.032    292    TOK_STRINGCON   "count < 9"
+  6    24.045    292    TOK_STRINGCON   "45-towers-of-hanoi.oc"
+  6    24.070    293    TOK_INTCON      24
+  6    24.075    265    BLOCK           {
+  6    25.011    268    CALL            (
+  6    25.004    294    TOK_IDENT       putstr
+  6    25.016    267    TOK_INDEX       [
+  6    25.012    294    TOK_IDENT       argv
+  6    25.017    293    TOK_INTCON      0
+  6    26.011    268    CALL            (
+  6    26.004    294    TOK_IDENT       putstr
+  6    26.012    292    TOK_STRINGCON   ": "
+  6    27.011    268    CALL            (
+  6    27.004    294    TOK_IDENT       putint
+  6    27.012    294    TOK_IDENT       count
+  6    28.011    268    CALL            (
+  6    28.004    294    TOK_IDENT       putstr
+  6    28.012    292    TOK_STRINGCON   " disks\n"
+  6    29.011    268    CALL            (
+  6    29.004    294    TOK_IDENT       towers
+  6    29.012    294    TOK_IDENT       count
+  6    29.019    292    TOK_STRINGCON   "source"
+  6    29.029    292    TOK_STRINGCON   "temporary"
+  6    29.042    292    TOK_STRINGCON   "distination"
+  6    30.004    287    TOK_RETURN      return
+  6    30.011    293    TOK_INTCON      0

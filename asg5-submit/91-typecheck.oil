@@ -1,0 +1,6 @@
+foo:      .function 
+          .end
+foo:      .function 
+          .param int a
+          .end
+

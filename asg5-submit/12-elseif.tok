@@ -1,0 +1,92 @@
+  0     0.000    258    ROOT            
+  5    22.001    262    FUNCTION        
+  5    22.001    261    TYPE_ID         
+  5    22.001    286    TOK_VOID        void
+  5    22.006    294    TOK_IDENT       fail
+  5    22.011    263    TOK_PARAM       (
+  5    22.012    261    TYPE_ID         
+  5    22.012    290    TOK_STRING      string
+  5    22.019    294    TOK_IDENT       expr
+  5    22.025    261    TYPE_ID         
+  5    22.025    290    TOK_STRING      string
+  5    22.032    294    TOK_IDENT       file
+  5    22.038    261    TYPE_ID         
+  5    22.038    288    TOK_INT         int
+  5    22.042    294    TOK_IDENT       line
+  5    24.001    262    FUNCTION        
+  5    24.001    261    TYPE_ID         
+  5    24.001    286    TOK_VOID        void
+  5    24.006    294    TOK_IDENT       putchr
+  5    24.013    263    TOK_PARAM       (
+  5    24.014    261    TYPE_ID         
+  5    24.014    288    TOK_INT         int
+  5    24.018    294    TOK_IDENT       chr
+  5    25.001    262    FUNCTION        
+  5    25.001    261    TYPE_ID         
+  5    25.001    286    TOK_VOID        void
+  5    25.006    294    TOK_IDENT       putint
+  5    25.013    263    TOK_PARAM       (
+  5    25.014    261    TYPE_ID         
+  5    25.014    288    TOK_INT         int
+  5    25.018    294    TOK_IDENT       num
+  5    26.001    262    FUNCTION        
+  5    26.001    261    TYPE_ID         
+  5    26.001    286    TOK_VOID        void
+  5    26.006    294    TOK_IDENT       putstr
+  5    26.013    263    TOK_PARAM       (
+  5    26.014    261    TYPE_ID         
+  5    26.014    290    TOK_STRING      string
+  5    26.021    294    TOK_IDENT       str
+  5    28.001    262    FUNCTION        
+  5    28.001    261    TYPE_ID         
+  5    28.001    288    TOK_INT         int
+  5    28.005    294    TOK_IDENT       getchr
+  5    28.011    263    TOK_PARAM       (
+  5    29.001    262    FUNCTION        
+  5    29.001    261    TYPE_ID         
+  5    29.001    290    TOK_STRING      string
+  5    29.008    294    TOK_IDENT       getstr
+  5    29.014    263    TOK_PARAM       (
+  5    30.001    262    FUNCTION        
+  5    30.001    261    TYPE_ID         
+  5    30.001    290    TOK_STRING      string
+  5    30.008    294    TOK_IDENT       getln
+  5    30.013    263    TOK_PARAM       (
+  6     5.001    262    FUNCTION        
+  6     5.001    261    TYPE_ID         
+  6     5.001    288    TOK_INT         int
+  6     5.005    294    TOK_IDENT       main
+  6     5.010    263    TOK_PARAM       (
+  6     5.011    261    TYPE_ID         
+  6     5.011    288    TOK_INT         int
+  6     5.015    294    TOK_IDENT       argc
+  6     5.021    265    BLOCK           {
+  6     6.004    277    TOK_IF          if
+  6     6.013    273    TOK_EQ          ==
+  6     6.008    294    TOK_IDENT       argc
+  6     6.016    293    TOK_INTCON      1
+  6     6.026    268    CALL            (
+  6     6.019    294    TOK_IDENT       putstr
+  6     6.027    292    TOK_STRINGCON   "one"
+  6     7.009    277    TOK_IF          if
+  6     7.018    273    TOK_EQ          ==
+  6     7.013    294    TOK_IDENT       argc
+  6     7.021    293    TOK_INTCON      2
+  6     7.031    268    CALL            (
+  6     7.024    294    TOK_IDENT       putstr
+  6     7.032    292    TOK_STRINGCON   "two"
+  6     8.009    277    TOK_IF          if
+  6     8.018    273    TOK_EQ          ==
+  6     8.013    294    TOK_IDENT       argc
+  6     8.021    293    TOK_INTCON      3
+  6     8.031    268    CALL            (
+  6     8.024    294    TOK_IDENT       putstr
+  6     8.032    292    TOK_STRINGCON   "three"
+  6     9.016    268    CALL            (
+  6     9.009    294    TOK_IDENT       putstr
+  6     9.017    292    TOK_STRINGCON   "many"
+  6    10.011    268    CALL            (
+  6    10.004    294    TOK_IDENT       putchr
+  6    10.012    291    TOK_CHARCON     '\n'
+  6    11.004    287    TOK_RETURN      return
+  6    11.011    293    TOK_INTCON      0

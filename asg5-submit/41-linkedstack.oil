@@ -1,0 +1,118 @@
+          .struct node
+          .field ptr data
+          .field ptr link
+          .end
+          .struct stack
+          .field ptr top
+          .end
+fail:     .function 
+          .param ptr expr
+          .param ptr file
+          .param int line
+          .end
+putchr:   .function 
+          .param int chr
+          .end
+putint:   .function 
+          .param int num
+          .end
+putstr:   .function 
+          .param ptr str
+          .end
+getchr:   .function int 
+          .end
+getstr:   .function ptr 
+          .end
+getln:    .function ptr 
+          .end
+empty:    .function int 
+          .param ptr stack
+.if0:     $t0:p = stack != nullptr
+          $t1:p = not $t0:p
+          goto .fi0 if not $t1:p
+.th0:     call fail("stack != nullptr","41-linkedstack.oc",15)
+          goto .fi0
+.fi0:
+          $t2:p = stack->stack.top
+          $t3:p = $t2:p == nullptr
+          $t4:p = stack->stack.top
+          $t5:p = $t4:p == nullptr
+return $t5:p
+          return
+          .end
+new_stack: .function ptr 
+          .local ptr stack
+          stack = malloc(sizeof struct stack) alloc $t3:p
+          stack = nullptr
+          return stack
+          return
+          .end
+push:     .function 
+          .param ptr stack
+          .param ptr str
+          .local ptr tmp
+          tmp = malloc(sizeof struct node) alloc stack
+.if1:     $t0:p = stack != nullptr
+          $t1:p = not $t0:p
+          goto .fi1 if not $t1:p
+.th1:     call fail("stack != nullptr","41-linkedstack.oc",27)
+          goto .fi1
+.fi1:
+          node = str
+          $t2:p = stack->stack.top
+          node = $t2:p
+          stack = tmp
+          return
+          .end
+pop:      .function ptr 
+          .param ptr stack
+          .local ptr tmp
+          $t0:p = stack->stack.top
+          $t1:p = $t0:p->node.data
+          tmp = $t1:p
+.if2:     $t2:p = stack != nullptr
+          $t3:p = not $t2:p
+          goto .fi2 if not $t3:p
+.th2:     call fail("stack != nullptr","41-linkedstack.oc",35)
+          goto .fi2
+.fi2:
+.if3:     $t4:i = call empty(stack)
+          $t5:i = not $t4:i
+          $t6:i = not $t5:i
+          goto .fi3 if not $t6:i
+.th3:     call fail("not empty (stack)","41-linkedstack.oc",36)
+          goto .fi3
+.fi3:
+          $t7:p = stack->stack.top
+          $t8:p = $t7:p->node.link
+          stack = $t8:p
+          return tmp
+          return
+          .end
+main:     .function int 
+          .param int argc
+          .param ptr argv
+          .local ptr stack
+          .local int argi
+          argi = 0 0 tmp
+          $t0:p = call new_stack
+          stack = $t0:p
+.wh0:     $t1:i = argi < argc
+          goto .od0 if not $t1:i
+.do0:     $t2:i = argv[argi * :i]
+          call push(stack,$t2:i)
+          $t3:i = argi + 1
+          argi = $t3:i
+          goto .wh0
+.od0:     
+.wh1:     $t4:i = call empty(stack)
+          $t5:i = not $t4:i
+          goto .od1 if not $t5:i
+.do1:     $t6:i = call pop(stack)
+          call putstr($t6:i)
+          call putchr('\n')
+          goto .wh1
+.od1:     return 0
+          return
+          .end
+

@@ -1,0 +1,114 @@
+          .struct stack
+          .field data
+          .field int size
+          .field int top
+          .end
+fail:     .function 
+          .param ptr expr
+          .param ptr file
+          .param int line
+          .end
+putchr:   .function 
+          .param int chr
+          .end
+putint:   .function 
+          .param int num
+          .end
+putstr:   .function 
+          .param ptr str
+          .end
+getchr:   .function int 
+          .end
+getstr:   .function ptr 
+          .end
+getln:    .function ptr 
+          .end
+new_stack: .function ptr 
+          .param int size
+          .local ptr stack
+          stack = malloc(sizeof struct stack)
+          stack = malloc(size * sizeof ptr)
+          stack = size
+          $t0:i = - 1
+          stack = $t0:i
+          return stack
+          return
+          .end
+push:     .function 
+          .param ptr stack
+          .param ptr str
+.if0:     $t0:p = stack->stack.top
+          $t1:i = stack->stack.size
+          $t2:i = $t1:i - 1
+          $t3:i = $t0:p < $t2:i
+          $t4:i = not $t3:i
+          goto .fi0 if not $t4:i
+.th0:     call fail("stack->top < stack->size - 1","40-arraystack.oc",22)
+          goto .fi0
+.fi0:
+          $t5:p = stack->stack.top
+          $t6:i = $t5:p + 1
+          stack = $t6:i
+          $t7:p = stack->stack.top
+          stack->stack.data[$t7:p * :p] = str
+          return
+          .end
+pop:      .function ptr 
+          .param ptr stack
+          .local ptr tmp
+          $t0:p = stack->stack.data
+          $t1:p = stack->stack.top
+          $t2:p = ->[$t1:p * :p]
+          tmp = $t2:p [ stack
+.if1:     $t3:p = stack->stack.top
+          $t4:i = - 1
+          $t5:i = $t3:p != $t4:i
+          $t6:i = not $t5:i
+          goto .fi1 if not $t6:i
+.th1:     call fail("stack->top != EMPTY","40-arraystack.oc",29)
+          goto .fi1
+.fi1:
+          $t7:p = stack->stack.top
+          $t8:i = $t7:p - 1
+          stack = $t8:i
+          return tmp
+          return
+          .end
+empty:    .function int 
+          .param ptr stack
+          $t0:p = stack->stack.top
+          $t1:i = - 1
+          $t2:i = $t0:p == $t1:i
+          $t3:i = stack->stack.top
+          $t4:i = - 1
+          $t5:i = $t3:i == $t4:i
+return $t5:i
+          return
+          .end
+main:     .function int 
+          .param int argc
+          .param ptr argv
+          .local int argi
+          .local ptr stack
+          $t0:i = call new_stack(100)
+          stack = $t0:i
+          argi = 0
+.wh0:     $t1:i = argi < argc
+          goto .od0 if not $t1:i
+.do0:     $t2:i = argv[argi * :i]
+          call push(stack,$t2:i)
+          $t3:i = argi + 1
+          argi = $t3:i
+          goto .wh0
+.od0:     
+.wh1:     $t4:i = call empty(stack)
+          $t5:i = not $t4:i
+          goto .od1 if not $t5:i
+.do1:     $t6:i = call pop(stack)
+          call putstr($t6:i)
+          call putchr('\n')
+          goto .wh1
+.od1:     return 0
+          return
+          .end
+

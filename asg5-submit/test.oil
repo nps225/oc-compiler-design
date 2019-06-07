@@ -1,0 +1,11 @@
+main:     .function int 
+          .local int b
+          .local int a
+          a = 5
+          b = 3
+          $t0:i = a == b
+          $t1:i = call hello($t0:i)
+          this = $t1:i
+          return
+          .end
+

@@ -1,0 +1,21 @@
+; 0.  1: # 1 "mackey.oc"; 0.  0: 
+; 0.  1: # 1 "<built-in>"
+; 1.  1: # 1 "<command-line>"
+; 2.  1: # 1 "mackey.oc"
+; 3.  1: struct node {
+; 3.  2:    int foo;
+; 3.  3:    ptr <struct node> link;
+; 3.  4: };
+; 3.  5: 
+; 3.  6: ptr <struct node> func (ptr <struct node> head, int length) {
+; 3.  7:    int a = 0;
+; 3.  8:    string b = "";
+; 3.  9:    ptr <struct node> c = alloc <struct node>();
+; 3. 10:    if (a < 3) {
+; 3. 11:       a=length;
+; 3. 12:       c=c->link;
+; 3. 13:    }else {
+; 3. 14:       if (0 == 0) a = 8;
+; 3. 15:       else b = "foo";
+; 3. 16:    }
+; 3. 17: }

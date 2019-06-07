@@ -1,0 +1,31 @@
+fail:     .function 
+          .param ptr expr
+          .param ptr file
+          .param int line
+          .end
+putchr:   .function 
+          .param int chr
+          .end
+putint:   .function 
+          .param int num
+          .end
+putstr:   .function 
+          .param ptr str
+          .end
+getchr:   .function int 
+          .end
+getstr:   .function ptr 
+          .end
+getln:    .function ptr 
+          .end
+main:     .function int 
+.if0:     $t0:p = "nullptr" == nullptr
+          $t1:p = not $t0:p
+          goto .fi0 if not $t1:p
+.th0:     call fail("\"nullptr\" == nullptr","07-assert.oc",6)
+          goto .fi0
+.fi0:
+          return 1
+          return
+          .end
+

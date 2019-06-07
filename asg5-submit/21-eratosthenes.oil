@@ -1,0 +1,69 @@
+fail:     .function 
+          .param ptr expr
+          .param ptr file
+          .param int line
+          .end
+putchr:   .function 
+          .param int chr
+          .end
+putint:   .function 
+          .param int num
+          .end
+putstr:   .function 
+          .param ptr str
+          .end
+getchr:   .function int 
+          .end
+getstr:   .function ptr 
+          .end
+getln:    .function ptr 
+          .end
+main:     .function int 
+          .local int sieve
+          .local int index
+          .local int prime
+          prime = 2
+          index = 2
+          sieve = malloc(100 * sizeof int)
+.wh0:     $t0:i = index < 100
+          goto .od0 if not $t0:i
+.do0:     sieve[index * :i] = 1
+          $t1:i = index + 1
+          index = $t1:i
+          goto .wh0
+.od0:     
+.wh1:     $t2:i = prime < 100
+          goto .od1 if not $t2:i
+.do1:     
+.if0:     $t3:i = sieve[prime * :i]
+          goto .fi0 if not $t3:i
+.th0:     $t4:i = prime * 2
+          index = $t4:i
+.wh2:     $t5:i = index < 100
+          goto .od2 if not $t5:i
+.do2:     sieve[index * :i] = 0
+          $t6:i = index + prime
+          index = $t6:i
+          goto .wh2
+.od2:     goto .fi0
+.fi0:
+          $t7:i = prime + 1
+          prime = $t7:i
+          goto .wh1
+.od1:     index = 2
+.wh3:     $t8:i = index < 100
+          goto .od3 if not $t8:i
+.do3:     
+.if1:     $t9:i = sieve[index * :i]
+          goto .fi1 if not $t9:i
+.th1:     call putint(index)
+          call putchr('\n')
+          goto .fi1
+.fi1:
+          $t10:i = index + 1
+          index = $t10:i
+          goto .wh3
+.od3:     return 0
+          return
+          .end
+

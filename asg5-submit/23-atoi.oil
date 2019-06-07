@@ -1,0 +1,112 @@
+fail:     .function 
+          .param ptr expr
+          .param ptr file
+          .param int line
+          .end
+putchr:   .function 
+          .param int chr
+          .end
+putint:   .function 
+          .param int num
+          .end
+putstr:   .function 
+          .param ptr str
+          .end
+getchr:   .function int 
+          .end
+getstr:   .function ptr 
+          .end
+getln:    .function ptr 
+          .end
+atoi:     .function int 
+          .param ptr str
+          .local int digit
+          .local int num
+          .local int neg
+          neg = 0
+          num = 0
+          digit = 0
+.if0:     $t0:p = str != nullptr
+          $t1:p = not $t0:p
+          goto .fi0 if not $t1:p
+.th0:     call fail("str != nullptr","23-atoi.oc",9)
+          goto .fi0
+.fi0:
+.if1:     $t2:i = str[0 * :i]
+          $t3:i = $t2:i != '\0'
+          goto .fi1 if not $t3:i
+.th1:     
+.if2:     $t4:i = str[0 * :i]
+          $t5:i = $t4:i == '-'
+          goto .fi2 if not $t5:i
+.th2:     $t6:i = digit + 1
+          digit = $t6:i
+          neg = 1
+          goto .fi2
+.fi2:
+          contin = 1
+.wh0:     goto .od0 if not contin
+.do0:     
+.if3:     $t7:i = str[digit * :i]
+          $t8:i = $t7:i == '\0'
+          goto .el3 if not $t8:i
+.th3: 
+          contin = 0
+          goto .fi3
+.el3:     $t9:i = str[digit * :i]
+          chr = $t9:i
+          $t10:i = digit + 1
+          digit = $t10:i
+.if4:     $t11:i = chr < '0'
+          goto .el4 if not $t11:i
+.th4: 
+          contin = 0
+          goto .fi4
+.el4:     
+.if5:     $t12:i = chr > '9'
+          goto .el5 if not $t12:i
+.th5: 
+          contin = 0
+          goto .fi5
+.el5:     $t13:i = num * 10
+          $t14:i = $t13:i + chr
+          $t15:i = $t14:i - '0'
+          num = $t15:i
+.fi5:
+.fi4:
+.fi3:
+          goto .wh0
+.od0:     
+.if6:     goto .fi6 if not neg
+.th6:     $t16:i = - num
+          num = $t16:i
+          goto .fi6
+.fi6:
+          goto .fi1
+.fi1:
+          return num
+          return
+          .end
+main:     .function int 
+          .param int argc
+          .param ptr argv
+          .local ptr arg
+          .local int argi
+          argi = 1 1 num
+          arg = nullptr
+.wh0:     $t0:i = argi < argc
+          goto .od0 if not $t0:i
+.do0:     $t1:i = argv[argi * :i]
+          arg = $t1:i
+          call putstr(arg)
+          call putstr(" = ")
+          $t2:i = call atoi(arg)
+          call putint($t2:i)
+          call putchr('\n')
+          $t3:i = argi + 1
+          argi = $t3:i
+          goto .wh0
+.od0:     return 0
+          return
+          .end
+

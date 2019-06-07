@@ -1,0 +1,93 @@
+fail:     .function 
+          .param ptr expr
+          .param ptr file
+          .param int line
+          .end
+putchr:   .function 
+          .param int chr
+          .end
+putint:   .function 
+          .param int num
+          .end
+putstr:   .function 
+          .param ptr str
+          .end
+getchr:   .function int 
+          .end
+getstr:   .function ptr 
+          .end
+getln:    .function ptr 
+          .end
+strlen:   .function int 
+          .param ptr str
+          .local int len
+          len = 0
+.wh0:     $t0:i = str[len * :i]
+          $t1:i = $t0:i != '\0'
+          goto .od0 if not $t1:i
+.do0:     $t2:i = len + 1
+          len = $t2:i
+          goto .wh0
+.od0:     return len
+          return
+          .end
+strcat:   .function 
+          .param ptr dest
+          .param ptr src
+          .local int srcix
+          .local int pos
+          $t0:i = call strlen(dest)
+          pos = $t0:i ( len
+          srcix = 0
+.wh0:     $t1:i = src[srcix * :i]
+          $t2:i = $t1:i != '\0'
+          goto .od0 if not $t2:i
+.do0:     $t3:i = src[srcix * :i]
+          dest[pos * :i] = $t3:i
+          $t4:i = pos + 1
+          pos = $t4:i
+          $t5:i = srcix + 1
+          srcix = $t5:i
+          goto .wh0
+.od0:     dest[pos * :i] = '\0'
+          return
+          .end
+main:     .function int 
+          .param int argc
+          .param ptr argv
+          .local ptr concat
+          .local int length
+          .local int argi
+          length = 0
+          argi = 1
+.wh0:     $t0:i = argi < argc
+          goto .od0 if not $t0:i
+.do0:     $t1:i = argv[argi * :i]
+          $t2:i = call strlen($t1:i)
+          $t3:i = length + $t2:i
+          $t4:i = $t3:i + 2
+          length = $t4:i
+          $t5:i = argi + 1
+          argi = $t5:i
+          goto .wh0
+.od0:     call putstr("concat length = ")
+          call putint(length)
+          call putchr('\n')
+          concat = malloc(length)
+          argi = 1
+          call putchr('[')
+.wh1:     $t6:i = argi < argc
+          goto .od1 if not $t6:i
+.do1:     call strcat(concat,"(")
+          $t7:i = argv[argi * :i]
+          call strcat(concat,$t7:i)
+          call strcat(concat,")")
+          $t8:i = argi + 1
+          argi = $t8:i
+          goto .wh1
+.od1:     call putstr(concat)
+          call putstr("]\n")
+          return 0
+          return
+          .end
+

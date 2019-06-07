@@ -1,0 +1,24 @@
+putstr (5.26.1) {0} void function 
+    str (5.26.14) {4} string variable param lval  0
+board (6.6.1) {0} int array variable lval 
+putchr (5.24.1) {0} void function 
+    chr (5.24.14) {2} int variable param lval  0
+main (6.42.1) {0} int function 
+putint (5.25.1) {0} void function 
+    num (5.25.14) {3} int variable param lval  0
+getstr (5.29.1) {0} string function 
+fail (5.22.1) {0} void function 
+    line (5.22.38) {1} int variable param lval  2
+    file (5.22.25) {1} string variable param lval  1
+    expr (5.22.12) {1} string variable param lval  0
+getln (5.30.1) {0} string function 
+getchr (5.28.1) {0} int function 
+is_safe (6.8.1) {0} int function 
+    col (6.9.4) {8} int variable local lval  0
+    diagonal (6.10.4) {8} int variable local lval  1
+    newcol (6.8.14) {8} int variable param lval  0
+queens (6.30.1) {0} void function 
+    row (6.31.4) {10} int variable local lval  0
+    newcol (6.30.14) {10} int variable param lval  0
+printqueens (6.21.1) {0} void function 
+    col (6.22.4) {9} int variable local lval  0

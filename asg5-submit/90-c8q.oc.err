@@ -1,0 +1,12 @@
+8A:1.7: syntax error, unexpected '[', expecting '('
+8A:2.2: invalid source character (|)
+8A:2.19: invalid source character (?)
+8A:2.20: invalid source character (!)
+8A:2.33: invalid source character (:)
+8A:3.14: invalid source character (&)
+8A:3.16: invalid source character (|)
+8A:3.18: invalid source character (&)
+8A:3.20: invalid source character (|)
+8A:3.21: invalid source character (|)
+8A:3.29: invalid source character (|)
+8A:3.33: invalid source character (|)

@@ -1,0 +1,19 @@
+96-unterminated.oc:6:15: warning: missing terminating " character [enabled by default]
+    string s = "abc;
+               ^
+96-unterminated.oc:7:13: warning: missing terminating ' character [enabled by default]
+    char c = 'a;
+             ^
+96-unterminated.oc:8:8: warning: missing terminating " character [enabled by default]
+    s = "abcd\";
+        ^
+96-unterminated.oc:9:8: warning: missing terminating " character [enabled by default]
+    s = "abc|\
+        ^
+˜Ñs:5.15: bad string
+˜Ñs:5.20: syntax error, unexpected ';'
+˜Ñs:6.15: bad string
+˜Ñs:6.49: invalid source character (\)
+˜Ñs:6.50: bad string
+˜Ñs:6.61: syntax error, unexpected TOK_IDENT
+˜Ñs:6.64: invalid source character (|)

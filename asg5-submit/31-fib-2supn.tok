@@ -1,0 +1,120 @@
+  0     0.000    258    ROOT            
+  5    22.001    262    FUNCTION        
+  5    22.001    261    TYPE_ID         
+  5    22.001    286    TOK_VOID        void
+  5    22.006    294    TOK_IDENT       fail
+  5    22.011    263    TOK_PARAM       (
+  5    22.012    261    TYPE_ID         
+  5    22.012    290    TOK_STRING      string
+  5    22.019    294    TOK_IDENT       expr
+  5    22.025    261    TYPE_ID         
+  5    22.025    290    TOK_STRING      string
+  5    22.032    294    TOK_IDENT       file
+  5    22.038    261    TYPE_ID         
+  5    22.038    288    TOK_INT         int
+  5    22.042    294    TOK_IDENT       line
+  5    24.001    262    FUNCTION        
+  5    24.001    261    TYPE_ID         
+  5    24.001    286    TOK_VOID        void
+  5    24.006    294    TOK_IDENT       putchr
+  5    24.013    263    TOK_PARAM       (
+  5    24.014    261    TYPE_ID         
+  5    24.014    288    TOK_INT         int
+  5    24.018    294    TOK_IDENT       chr
+  5    25.001    262    FUNCTION        
+  5    25.001    261    TYPE_ID         
+  5    25.001    286    TOK_VOID        void
+  5    25.006    294    TOK_IDENT       putint
+  5    25.013    263    TOK_PARAM       (
+  5    25.014    261    TYPE_ID         
+  5    25.014    288    TOK_INT         int
+  5    25.018    294    TOK_IDENT       num
+  5    26.001    262    FUNCTION        
+  5    26.001    261    TYPE_ID         
+  5    26.001    286    TOK_VOID        void
+  5    26.006    294    TOK_IDENT       putstr
+  5    26.013    263    TOK_PARAM       (
+  5    26.014    261    TYPE_ID         
+  5    26.014    290    TOK_STRING      string
+  5    26.021    294    TOK_IDENT       str
+  5    28.001    262    FUNCTION        
+  5    28.001    261    TYPE_ID         
+  5    28.001    288    TOK_INT         int
+  5    28.005    294    TOK_IDENT       getchr
+  5    28.011    263    TOK_PARAM       (
+  5    29.001    262    FUNCTION        
+  5    29.001    261    TYPE_ID         
+  5    29.001    290    TOK_STRING      string
+  5    29.008    294    TOK_IDENT       getstr
+  5    29.014    263    TOK_PARAM       (
+  5    30.001    262    FUNCTION        
+  5    30.001    261    TYPE_ID         
+  5    30.001    290    TOK_STRING      string
+  5    30.008    294    TOK_IDENT       getln
+  5    30.013    263    TOK_PARAM       (
+  6     8.001    262    FUNCTION        
+  6     8.001    261    TYPE_ID         
+  6     8.001    288    TOK_INT         int
+  6     8.005    294    TOK_IDENT       fibonacci
+  6     8.015    263    TOK_PARAM       (
+  6     8.016    261    TYPE_ID         
+  6     8.016    288    TOK_INT         int
+  6     8.020    294    TOK_IDENT       n
+  6     8.023    265    BLOCK           {
+  6     9.004    277    TOK_IF          if
+  6     9.010    276    TOK_LT          <
+  6     9.008    294    TOK_IDENT       n
+  6     9.012    293    TOK_INTCON      2
+  6     9.015    287    TOK_RETURN      return
+  6     9.022    294    TOK_IDENT       n
+  6    10.004    287    TOK_RETURN      return
+  6    10.029     43    '+'             +
+  6    10.021    268    CALL            (
+  6    10.011    294    TOK_IDENT       fibonacci
+  6    10.024     45    '-'             -
+  6    10.022    294    TOK_IDENT       n
+  6    10.026    293    TOK_INTCON      1
+  6    10.041    268    CALL            (
+  6    10.031    294    TOK_IDENT       fibonacci
+  6    10.044     45    '-'             -
+  6    10.042    294    TOK_IDENT       n
+  6    10.046    293    TOK_INTCON      2
+  6    13.001    262    FUNCTION        
+  6    13.001    261    TYPE_ID         
+  6    13.001    288    TOK_INT         int
+  6    13.005    294    TOK_IDENT       main
+  6    13.009    263    TOK_PARAM       (
+  6    13.012    265    BLOCK           {
+  6    14.004    261    TYPE_ID         
+  6    14.004    288    TOK_INT         int
+  6    14.008    294    TOK_IDENT       n
+  6    14.012    293    TOK_INTCON      0
+  6    15.004    285    TOK_WHILE       while
+  6    15.013    276    TOK_LT          <
+  6    15.011    294    TOK_IDENT       n
+  6    15.015    293    TOK_INTCON      10
+  6    15.019    265    BLOCK           {
+  6    16.014    268    CALL            (
+  6    16.007    294    TOK_IDENT       putstr
+  6    16.015    292    TOK_STRINGCON   "fibonacci("
+  6    17.014    268    CALL            (
+  6    17.007    294    TOK_IDENT       putint
+  6    17.015    294    TOK_IDENT       n
+  6    18.014    268    CALL            (
+  6    18.007    294    TOK_IDENT       putstr
+  6    18.015    292    TOK_STRINGCON   ") = "
+  6    19.014    268    CALL            (
+  6    19.007    294    TOK_IDENT       putint
+  6    19.025    268    CALL            (
+  6    19.015    294    TOK_IDENT       fibonacci
+  6    19.026    294    TOK_IDENT       n
+  6    20.014    268    CALL            (
+  6    20.007    294    TOK_IDENT       putchr
+  6    20.015    291    TOK_CHARCON     '\n'
+  6    21.009     61    '='             =
+  6    21.007    294    TOK_IDENT       n
+  6    21.013     43    '+'             +
+  6    21.011    294    TOK_IDENT       n
+  6    21.015    293    TOK_INTCON      1
+  6    23.004    287    TOK_RETURN      return
+  6    23.011    293    TOK_INTCON      0

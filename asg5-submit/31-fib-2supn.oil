@@ -1,0 +1,58 @@
+fail:     .function 
+          .param ptr expr
+          .param ptr file
+          .param int line
+          .end
+putchr:   .function 
+          .param int chr
+          .end
+putint:   .function 
+          .param int num
+          .end
+putstr:   .function 
+          .param ptr str
+          .end
+getchr:   .function int 
+          .end
+getstr:   .function ptr 
+          .end
+getln:    .function ptr 
+          .end
+fibonacci: .function int 
+          .param int n
+.if0:     $t0:i = n < 2
+          goto .fi0 if not $t0:i
+.th0:     return n
+          goto .fi0
+.fi0:
+          $t1:i = n - 1
+          $t2:i = call fibonacci($t1:i)
+          $t3:i = n - 2
+          $t4:i = call fibonacci($t3:i)
+          $t5:i = $t2:i + $t4:i
+          $t6:i = n - 1
+          $t7:i = call fibonacci($t6:i)
+          $t8:i = n - 2
+          $t9:i = call fibonacci($t8:i)
+          $t10:i = $t7:i + $t9:i
+return $t10:i
+          return
+          .end
+main:     .function int 
+          .local int n
+          n = 0
+.wh0:     $t0:i = n < 10
+          goto .od0 if not $t0:i
+.do0:     call putstr("fibonacci(")
+          call putint(n)
+          call putstr(") = ")
+          $t1:i = call fibonacci(n)
+          call putint($t1:i)
+          call putchr('\n')
+          $t2:i = n + 1
+          n = $t2:i
+          goto .wh0
+.od0:     return 0
+          return
+          .end
+

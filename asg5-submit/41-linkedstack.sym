@@ -1,0 +1,34 @@
+pop (6.33.1) {0} string function 
+    tmp (6.34.4) {11} string variable local lval  0
+    stack (6.33.13) {11} ptr <struct stack> variable param lval  0
+new_stack (6.19.1) {0} ptr <struct stack> function 
+    stack (6.20.4) {9} ptr <struct stack> variable local lval  0
+putstr (5.26.1) {0} void function 
+    str (5.26.14) {4} string variable param lval  0
+putchr (5.24.1) {0} void function 
+    chr (5.24.14) {2} int variable param lval  0
+main (6.41.1) {0} int function 
+    stack (6.43.4) {12} ptr <struct stack> variable local lval  1
+    argi (6.42.4) {12} int variable local lval  0
+    argv (6.41.21) {12} string array variable param lval  1
+    argc (6.41.11) {12} int variable param lval  0
+push (6.25.1) {0} void function 
+    tmp (6.26.4) {10} ptr <struct node> variable local lval  0
+    str (6.25.37) {10} string variable param lval  1
+    stack (6.25.12) {10} ptr <struct stack> variable param lval  0
+putint (5.25.1) {0} void function 
+    num (5.25.14) {3} int variable param lval  0
+getstr (5.29.1) {0} string function 
+fail (5.22.1) {0} void function 
+    line (5.22.38) {1} int variable param lval  2
+    file (5.22.25) {1} string variable param lval  1
+    expr (5.22.12) {1} string variable param lval  0
+getln (5.30.1) {0} string function 
+node (6.5.1) {0} struct node
+    link (6.7.4) ptr <struct node> field  1
+    data (6.6.4) string field  0
+getchr (5.28.1) {0} int function 
+stack (6.10.1) {0} struct stack
+    top (6.11.4) ptr <struct node> field  0
+empty (6.14.1) {0} int function 
+    stack (6.14.12) {8} ptr <struct stack> variable param lval  0

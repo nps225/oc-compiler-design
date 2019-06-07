@@ -1,0 +1,163 @@
+fail:     .function 
+          .param ptr expr
+          .param ptr file
+          .param int line
+          .end
+putchr:   .function 
+          .param int chr
+          .end
+putint:   .function 
+          .param int num
+          .end
+putstr:   .function 
+          .param ptr str
+          .end
+getchr:   .function int 
+          .end
+getstr:   .function ptr 
+          .end
+getln:    .function ptr 
+          .end
+strcmp:   .function int 
+          .param ptr s1
+          .param ptr s2
+          .local int s1c
+          .local int cmp
+          .local int index
+          .local int s2c
+          .local int contin
+          index = 0
+          contin = 1
+          s1c = 0
+          s2c = 0
+          cmp = 0
+.wh0:     goto .od0 if not contin
+.do0:     $t0:i = s1[index * :i]
+          s1c = $t0:i
+          $t1:i = s2[index * :i]
+          s2c = $t1:i
+          $t2:i = s1c - s2c
+          cmp = $t2:i
+.if0:     $t3:i = cmp != 0
+          goto .fi0 if not $t3:i
+.th0:     return cmp
+          goto .fi0
+.fi0:
+.if1:     $t4:i = s1c == '\0'
+          goto .fi1 if not $t4:i
+.th1:     contin = 0
+          goto .fi1
+.fi1:
+.if2:     $t5:i = s2c == '\0'
+          goto .fi2 if not $t5:i
+.th2:     contin = 0
+          goto .fi2
+.fi2:
+          $t6:i = index + 1
+          index = $t6:i
+          goto .wh0
+.od0:     return 0
+          return
+          .end
+insertion_sort: .function 
+          .param int size
+          .param ptr words
+          .local ptr element
+          .local int contin
+          .local int sorted
+          .local int slot
+          sorted = 1
+          slot = 0
+          element = nullptr
+          contin = 0
+.wh0:     $t0:i = sorted < size
+          goto .od0 if not $t0:i
+.do0:     slot = sorted
+          $t1:i = words[slot * :i]
+          element = $t1:i
+          contin = 1
+.wh1:     goto .od1 if not contin
+.do1:     
+.if3:     $t2:i = slot == 0
+          goto .el3 if not $t2:i
+.th3: 
+          contin = 0
+          goto .fi3
+.el3:     
+.if4:     $t3:i = slot - 1
+          $t4:i = words[$t3:i * :i]
+          $t5:i = call strcmp($t4:i,element)
+          $t6:i = $t5:i <= 0
+          goto .el4 if not $t6:i
+.th4: 
+          contin = 0
+          goto .fi4
+.el4:     $t7:i = slot - 1
+          $t8:i = words[$t7:i * :i]
+          words[slot * :i] = $t8:i
+          $t9:i = slot - 1
+          slot = $t9:i
+.fi4:
+.fi3:
+          goto .wh1
+.od1:     words[slot * :i] = element
+          $t10:i = sorted + 1
+          sorted = $t10:i
+          goto .wh0
+.od0:     return
+          .end
+print_array: .function 
+          .param int size
+          .param ptr words
+          .local int index
+          index = 0
+.wh0:     $t0:i = index < size
+          goto .od0 if not $t0:i
+.do0:     $t1:i = words[index * :i]
+          call putstr($t1:i)
+          call putchr('\n')
+          $t2:i = index + 1
+          index = $t2:i
+          goto .wh0
+.od0:     return
+          .end
+read_words: .function int 
+          .param int size
+          .param ptr words
+          .local ptr word
+          .local int count
+          count = 0
+          word = nullptr
+.wh0:     goto .od0 if not 1
+.do0:     
+.if5:     $t0:i = count == size
+          goto .fi5 if not $t0:i
+.th5:     return count
+          goto .fi5
+.fi5:
+          $t1:p = call getstr
+          word = $t1:p
+.if6:     $t2:p = word == nullptr
+          goto .fi6 if not $t2:p
+.th6:     return count
+          goto .fi6
+.fi6:
+          words[count * :i] = word
+          $t3:i = count + 1
+          count = $t3:i
+          goto .wh0
+.od0:     return
+          .end
+main:     .function int 
+          .local ptr words
+          .local int count
+          count = 100
+          words = malloc(count * sizeof ptr)
+          $t0:i = call read_words(count,words)
+          count = $t0:i
+          call insertion_sort(count,words)
+          call print_array(count,words)
+          return 0
+          return
+          .end
+

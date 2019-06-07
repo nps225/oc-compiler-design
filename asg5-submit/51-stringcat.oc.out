@@ -1,0 +1,62 @@
+; 0.  1: # 1 "51-stringcat.oc"; 0.  0: 
+; 0.  1: # 1 "<built-in>"
+; 1.  1: # 1 "<command-line>"
+; 2.  1: # 1 "51-stringcat.oc"
+; 3.  1: 
+; 3.  2: 
+; 3.  3: 
+; 3.  4: 
+; 3.  5: 
+; 3.  6: # 1 "oclib.h" 1
+; 4.  1: # 22 "oclib.h"
+; 5. 22: void fail (string expr, string file, int line);
+; 5. 23: 
+; 5. 24: void putchr (int chr);
+; 5. 25: void putint (int num);
+; 5. 26: void putstr (string str);
+; 5. 27: 
+; 5. 28: int getchr();
+; 5. 29: string getstr();
+; 5. 30: string getln();
+; 5. 31: # 7 "51-stringcat.oc" 2
+; 6.  7: 
+; 6.  8: int strlen (string str) {
+; 6.  9:    int len = 0;
+; 6. 10:    while (str[len] != '\0') len = len + 1;
+; 6. 11:    return len;
+; 6. 12: }
+; 6. 13: 
+; 6. 14: void strcat (string dest, string src) {
+; 6. 15:    int pos = strlen (dest);
+; 6. 16:    int srcix = 0;
+; 6. 17:    while (src[srcix] != '\0') {
+; 6. 18:       dest[pos] = src[srcix];
+; 6. 19:       pos = pos + 1;
+; 6. 20:       srcix = srcix + 1;
+; 6. 21:    }
+; 6. 22:    dest[pos] = '\0';
+; 6. 23: }
+; 6. 24: 
+; 6. 25: int main (int argc, array<string> argv) {
+; 6. 26:    int length = 0;
+; 6. 27:    int argi = 1;
+; 6. 28:    while (argi < argc) {
+; 6. 29:       length = length + strlen (argv[argi]) + 2;
+; 6. 30:       argi = argi + 1;
+; 6. 31:    }
+; 6. 32:    putstr ("concat length = ");
+; 6. 33:    putint (length);
+; 6. 34:    putchr ('\n');
+; 6. 35:    string concat = alloc<string> (length);
+; 6. 36:    argi = 1;
+; 6. 37:    putchr ('[');
+; 6. 38:    while (argi < argc) {
+; 6. 39:       strcat (concat, "(");
+; 6. 40:       strcat (concat, argv[argi]);
+; 6. 41:       strcat (concat, ")");
+; 6. 42:       argi = argi + 1;
+; 6. 43:    }
+; 6. 44:    putstr (concat);
+; 6. 45:    putstr ("]\n");
+; 6. 46:    return 0;
+; 6. 47: }

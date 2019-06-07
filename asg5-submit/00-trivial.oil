@@ -1,0 +1,4 @@
+main:     .function int 
+          return
+          .end
+

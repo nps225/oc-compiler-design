@@ -1,0 +1,16 @@
+main:     .function int 
+          .local int y
+          .local int x
+          .local n
+          .local int c
+          $t0:i = a + b
+          c = $t0:i
+          n = null
+          $t1:i = a < b
+          x = $t1:i
+          $t2:i = a == b
+          y = $t2:i
+          return "foobar"
+          return
+          .end
+

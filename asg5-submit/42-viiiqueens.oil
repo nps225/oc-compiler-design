@@ -1,0 +1,106 @@
+board:    .global nullptr
+fail:     .function 
+          .param ptr expr
+          .param ptr file
+          .param int line
+          .end
+putchr:   .function 
+          .param int chr
+          .end
+putint:   .function 
+          .param int num
+          .end
+putstr:   .function 
+          .param ptr str
+          .end
+getchr:   .function int 
+          .end
+getstr:   .function ptr 
+          .end
+getln:    .function ptr 
+          .end
+is_safe:  .function int 
+          .param int newcol
+          .local int col
+          .local int diagonal
+          col = 0
+          diagonal = 0
+.wh0:     $t0:i = col < newcol
+          goto .od0 if not $t0:i
+.do0:     
+.if0:     $t1:i = board[col * :i]
+          $t2:i = board[newcol * :i]
+          $t3:i = $t1:i == $t2:i
+          goto .fi0 if not $t3:i
+.th0:     return 0
+          goto .fi0
+.fi0:
+          $t4:i = board[col * :i]
+          $t5:i = board[newcol * :i]
+          $t6:i = $t4:i - $t5:i
+          diagonal = $t6:i
+.if1:     $t7:i = col - newcol
+          $t8:i = diagonal == $t7:i
+          goto .fi1 if not $t8:i
+.th1:     return 0
+          goto .fi1
+.fi1:
+.if2:     $t9:i = newcol - col
+          $t10:i = diagonal == $t9:i
+          goto .fi2 if not $t10:i
+.th2:     return 0
+          goto .fi2
+.fi2:
+          $t11:i = col + 1
+          col = $t11:i
+          goto .wh0
+.od0:     return 1
+          return
+          .end
+printqueens: .function 
+          .local int col
+          col = 0
+.wh0:     $t0:i = col < 8
+          goto .od0 if not $t0:i
+.do0:     $t1:i = board[col * :i]
+          $t2:i = $t1:i + '1'
+          call putchr($t2:i)
+          $t3:i = col + 1
+          col = $t3:i
+          goto .wh0
+.od0:     call putchr('\n')
+          return
+          .end
+queens:   .function 
+          .param int newcol
+          .local int row
+          row = 0
+.if3:     $t0:i = newcol == 8
+          goto .el3 if not $t0:i
+.th3: 
+          call printqueens
+          goto .fi3
+.el3:     
+.wh0:     $t1:i = row < 8
+          goto .od0 if not $t1:i
+.do0:     board[newcol * :i] = row
+.if4:     $t2:i = call is_safe(newcol)
+          goto .fi4 if not $t2:i
+.th4:     $t3:i = newcol + 1
+          call queens($t3:i)
+          goto .fi4
+.fi4:
+          $t4:i = row + 1
+          row = $t4:i
+          goto .wh0
+.od0:     
+.fi3:
+          return
+          .end
+main:     .function int 
+          board = malloc(8 * sizeof int)
+          call queens(0)
+          return 0
+          return
+          .end
+

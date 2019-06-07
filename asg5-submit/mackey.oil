@@ -1,0 +1,32 @@
+          .struct node
+          .field int foo
+          .field ptr link
+          .end
+func:     .function ptr 
+          .param ptr head
+          .param int length
+          .local ptr c
+          .local ptr b
+          .local int a
+          a = 0
+          b = ""
+          c = malloc(sizeof struct node)
+.if0:     $t0:i = a < 3
+          goto .el0 if not $t0:i
+.th0: 
+          a = length
+          $t1:p = c->node.link
+          c = $t1:p
+          goto .fi0
+.el0:     
+.if1:     $t2:i = 0 == 0
+          goto .el1 if not $t2:i
+.th1: 
+          a = 8
+          goto .fi1
+.el1:     b = "foo"
+.fi1:
+.fi0:
+          return
+          .end
+
